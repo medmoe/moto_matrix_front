@@ -17,10 +17,9 @@ export function SignInForm(props: Props) {
             </div>
             <hr/>
             <div className={styles.body}>
-
                 <form onSubmit={props.handleSubmit}>
                     <input type="text" id="username" name="username" onChange={props.handleChange}
-                           placeholder="username" required/>
+                           placeholder="email" required/>
                     <input type="password" id="password" name="password" onChange={props.handleChange}
                            placeholder="password" required/>
                     <input className={styles.submit_btn} type="submit" value="submit" id="submit_btn"/>

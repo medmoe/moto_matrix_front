@@ -4,7 +4,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
+
 .container {
     display: flex;
     flex-direction: column;
@@ -44,14 +46,13 @@ hr {
     margin: 10px 0;
 }
 
-.body input[type="text"],input[type="email"],input[type="password"] {
+.body input[type="text"], .body input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 5px 0;
     box-sizing: border-box;
-    max-width: 400px;
 }
 
 .submit_btn {
@@ -82,4 +83,5 @@ hr {
 }
 .signUpLink {
     color: #4CAF50;
+    text-decoration: none;
 }
