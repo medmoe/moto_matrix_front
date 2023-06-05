@@ -63,6 +63,20 @@ export function SignUpForm({handleSubmit, handleChange, errorMessage}: Props) {
                             </div>
                             <div className={styles.row}>
                                 <div className={styles.col}>
+                                    <label htmlFor="consumer">
+                                        <input type="radio" id="consumer" name="is_provider" value="NO" onChange={handleChange} required/>
+                                        Consumer
+                                    </label>
+                                    <label htmlFor="seller">
+                                        <input type="radio" id="seller" name="is_provider" value="YES" onChange={handleChange} required/>
+                                        Seller
+                                    </label>
+                                </div>
+                                <div className={styles.col}>
+                                </div>
+                            </div>
+                            <div className={styles.row}>
+                                <div className={styles.col}>
                                     <input type="submit" value="submit" id="submit_btn" className={styles.submit_btn}/>
                                 </div>
                                 <div className={styles.col}>

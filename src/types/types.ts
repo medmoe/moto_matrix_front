@@ -1,15 +1,17 @@
 export interface UserProfile {
     user_id?: number,
-    username: string,
     email: string,
-    first_name: string,
-    last_name: string,
-    profile_pic: string,
-    phone: string,
-    address: string,
-    city: string,
-    country: string,
-    rating: number,
+    password: string,
+    password2?: string,
+    first_name?: string,
+    last_name?: string,
+    profile_pic?: string,
+    phone?: string,
+    address?: string,
+    city?: string,
+    country?: string,
+    rating?: number,
+    is_provider?: boolean,
 }
 
 export interface Provider extends UserProfile {

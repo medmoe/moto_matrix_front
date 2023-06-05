@@ -2,33 +2,19 @@ import React, {FormEvent, useState} from "react";
 import axios from "axios";
 import {SignUpForm} from "./SignUpForm";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../../hooks";
-import {API} from "../../../types/types";
-
-interface UserInfo {
-    first_name: string,
-    last_name: string,
-    email: string,
-    phone: string,
-    password: string,
-    pass2?: string,
-}
+import {API, UserProfile} from "../../../types/types";
 
 export function SignUp() {
-    let initialState: UserInfo = {
-        "first_name": "",
-        "last_name": "",
+    let initialState: UserProfile = {
         "email": "",
-        "phone": "",
         "password": "",
-        "pass2": "",
     }
     const [userInfo, setUserInfo] = useState(initialState);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        if (userInfo.password !== userInfo.pass2) {
+        if (userInfo.password !== userInfo.password2) {
             setErrorMessage("Password didn't match!")
             return;
         }
@@ -38,10 +24,10 @@ export function SignUp() {
             },
             withCredentials: true,
         }
-        delete userInfo.pass2;
+        delete userInfo.password2;
         await axios.post(`${API}signup/`, JSON.stringify(userInfo), options)
             .then((res) => {
-                console.log("success");
+                navigate("/dashboard");
             })
             .catch((err) => {
                 setErrorMessage("something went wrong! please contact support");
@@ -50,11 +36,10 @@ export function SignUp() {
     }
 
     const handleChange = (event: FormEvent) => {
-        event.preventDefault()
         const target = event.target as HTMLInputElement
         setUserInfo({
             ...userInfo,
-            [target.name]: target.value
+            [target.name]: target.name === "is_provider" ? target.value === "YES" : target.value
         })
     }
     return (

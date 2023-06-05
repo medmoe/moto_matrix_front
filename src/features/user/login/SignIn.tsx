@@ -1,14 +1,10 @@
 import React, {FormEvent, useState} from "react";
 import {SignInForm} from "./SignInForm";
 import axios from "axios";
-import {API} from "../../../types/types";
+import {API, UserProfile} from "../../../types/types";
 
-interface LoginInfo {
-    email: string,
-    password: string,
-}
 export function SignIn() {
-    let initialState: LoginInfo = {
+    let initialState: UserProfile = {
         "email": "",
         "password": "",
     }
