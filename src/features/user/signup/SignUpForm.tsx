@@ -1,14 +1,17 @@
 import React, {FormEvent} from "react";
 import {Link} from "react-router-dom";
 import styles from './SignUp.module.css';
+import all from '../../assets/styles/Forms.module.css'
 import auto from '../../assets/images/auto.jpg';
+
 
 type Props = {
     handleSubmit: (event: FormEvent) => void;
     handleChange: (event: FormEvent) => void;
+    errorMessage: string;
 }
 
-export function SignUpForm(props: Props) {
+export function SignUpForm({handleSubmit, handleChange, errorMessage}: Props) {
     return (
         <div className={styles.root}>
             <div className={styles.container}>
@@ -24,35 +27,38 @@ export function SignUpForm(props: Props) {
                     </div>
                     <hr id={styles['divider']}/>
                     <div className={styles.body}>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className={styles.row}>
                                 <div className={styles.col}>
                                     <label htmlFor="first_name">First name</label>
-                                    <input type="text" id="first_name" name="first_name" required/>
+                                    <input type="text" id="first_name" name="first_name" onChange={handleChange}
+                                           required/>
                                 </div>
                                 <div className={styles.col}>
                                     <label htmlFor="last_name">Last name</label>
-                                    <input type="text" id="last_name" name="last_name" required/>
+                                    <input type="text" id="last_name" name="last_name" onChange={handleChange}
+                                           required/>
                                 </div>
                             </div>
                             <div className={styles.row}>
                                 <div className={styles.col}>
                                     <label htmlFor="phone">Phone</label>
-                                    <input type="tel" id="phone" name="phone" required/>
+                                    <input type="tel" id="phone" name="phone" onChange={handleChange} required/>
                                 </div>
                                 <div className={styles.col}>
                                     <label htmlFor="email">Email</label>
-                                    <input type="email" id="email" name="email" required/>
+                                    <input type="email" id="email" name="email" onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className={styles.row}>
                                 <div className={styles.col}>
                                     <label htmlFor="pass1">Password</label>
-                                    <input type="password" id="password" name="password" required/>
+                                    <input type="password" id="password" name="password" onChange={handleChange}
+                                           required/>
                                 </div>
                                 <div className={styles.col}>
                                     <label htmlFor="pass2">Renter password</label>
-                                    <input type="password" id="pass2" name="pass2" required/>
+                                    <input type="password" id="pass2" name="pass2" onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className={styles.row}>
@@ -60,6 +66,7 @@ export function SignUpForm(props: Props) {
                                     <input type="submit" value="submit" id="submit_btn" className={styles.submit_btn}/>
                                 </div>
                                 <div className={styles.col}>
+                                    <p className={all.err}>{errorMessage}</p>
                                 </div>
                             </div>
                         </form>
