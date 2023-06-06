@@ -58,10 +58,14 @@ export function SignUpForm({handleSubmit, handleChange, errorMessage}: Props) {
                                 </div>
                                 <div className={styles.col}>
                                     <label htmlFor="pass2">Renter password</label>
-                                    <input type="password" id="pass2" name="pass2" onChange={handleChange} required/>
+                                    <input type="password" id="password2" name="password2" onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className={styles.row}>
+                                <div className={styles.col}>
+                                    <label htmlFor="username">Username</label>
+                                    <input type="text" id="username" name="username" onChange={handleChange} required />
+                                </div>
                                 <div className={styles.col}>
                                     <label htmlFor="consumer">
                                         <input type="radio" id="consumer" name="is_provider" value="NO" onChange={handleChange} required/>
@@ -71,8 +75,6 @@ export function SignUpForm({handleSubmit, handleChange, errorMessage}: Props) {
                                         <input type="radio" id="seller" name="is_provider" value="YES" onChange={handleChange} required/>
                                         Seller
                                     </label>
-                                </div>
-                                <div className={styles.col}>
                                 </div>
                             </div>
                             <div className={styles.row}>

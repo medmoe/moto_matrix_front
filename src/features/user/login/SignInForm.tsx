@@ -20,7 +20,7 @@ export function SignInForm({handleSubmit, handleChange, errorMessage}: Props) {
             <div className={styles.body}>
                 <form onSubmit={handleSubmit}>
                     <input type="text" id="username" name="username" onChange={handleChange}
-                           placeholder="email" required/>
+                           placeholder="username" required/>
                     <input type="password" id="password" name="password" onChange={handleChange}
                            placeholder="password" required/>
                     <input className={styles.submit_btn} type="submit" value="submit" id="submit_btn"/>

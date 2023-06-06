@@ -1,16 +1,17 @@
 import React, {FormEvent, useState} from "react";
 import {SignInForm} from "./SignInForm";
 import axios from "axios";
-import {API, UserProfile} from "../../../types/types";
+import {API, UserProfile, User} from "../../../types/types";
+import {useNavigate} from "react-router-dom";
 
 export function SignIn() {
-    let initialState: UserProfile = {
-        "email": "",
+    let initialState: User = {
+        "username": "",
         "password": "",
     }
     const [loginInfo, setLoginInfo] = useState(initialState);
     const [errorMessage, setErrorMessage] = useState("");
-
+    const navigate = useNavigate();
 
     const handleChange = (event: FormEvent) => {
         event.preventDefault()
@@ -28,8 +29,9 @@ export function SignIn() {
             },
             withCredentials: true,
         }
-        await axios.post(`${API}login/`, JSON.stringify(loginInfo), options)
+        await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
+                navigate("/dashboard");
                 console.log("success");
             })
             .catch((err) => {

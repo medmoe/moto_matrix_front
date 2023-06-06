@@ -1,10 +1,14 @@
-export interface UserProfile {
+export interface User {
     user_id?: number,
-    email: string,
-    password: string,
-    password2?: string,
+    username: string,
     first_name?: string,
     last_name?: string,
+    email?: string,
+    password: string,
+    password2?: string,
+}
+export interface UserProfile {
+    user: User,
     profile_pic?: string,
     phone?: string,
     address?: string,
