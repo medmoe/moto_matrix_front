@@ -1,0 +1,12 @@
+.storybook_inputField {
+    border-radius: 5px;
+}
+
+.storybook_inputField::placeholder {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #9E9D9D;
+}

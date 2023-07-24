@@ -1,0 +1,16 @@
+.banner{
+    width: 548px;
+    height: 832px;
+    background-color: #706500;
+}
+
+.logo {
+    position: absolute;
+    width: 462px;
+    height: 421px;
+    flex-shrink: 0;
+    top: 205px;
+}
+
+.container {
+}
