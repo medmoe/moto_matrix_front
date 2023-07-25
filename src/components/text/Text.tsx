@@ -8,7 +8,7 @@ interface textProps {
     fontWeight: string
 }
 
-export function Text({text, color="#000", fontSize="14px", fontWeight="400"}: textProps) {
+export function Text({text, color = "#000", fontSize = "14px", fontWeight = "400"}: textProps) {
     return (
         <p style={{
             color: `${color}`,

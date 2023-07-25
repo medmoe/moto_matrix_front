@@ -8,11 +8,13 @@ interface InputFieldProps {
     placeholder?: string,
     id?: string,
     padding?: string,
+    name?: string,
+    type?: string,
 }
 
-export function InputField ({width, height, border, placeholder, id, padding}: InputFieldProps) {
+export function InputField ({width, height, border, placeholder, id, padding, name, type="text"}: InputFieldProps) {
     return (
-        <input type="text"
+        <input type={type}
                style={{
                    width:`${width}`,
                    height:`${height}`,
@@ -22,6 +24,7 @@ export function InputField ({width, height, border, placeholder, id, padding}: I
                className={styles.storybook_inputField}
                placeholder={placeholder}
                id={id}
+               name={name}
                required />
     )
 }

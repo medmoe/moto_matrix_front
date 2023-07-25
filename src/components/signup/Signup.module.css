@@ -1,0 +1,50 @@
+.container {
+    position: relative;
+    width: 700px;
+    height: 832px;
+}
+
+.header {
+}
+
+.title {
+    position: absolute;
+    left: 86px;
+    top: 152px;
+}
+
+.subtitle {
+    position: absolute;
+    left: 86px;
+    top: 207px;
+}
+
+.text {
+    position: absolute;
+    left: 86px;
+    top: 245px;
+}
+
+.body {
+    position: absolute;
+    top: 291px;
+    left: 86px;
+    display: flex;
+    flex-direction: column;
+    gap: 31px;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 31px;
+}
+.row {
+    display: flex;
+    gap: 28px;
+}
+.radios {
+    display: flex;
+    flex-direction: column;
+    margin-top: 9px;
+}
