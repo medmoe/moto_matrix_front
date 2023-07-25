@@ -1,3 +1,8 @@
 .container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1248px;
+    margin: 96px 96px;
+    position: relative;
 }

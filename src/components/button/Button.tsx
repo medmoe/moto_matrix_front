@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FormEvent} from "react";
 import styles from './Button.module.css'
 
 interface args {
@@ -8,10 +8,11 @@ interface args {
     backgroundColor?: string,
     textColor?: string,
     border?: string,
+    handleClick: (event: FormEvent) => void,
 
 }
 
-export function Button({label, width, height, backgroundColor, textColor, border}: args) {
+export function Button({handleClick, label, width, height, backgroundColor, textColor, border}: args) {
     return (
         <button className={styles.storybook_button}
                 style={{
@@ -21,6 +22,7 @@ export function Button({label, width, height, backgroundColor, textColor, border
                     color: `${textColor}`,
                     border: `${border}`,
                 }}
+                onClick={handleClick}
         >
             {label}
         </button>

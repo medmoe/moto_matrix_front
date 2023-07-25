@@ -3,7 +3,7 @@
 }
 
 .storybook_inputField::placeholder {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

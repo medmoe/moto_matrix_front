@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {FormEvent} from 'react';
 import {Banner} from "../../../components/banner/Banner";
 import {Signup} from "../../../components/signup/Signup";
 import styles from './SignUp.module.css'
 
 export function SignUp () {
+    const handleChange = (event: FormEvent) => {
+
+    }
+    const handleSubmit = (event: FormEvent) => {
+
+    }
     return (
         <div className={styles.container}>
             <Banner />
-            <Signup />
+            <Signup handleChange={handleChange} handleSubmit={handleSubmit}/>
         </div>
     )
 }

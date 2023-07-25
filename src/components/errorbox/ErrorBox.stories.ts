@@ -1,21 +1,21 @@
 import type {Meta, StoryObj} from "@storybook/react";
-import {Signup} from "./Signup";
+import {ErrorBox} from "./ErrorBox";
 
 const meta = {
-    title: "Signup",
-    component: Signup,
+    title: "ErrorBox",
+    component: ErrorBox,
     parameters: {
         layout: 'centered',
     },
     tags: ['autodocs']
-
-}satisfies Meta<typeof Signup>;
+} satisfies Meta<typeof ErrorBox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SignUpForm: Story = {
+export const ErrorMessage: Story = {
     args: {
-
+        message: "some error message!"
     }
+
 }

@@ -1,19 +1,25 @@
-import React from "react";
+import React, {FormEvent} from "react";
 import {Text} from "../text/Text";
 import {InputField} from "../inputField/InputField";
 import {Radio} from "../radio/Radio";
 import {Button} from "../button/Button"
 import styles from './Signup.module.css';
+import {Link} from "react-router-dom";
 
-export function Signup() {
+interface SignupProps {
+    handleChange: (event: FormEvent) => void
+    handleSubmit: (event: FormEvent) => void
+}
+
+export function Signup({handleChange, handleSubmit}: SignupProps) {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.title}>
-                    <Text text="Register" fontSize="32px" fontWeight="600"/>
+                    <Text text="Register" fontSize="32px" fontWeight="600" color="#000"/>
                 </div>
                 <div className={styles.subtitle}>
-                    <Text text="Start exploring our extensive catalog" fontSize="18px" fontWeight="500"/>
+                    <Text text="Start exploring our extensive catalog" fontSize="18px" fontWeight="500" color="#000"/>
                 </div>
                 <div className={styles.text}>
                     <p style={{
@@ -32,6 +38,7 @@ export function Signup() {
                                 width="222px"
                                 placeholder="First Name"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                     <InputField border="1px solid #9e9d9d"
                                 id="last_name"
@@ -40,6 +47,7 @@ export function Signup() {
                                 width="222px"
                                 placeholder="Last Name"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                 </div>
                 <div className={styles.row}>
@@ -51,6 +59,7 @@ export function Signup() {
                                 placeholder="Phone"
                                 type="tel"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                     <InputField border="1px solid #9e9d9d"
                                 id="email"
@@ -60,6 +69,7 @@ export function Signup() {
                                 placeholder="Email"
                                 type="email"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                 </div>
                 <div className={styles.row}>
@@ -71,6 +81,7 @@ export function Signup() {
                                 placeholder="Password"
                                 type="password"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                     <InputField border="1px solid #9e9d9d"
                                 id="password2"
@@ -80,6 +91,7 @@ export function Signup() {
                                 placeholder="Confirm Password"
                                 type="password"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                 </div>
                 <div className={styles.row}>
@@ -90,6 +102,7 @@ export function Signup() {
                                 width="222px"
                                 placeholder="Username"
                                 padding="0 14px"
+                                handleChange={handleChange}
                     />
                     <div className={styles.radios}>
                         <Radio id="consumer" name="consumer" value="YES"/>
@@ -103,8 +116,14 @@ export function Signup() {
                             border="none"
                             backgroundColor="#007BFF"
                             textColor="#FFF"
+                            handleClick={handleSubmit}
                     />
-                    <p>Already have an account? <span style={{color: "#007BFF"}}>Log in</span></p>
+                    <p className={styles.helper_text}>Already have an account?
+                        <span
+                            style={{color: "#007BFF"}}>
+                            <Link to="/">Log in</Link>
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
