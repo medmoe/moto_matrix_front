@@ -1,0 +1,25 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 201px;
+    height: 65px;
+    cursor: pointer;
+}
+.title {
+    color: #FFFFFF;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    width: 0;
+    left: 81px;
+}
+
+.icon {
+    position: absolute;
+    left: 37px;
+}

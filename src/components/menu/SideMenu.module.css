@@ -1,0 +1,63 @@
+.container {
+    position: relative;
+    width: 202px;
+    height: 832px;
+    background-color: #706500;
+}
+
+.logo {
+    position: absolute;
+    right: 0;
+    top: -55px;
+}
+
+.items {
+    position: absolute;
+    top: 104px;
+}
+
+.account {
+    position: absolute;
+    width: 202px;
+    height: 65px;
+    top: 743px;
+    cursor: pointer;
+
+}
+
+.profile_picture {
+    width: 50px;
+    height: 50px;
+    background-color: #FFF;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    margin-left: 28px;
+    position: absolute;
+    top: 8px;
+}
+
+.profile_picture p {
+    color: #000;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.profile_name {
+    position: absolute;
+    left: 88px;
+    top: 7px;
+}
+
+.profile_name p {
+    color: #FFF;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
