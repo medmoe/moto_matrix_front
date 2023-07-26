@@ -37,17 +37,31 @@ export function SignUp() {
     }
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
+        /* Validating data before submitting*/
+        if (userInfo.user.password.length < 8) {
+            setErrorMessage("Password must be at least 8 characters long");
+            return
+        }
+        if (userInfo.user.username === "") {
+            setErrorMessage("Username is required");
+            return
+        }
         if (userInfo.user.password !== userInfo.user.password2) {
             setErrorMessage("Password didn't match!");
-
             return;
         }
+        if (!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(userInfo.user.email as string))) {
+            setErrorMessage("Enter a valid email address")
+            return
+        }
+
+        /* Sending the form */
         const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
             withCredentials: true,
-        }
+        };
         delete userInfo.user.password2;
         await axios.post(`${API}accounts/signup/`, JSON.stringify(userInfo), options)
             .then((res) => {

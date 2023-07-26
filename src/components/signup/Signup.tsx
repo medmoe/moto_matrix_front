@@ -29,7 +29,7 @@ export function Signup({handleChange, handleSubmit}: SignupProps) {
                         profile.</p>
                 </div>
             </div>
-            <div className={styles.body}>
+            <form className={styles.body}>
                 <div className={styles.row}>
                     <InputField border="1px solid #9e9d9d"
                                 id="first_name"
@@ -125,7 +125,7 @@ export function Signup({handleChange, handleSubmit}: SignupProps) {
                         </span>
                     </p>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }

@@ -37,6 +37,6 @@ export function InputField({
                id={id}
                name={name}
                onChange={handleChange}
-               required/>
+               required />
     )
 }
