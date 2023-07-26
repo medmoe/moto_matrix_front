@@ -65,7 +65,7 @@ export function SignIn(){
 //
 //     const handleChange = (event: FormEvent) => {
 //         event.preventDefault()
-//         const target = event.target as HTMLInputElement
+//         const target = event.target as HTMLInputElement++
 //         setLoginInfo({
 //             ...loginInfo,
 //             [target.name]: target.value

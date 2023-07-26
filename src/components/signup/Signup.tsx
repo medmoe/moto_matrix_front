@@ -105,8 +105,8 @@ export function Signup({handleChange, handleSubmit}: SignupProps) {
                                 handleChange={handleChange}
                     />
                     <div className={styles.radios}>
-                        <Radio id="consumer" name="consumer" value="YES"/>
-                        <Radio id="provider" name="provider" value="NO"/>
+                        <Radio id="consumer" name="is_provider" value="NO" handleChange={handleChange}/>
+                        <Radio id="seller" name="is_provider" value="YES" handleChange={handleChange}/>
                     </div>
                 </div>
                 <div className={styles.row}>
