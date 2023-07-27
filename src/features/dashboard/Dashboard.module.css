@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+}
+
+.sideMenu {
+}
+
+.contentWindow {
+    background-color: #eeeeee;
+}
+
+.upperBar {
+    position: relative;
+    width: 1047px;
+    height: 82px;
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+}
+
+.searchBar {
+    position: absolute;
+    left: 635px;
+}
+
+.lowerContainer {
+    position: relative;
+}
+
+.cardsContainer {
+    display: flex;
+    gap: 25px;
+    position: absolute;
+    left: 16px;
+    top: 26px;
+}

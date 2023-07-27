@@ -10,6 +10,7 @@ interface InputFieldProps {
     padding?: string,
     name?: string,
     type?: string,
+    backgroundColor?: string,
     handleChange: (event: FormEvent) => void,
 }
 
@@ -22,21 +23,23 @@ export function InputField({
                                padding,
                                name,
                                handleChange,
+                               backgroundColor,
                                type = "text"
                            }: InputFieldProps) {
     return (
         <input type={type}
                style={{
-                   width: `${width}`,
-                   height: `${height}`,
-                   border: `${border}`,
-                   padding: `${padding}`
+                   width: width,
+                   height: height,
+                   border: border,
+                   padding: padding,
+                   backgroundColor: backgroundColor
                }}
                className={styles.storybook_inputField}
                placeholder={placeholder}
                id={id}
                name={name}
                onChange={handleChange}
-               required />
+               required/>
     )
 }

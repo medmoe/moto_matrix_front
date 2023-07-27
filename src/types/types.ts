@@ -19,4 +19,11 @@ export interface UserProfile {
     is_provider?: boolean,
 }
 
+export interface GeneralInfo {
+    itemsInStock: string,
+    inventoryTurnOver: string,
+    ordersThisWeek: string,
+    totalOrders: string,
+}
+
 export const API = "http://localhost:8000/";

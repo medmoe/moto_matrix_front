@@ -10,3 +10,7 @@
     line-height: normal;
     color: #9E9D9D;
 }
+
+.storybook_inputField:focus {
+    outline: none;
+}
