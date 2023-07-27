@@ -6,24 +6,7 @@
     position: relative;
 }
 
-.amount {
+.description {
     position: absolute;
     left: 40px;
-    font-family: "Nunito Sans", sans-serif;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.description{
-    position: absolute;
-    left: 40px;
-    top: 61px;
-    color: #9E9D9D;
-    font-family: "Nunito Sans", sans-serif;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
 }
