@@ -27,3 +27,6 @@ export interface GeneralInfo {
 }
 
 export const API = "http://localhost:8000/";
+export const STATUS_COLORS: {[key: string]: string} = {
+    "Paid": "#4ECB71", "Pending": "#F9d100", "Canceled": "#FF0000",
+}

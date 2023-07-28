@@ -29,6 +29,12 @@
     position: relative;
 }
 
+.recentOrdersDetails {
+    position: absolute;
+    top: 45px;
+    left: 15px;
+}
+
 .largeCardsContainer {
     display: flex;
     flex-direction: column;
@@ -82,7 +88,6 @@
     position: absolute;
     top: 53px;
     left: 43px;
-
 }
 
 .graphDescriptors {
@@ -91,4 +96,12 @@
     gap: 36px;
     top: 225px;
     left: 45px;
+}
+
+.inventoryLevelDetails {
+    display: flex;
+    position: absolute;
+    top: 53px;
+    left: 43px;
+    gap: 164px;
 }

@@ -20,7 +20,7 @@ export function SearchField() {
                             type="text"
                             name="searchBar"
                             id="searchBar"
-                            backgroundColor="#eeeeee"
+                            backgroundColor="#eee"
                 />
             </div>
         </div>

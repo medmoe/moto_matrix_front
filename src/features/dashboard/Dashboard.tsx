@@ -11,6 +11,7 @@ import {DonutChart} from "../../components/donutChart/DonutChart";
 import {Description} from "../../components/description/Description";
 import {Divider} from "../../components/divider/Divider";
 import {GraphDescriptors} from "../../components/graphDescriptors/GraphDescriptors";
+import {Table} from "../../components/table/Table";
 
 export function Dashboard() {
     const navigate = useNavigate();
@@ -20,6 +21,21 @@ export function Dashboard() {
         ["62", "Orders This Week"],
         ["505", "Total Orders"],
     ]
+    const popularProducts: [number, string][] = [
+        [27, "Crankshaft"], [20, "Piston"], [36, "Camshaft"], [10, "Spark Plug"], [25, "Oil Pump"]
+    ]
+    const recentOrders = {
+        "data": [
+            {Name: "Mohammed Bekhouche Abdelghafour", Quantity: 100, Date: "2023-07-30", Status: "Paid"},
+            {Name: "Noah David", Quantity: 50, Date: "2023-07-29", Status: "Paid"},
+            {Name: "Joe Shmoe", Quantity: 0, Date: "2023-07-28", Status: "Pending"},
+            {Name: "Joe Doe", Quantity: 200, Date: "2023-07-27", Status: "Canceled"},
+            {Name: "Xiang Li", Quantity: 30, Date: "2023-07-26", Status: "Paid"},
+        ],
+        "columns": [
+            "Name", "Quantity", "Date", "Status"
+        ]
+    }
     const handleLogout = async () => {
         const options = {
             headers: {
@@ -44,7 +60,7 @@ export function Dashboard() {
             <div className={styles.contentWindow}>
                 <div className={styles.upperBar}>
                     <div className={styles.searchBar}>
-                        <SearchField/>
+                        <SearchField />
                     </div>
                 </div>
                 <div className={styles.lowerContainer}>
@@ -58,6 +74,10 @@ export function Dashboard() {
                             <div className={styles.largeCard}>
                                 <div className={styles.title}>
                                     <p>Inventory Levels</p>
+                                </div>
+                                <div className={styles.inventoryLevelDetails}>
+                                    <Description title="$20.600" description="Stock Value" />
+                                    <Description title="75%" description="Stock Sold" />
                                 </div>
                             </div>
                             <div className={styles.largeCard}>
@@ -87,6 +107,9 @@ export function Dashboard() {
                             <div className={styles.largeCard}>
                                 <div className={styles.title}>
                                     <p>Recent Orders</p>
+                                </div>
+                                <div className={styles.recentOrdersDetails}>
+                                    <Table data={recentOrders["data"]} columns={recentOrders["columns"]} />
                                 </div>
                             </div>
                         </div>
