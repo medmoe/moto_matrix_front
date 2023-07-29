@@ -105,3 +105,35 @@
     left: 43px;
     gap: 164px;
 }
+
+.popularProductsDetails {
+
+}
+
+.bars {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    justify-content: center;
+    position: absolute;
+    top: 70px;
+    left: 60px;
+}
+
+.bar {
+    width: 68px;
+}
+
+.popularProductsGraphDescriptors {
+    display: flex;
+    column-gap: 80px;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 210px;
+    left: 15px;
+}
+.inventoryLevelChart {
+    position: absolute;
+    top: 142px;
+    left: 43px;
+}

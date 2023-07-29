@@ -29,6 +29,7 @@ export function SideMenu() {
             <div className={styles.items}>
                 {menuItems.map(([icon, title], index) => {
                     return <MenuItem
+                        key={index}
                         icon={icon}
                         title={title}
                         backgroundColor={index === activeIndex ? "#877B04" : "#706500"}

@@ -30,3 +30,5 @@ export const API = "http://localhost:8000/";
 export const STATUS_COLORS: {[key: string]: string} = {
     "Paid": "#4ECB71", "Pending": "#F9d100", "Canceled": "#FF0000",
 }
+
+export const BAR_COLORS: string[] = ["#F94144", "#F3722C","#F8961E", "#F9C74F", "#90BE6D"]
