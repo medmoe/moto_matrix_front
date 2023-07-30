@@ -16,3 +16,4 @@ export {SearchField} from "./searchField/SearchField";
 export {Signup} from "./signup/Signup";
 export {Table} from "./table/Table";
 export {Text} from "./text/Text";
+export {Spinner} from "./spinner/Spinner";

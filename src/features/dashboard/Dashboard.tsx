@@ -1,10 +1,10 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import axios from "axios";
 import {API, BAR_COLORS} from '../../types/types';
 import styles from './Dashboard.module.css';
 import {Card, Description, Divider, DonutChart, GraphDescriptors, SearchField, SideMenu, Table} from "../../components";
 import {useNavigate} from "react-router-dom";
-import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from "recharts";
+import {Area, AreaChart, CartesianGrid, Tooltip} from "recharts";
 import {zip} from "../../utils/functools";
 
 export function Dashboard() {
@@ -91,7 +91,11 @@ export function Dashboard() {
                 console.log("success");
             })
             .catch((err) => {
-                console.log(err);
+                if (err.response.status === 401) {
+                    navigate("/");
+                }else{
+                    console.log(err.data.detail)
+                }
             })
     }
     const handleDashboard = () => {
@@ -214,7 +218,6 @@ export function Dashboard() {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );

@@ -1,11 +1,9 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import axios from 'axios';
-import {Banner} from "../../../components/banner/Banner";
-import {Signup} from "../../../components/signup/Signup";
+import {Banner, Signup, ErrorBox, Spinner} from "../../../components";
 import styles from './SignUp.module.css'
-import {ErrorBox} from "../../../components/errorbox/ErrorBox";
 import {API, UserProfile} from "../../../types/types";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Navigate} from "react-router-dom";
 
 export function SignUp() {
     let initState: UserProfile = {
@@ -16,7 +14,26 @@ export function SignUp() {
     }
     const [userInfo, setUserInfo] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const options = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true,
+    }
     const navigate = useNavigate();
+    useEffect(() => {
+        axios.get(`${API}/accounts/check-auth`, options)
+            .then(() => {
+                setIsAuthenticated(true);
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setIsLoading(false);
+            })
+    }, [])
+
     const handleChange = (event: FormEvent) => {
         const target = event.target as HTMLInputElement
         const properties = ['username', 'password', 'password2', 'first_name', 'last_name', 'email'];
@@ -73,7 +90,11 @@ export function SignUp() {
                 setErrorMessage(err.response.data[0]);
             })
     }
+    if (isLoading) {
+        return <Spinner />
+    }
     return (
+        isAuthenticated? <Navigate to="/dashboard" />:
         <div className={styles.container}>
             {errorMessage ? <ErrorBox message={errorMessage}/> : null}
             <Banner/>
