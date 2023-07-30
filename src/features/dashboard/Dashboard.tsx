@@ -94,10 +94,26 @@ export function Dashboard() {
                 console.log(err);
             })
     }
+    const handleDashboard = () => {
+        console.log("dashboard");
+    }
+    const handleInventory = () => {
+        console.log("inventory");
+    }
+    const handleOrders = () => {
+        console.log("orders");
+    }
+    const handleAnalytics = () => {
+        console.log("analytics");
+    }
     return (
         <div className={styles.container}>
             <div className={styles.sideMenu}>
-                <SideMenu/>
+                <SideMenu handleLogout={handleLogout}
+                          handleDashboard={handleDashboard}
+                          handleAnalytics={handleAnalytics}
+                          handleInventory={handleInventory}
+                          handleOrders={handleOrders}/>
             </div>
             <div className={styles.contentWindow}>
                 <div className={styles.upperBar}>

@@ -3,13 +3,21 @@ import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
 
-export function SideMenu() {
-    const menuItems: [string, string][] = [
-        ["dashboard", "Dashboard"],
-        ["list_alt", "Orders"],
-        ["inventory_2", "Inventory"],
-        ["analytics", "Analytics"],
-        ["logout", "Logout"],
+interface SideMenuProps {
+    handleDashboard: () => void;
+    handleOrders: () => void;
+    handleInventory: () => void;
+    handleAnalytics: () => void;
+    handleLogout: () => void;
+}
+
+export function SideMenu({handleDashboard, handleOrders, handleInventory, handleAnalytics, handleLogout}: SideMenuProps) {
+    const menuItems: [string, string, () => void][] = [
+        ["dashboard", "Dashboard", handleDashboard],
+        ["list_alt", "Orders", handleOrders],
+        ["inventory_2", "Inventory", handleInventory],
+        ["analytics", "Analytics", handleAnalytics],
+        ["logout", "Logout", handleLogout],
     ]
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isAccountActive, setAccountActive] = useState(false);
@@ -27,13 +35,16 @@ export function SideMenu() {
                 <Logo/>
             </div>
             <div className={styles.items}>
-                {menuItems.map(([icon, title], index) => {
+                {menuItems.map(([icon, title, action], index) => {
                     return <MenuItem
                         key={index}
                         icon={icon}
                         title={title}
                         backgroundColor={index === activeIndex ? "#877B04" : "#706500"}
-                        handleClick={() => handleItemClick(index)}
+                        handleClick={() => {
+                            handleItemClick(index);
+                            action();
+                        }}
                     />
                 })}
             </div>
