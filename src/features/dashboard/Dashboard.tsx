@@ -93,7 +93,7 @@ export function Dashboard() {
             .catch((err) => {
                 if (err.response.status === 401) {
                     navigate("/");
-                }else{
+                } else {
                     console.log(err.data.detail)
                 }
             })
@@ -110,6 +110,9 @@ export function Dashboard() {
     const handleAnalytics = () => {
         console.log("analytics");
     }
+    const handleNotifications = () => {
+        console.log("notifications");
+    }
     return (
         <div className={styles.container}>
             <div className={styles.sideMenu}>
@@ -117,7 +120,8 @@ export function Dashboard() {
                           handleDashboard={handleDashboard}
                           handleAnalytics={handleAnalytics}
                           handleInventory={handleInventory}
-                          handleOrders={handleOrders}/>
+                          handleOrders={handleOrders}
+                          handleNotifications={handleNotifications}/>
             </div>
             <div className={styles.contentWindow}>
                 <div className={styles.upperBar}>

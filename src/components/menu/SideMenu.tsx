@@ -9,14 +9,16 @@ interface SideMenuProps {
     handleInventory: () => void;
     handleAnalytics: () => void;
     handleLogout: () => void;
+    handleNotifications: () => void;
 }
 
-export function SideMenu({handleDashboard, handleOrders, handleInventory, handleAnalytics, handleLogout}: SideMenuProps) {
+export function SideMenu({handleDashboard, handleOrders, handleInventory, handleAnalytics, handleLogout, handleNotifications}: SideMenuProps) {
     const menuItems: [string, string, () => void][] = [
         ["dashboard", "Dashboard", handleDashboard],
         ["list_alt", "Orders", handleOrders],
         ["inventory_2", "Inventory", handleInventory],
         ["analytics", "Analytics", handleAnalytics],
+        ["notifications", "Notifications", handleNotifications],
         ["logout", "Logout", handleLogout],
     ]
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
