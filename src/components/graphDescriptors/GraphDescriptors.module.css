@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.square {
+    width: 10px;
+    height: 10px;
+}
+
+.description {
+    color: #9E9D9D;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}

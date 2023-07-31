@@ -1,0 +1,26 @@
+.table {
+
+}
+.thead {
+    align-items: normal;
+}
+
+.table tr th {
+    padding: 10px 26px 10px 0;
+    color: #9E9D9D;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+}
+
+.table tbody tr td {
+    padding: 10px 26px 10px 0;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
