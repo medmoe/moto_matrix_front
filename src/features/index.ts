@@ -1,4 +1,4 @@
 export {ProfilePage} from "./profile/ProfilePage";
-export {Dashboard} from "./dashboard/Dashboard";
+export {DashboardWindow} from "./dashboard/DashboardWindow";
 export {SignIn} from "./user/login/SignIn";
 export {SignUp} from "./user/signup/SignUp";

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Dashboard, ProfilePage, SignIn, SignUp} from "./features";
+import {DashboardWindow, ProfilePage, SignIn, SignUp} from "./features";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {PrivateRoutes} from "./components/auth/PrivateRoutes";
 
@@ -13,7 +13,7 @@ function App() {
                 <Route path="/signup" element={<SignUp/>}/>
                 /* app routes */
                 <Route element={<PrivateRoutes/>}>
-                    <Route path="/dashboard" element={<Dashboard/>}/>
+                    <Route path="/dashboard" element={<DashboardWindow/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
                 </Route>
             </Routes>
