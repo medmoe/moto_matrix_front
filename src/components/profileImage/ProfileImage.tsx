@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import styles from "./Profile.module.css";
+import styles from "./ProfileImage.module.css";
 import MaterialIcon from 'material-icons-react';
 
 interface ProfileProps {
@@ -7,7 +7,7 @@ interface ProfileProps {
     alt: string;
 }
 
-export function Profile({src, alt}: ProfileProps) {
+export function ProfileImage({src, alt}: ProfileProps) {
     const [hasLoaded, setHasLoaded] = useState(true);
     const handleError = () => {
         setHasLoaded(false);

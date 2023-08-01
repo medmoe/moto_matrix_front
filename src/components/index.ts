@@ -18,6 +18,7 @@ export {Table} from "./table/Table";
 export {Text} from "./text/Text";
 export {Spinner} from "./spinner/Spinner";
 export {Rating} from "./rating/Rating";
-export {Profile} from "./profile/Profile";
+export {ProfileImage} from "./profileImage/ProfileImage";
 export {UpperBar} from "./upperBar/UpperBar";
 export {Dashboard} from "./pages/dashboard/Dashboard";
+export {Profile} from "./pages/profile/Profile";

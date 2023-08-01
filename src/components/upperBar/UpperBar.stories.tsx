@@ -35,9 +35,9 @@ export const Orders: Story = {
 
 export const UpdateProfile: Story = {
     args: {
-        title: "Update Profile",
+        title: "Update ProfileImage",
         left: "810px",
-        subtitle: "Update Profile to Reflect the New You",
+        subtitle: "Update ProfileImage to Reflect the New You",
         components: [<Button label="Cancel"
                              width="100px"
                              height="40px"

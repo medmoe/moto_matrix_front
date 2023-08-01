@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
-import {SideMenu, Dashboard} from "../../components";
+import {SideMenu, Dashboard, Profile} from "../../components";
 import {useNavigate} from "react-router-dom";
 
 export function DashboardWindow() {
@@ -52,7 +52,9 @@ export function DashboardWindow() {
                           handleOrders={handleOrders}
                           handleNotifications={handleNotifications}/>
             </div>
-            <Dashboard />
+            <div className={styles.dashboard}>
+                <Profile />
+            </div>
         </div>
     );
 }

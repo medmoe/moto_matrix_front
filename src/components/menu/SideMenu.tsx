@@ -39,7 +39,7 @@ export function SideMenu({
     const handleAccountClick = () => {
         setActiveIndex(null); //rest the active menu item whenever the account is active
         setAccountActive(true);
-        navigate("/profile");
+        navigate("/profileImage");
     }
     return (
         <div className={styles.container}>
