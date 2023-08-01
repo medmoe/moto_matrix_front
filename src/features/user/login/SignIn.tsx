@@ -4,6 +4,8 @@ import styles from './SignIn.module.css';
 import axios from "axios";
 import {API, User} from "../../../types/types";
 import {Navigate, useNavigate} from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { updateUserData } from "../userSlice";
 
 export function SignIn() {
     let initState: User = {
@@ -15,6 +17,7 @@ export function SignIn() {
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const options = {
         headers: {
             'Content-Type': 'application/json'
@@ -51,6 +54,8 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
+                console.log(res);
+                dispatch(updateUserData(res.data.user));
             })
             .catch((err) => {
                 setErrorMessage(err.response.data['detail']);
