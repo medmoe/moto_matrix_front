@@ -7,7 +7,31 @@ import {Button} from "../../button/Button";
 import {Divider} from "../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 
-export function Profile() {
+interface ProfileProps {
+    firstName?: string,
+    lastName?: string,
+    rating?: number,
+    phone?: string,
+    address?: string,
+    city?: string,
+    country?: string,
+    email?: string,
+    bio?: string,
+    img?: string
+}
+
+export function Profile({
+                            firstName,
+                            lastName,
+                            rating,
+                            phone,
+                            address,
+                            city,
+                            country,
+                            email,
+                            bio,
+                            img
+                        }: ProfileProps) {
     return (
         <div className={styles.container}>
             <div className={styles.upperBar}>
@@ -24,12 +48,12 @@ export function Profile() {
                 <div className={styles.card}>
                     <div className={styles.header}>
                         <div className={styles.imageNameContainer}>
-                            <ProfileImage src="https://picsum.photos/200" alt="Profile image"/>
-                            <p>Mohammed Bekhouche</p>
+                            <ProfileImage src={img as string} alt="Profile image"/>
+                            <p>{firstName} {lastName}</p>
                         </div>
                         <div className={styles.ratingContainer}>
-                            <p>4.5</p>
-                            <Rating rate={4.5}/>
+                            <p>{rating}</p>
+                            <Rating rate={rating as number}/>
                         </div>
                     </div>
                     <div className={styles.dividerContainer}>
@@ -43,23 +67,19 @@ export function Profile() {
                             <div className={styles.col}>
                                 <p>Phone</p>
                                 <p>Address</p>
-                                 <p>City</p>
-                                 <p>Country</p>
+                                <p>City</p>
+                                <p>Country</p>
                                 <p>E-mail</p>
                                 <p>Bio</p>
 
                             </div>
                             <div className={styles.col}>
-                                <p>+1 929 292 9292</p>
-                                <p>929 some street apt 20</p>
-                                <p>New York City</p>
-                                <p>United States</p>
-                                <p>test@test.com</p>
-                                <p className={styles.bio}>AutoPro Garage is a reputable auto repair shop that has been providing
-                                top-quality services since its establishment in 1998. With a team of highly
-                                skilled mechanics and a commitment to customer satisfaction,
-                                we have become a trusted name in the automotive industry.
-                            </p>
+                                <p>{phone}</p>
+                                <p>{address}</p>
+                                <p>{city}</p>
+                                <p>{country}</p>
+                                <p>{email}</p>
+                                <p className={styles.bio}>{bio}</p>
                             </div>
                         </div>
                     </div>

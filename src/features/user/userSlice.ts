@@ -23,7 +23,7 @@ export const userSlice = createSlice({
     }
 })
 
-export const selectUserData = (state: RootState) => state.user;
+export const selectUserData = (state: RootState) => state.user.user;
 
 export const { updateUserData } = userSlice.actions;
 

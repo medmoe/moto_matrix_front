@@ -2,16 +2,27 @@ import React, {JSX} from "react";
 import axios from "axios";
 import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
-import {SideMenu, Dashboard, Profile} from "../../components";
+import {Dashboard, Profile, SideMenu} from "../../components";
 import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../hooks";
 import {selectActiveIndex} from "./dashboardSlice";
+import {selectUserData} from "../user/userSlice";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
-    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
-        <Profile/>];
     const activeIndex = useAppSelector(selectActiveIndex);
+    const user = useAppSelector(selectUserData);
+    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
+        <Profile firstName={user.first_name}
+                 lastName={user.last_name}
+                 rating={user.rating}
+                 phone={user.phone}
+                 address={user.address}
+                 city={user.city}
+                 country={user.country}
+                 email={user.email}
+                 bio={user.bio}
+                 img="https://picsum.photos/200"/>];
     const handleLogout = async () => {
         const options = {
             headers: {

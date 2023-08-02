@@ -4,8 +4,8 @@ import styles from './SignIn.module.css';
 import axios from "axios";
 import {API, User} from "../../../types/types";
 import {Navigate, useNavigate} from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { updateUserData } from "../userSlice";
+import {useAppDispatch} from "../../../hooks";
+import {updateUserData} from "../userSlice";
 
 export function SignIn() {
     let initState: User = {
@@ -54,7 +54,6 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                console.log(res);
                 dispatch(updateUserData(res.data.user));
             })
             .catch((err) => {

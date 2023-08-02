@@ -17,6 +17,7 @@ export interface UserProfile {
     country?: string;
     rating?: number;
     is_provider?: boolean;
+    bio?: string;
 }
 
 export interface Dashboard {
