@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Profile.module.css";
-import {UpperBar} from "../../upperBar/UpperBar";
-import {ProfileImage} from "../../profileImage/ProfileImage";
-import {Rating} from "../../rating/Rating";
-import {Button} from "../../button/Button";
-import {Divider} from "../../divider/Divider";
+import {UpperBar} from "../../../upperBar/UpperBar";
+import {ProfileImage} from "../../../profileImage/ProfileImage";
+import {Rating} from "../../../rating/Rating";
+import {Button} from "../../../button/Button";
+import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 
 interface ProfileProps {

@@ -2,7 +2,7 @@ import React, {JSX} from "react";
 import axios from "axios";
 import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
-import {Dashboard, Profile, SideMenu} from "../../components";
+import {Dashboard, Profile, SideMenu, UpdateProfile} from "../../components";
 import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../hooks";
 import {selectActiveIndex} from "./dashboardSlice";
@@ -22,7 +22,9 @@ export function DashboardWindow() {
                  country={user.country}
                  email={user.email}
                  bio={user.bio}
-                 img="https://picsum.photos/200"/>];
+                 img="https://picsum.photos/200"/>,
+    <UpdateProfile />
+    ];
     const handleLogout = async () => {
         const options = {
             headers: {
@@ -69,7 +71,7 @@ export function DashboardWindow() {
                           handleNotifications={handleNotifications}/>
             </div>
             <div className={styles.dashboard}>
-                {pages[activeIndex]}
+                <UpdateProfile />
             </div>
         </div>
     );

@@ -21,4 +21,5 @@ export {Rating} from "./rating/Rating";
 export {ProfileImage} from "./profileImage/ProfileImage";
 export {UpperBar} from "./upperBar/UpperBar";
 export {Dashboard} from "./pages/dashboard/Dashboard";
-export {Profile} from "./pages/profile/Profile";
+export {Profile} from "./pages/profile/profile/Profile";
+export {UpdateProfile} from "./pages/profile/updateProfile/UpdateProfile";

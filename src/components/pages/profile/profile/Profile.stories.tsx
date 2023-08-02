@@ -3,7 +3,7 @@ import {Meta, StoryObj} from "@storybook/react";
 import {Profile} from "./Profile";
 
 const meta = {
-    title: "Profile",
+    title: "Pages/Profile/Profile",
     component: Profile,
     parameters: {
         layout: "centered",
