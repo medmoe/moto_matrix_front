@@ -24,7 +24,7 @@ export function Button({
                            border,
                        }: args) {
     return (
-        <div className={styles.container}>
+        <div className={styles.container} onClick={handleClick}>
             <div className={styles.icon}>
                 {icon}
             </div>
@@ -45,8 +45,7 @@ export function Button({
                                     border: `${border}`,
                                     borderTopLeftRadius: 0,
                                     borderBottomLeftRadius: 0,
-                                }}
-                                onClick={handleClick}>
+                                }}>
                     {label}
                 </button> : <button className={styles.storybook_button}
                                     style={{
@@ -55,8 +54,7 @@ export function Button({
                                         backgroundColor: `${backgroundColor}`,
                                         color: `${textColor}`,
                                         border: `${border}`,
-                                    }}
-                                    onClick={handleClick}>
+                                    }}>
                     {label}
                 </button>}
 

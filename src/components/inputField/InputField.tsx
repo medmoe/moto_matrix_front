@@ -11,12 +11,14 @@ interface InputFieldProps {
     name?: string,
     type?: string,
     backgroundColor?: string,
+    value?: string,
     handleChange: (event: FormEvent) => void,
 }
 
 export function InputField({
                                width,
                                height,
+                               value,
                                border,
                                placeholder,
                                id,
@@ -39,6 +41,7 @@ export function InputField({
                placeholder={placeholder}
                id={id}
                name={name}
+               value={value}
                onChange={handleChange}
                required/>
     )

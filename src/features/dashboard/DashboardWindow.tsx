@@ -12,6 +12,7 @@ export function DashboardWindow() {
     const navigate = useNavigate();
     const activeIndex = useAppSelector(selectActiveIndex);
     const user = useAppSelector(selectUserData);
+    // the pages list should be always sorted as the items appear in the sidebar menu.
     const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
         <Profile firstName={user.first_name}
                  lastName={user.last_name}
@@ -71,7 +72,7 @@ export function DashboardWindow() {
                           handleNotifications={handleNotifications}/>
             </div>
             <div className={styles.dashboard}>
-                <UpdateProfile />
+                {pages[activeIndex]}
             </div>
         </div>
     );

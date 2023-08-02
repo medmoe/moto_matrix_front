@@ -6,6 +6,8 @@ import {Rating} from "../../../rating/Rating";
 import {Button} from "../../../button/Button";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
+import {useAppDispatch} from "../../../../hooks";
+import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
 
 interface ProfileProps {
     firstName?: string,
@@ -32,6 +34,7 @@ export function Profile({
                             bio,
                             img
                         }: ProfileProps) {
+    const dispatch = useAppDispatch()
     return (
         <div className={styles.container}>
             <div className={styles.upperBar}>
@@ -41,6 +44,7 @@ export function Profile({
                                                backgroundColor="#007bff"
                                                textColor="#fff"
                                                border="none"
+                                               handleClick={() => {dispatch(updateActiveIndex(7))}}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
                 />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>
             </div>
