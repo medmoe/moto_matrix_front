@@ -18,7 +18,7 @@ export function Profile() {
                                                textColor="#fff"
                                                border="none"
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
-                />]} left="945px" title="Profile" subtitle="Innovative Trailblazer"/>
+                />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>
             </div>
             <div className={styles.lowerContainer}>
                 <div className={styles.card}>

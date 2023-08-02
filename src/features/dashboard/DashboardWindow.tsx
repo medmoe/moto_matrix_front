@@ -1,12 +1,17 @@
-import React from "react";
+import React, {JSX} from "react";
 import axios from "axios";
 import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
 import {SideMenu, Dashboard, Profile} from "../../components";
 import {useNavigate} from "react-router-dom";
+import {useAppSelector} from "../../hooks";
+import {selectActiveIndex} from "./dashboardSlice";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
+    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
+        <Profile/>];
+    const activeIndex = useAppSelector(selectActiveIndex);
     const handleLogout = async () => {
         const options = {
             headers: {
@@ -53,7 +58,7 @@ export function DashboardWindow() {
                           handleNotifications={handleNotifications}/>
             </div>
             <div className={styles.dashboard}>
-                <Profile />
+                {pages[activeIndex]}
             </div>
         </div>
     );

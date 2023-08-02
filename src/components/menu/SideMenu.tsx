@@ -3,6 +3,9 @@ import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../hooks";
+import {selectActiveIndex, updateActiveIndex} from "../../features/dashboard/dashboardSlice";
+import {useAppSelector} from "../../hooks";
 
 interface SideMenuProps {
     handleDashboard: () => void;
@@ -29,17 +32,18 @@ export function SideMenu({
         ["notifications", "Notifications", handleNotifications],
         ["logout", "Logout", handleLogout],
     ]
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isAccountActive, setAccountActive] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const activeIndex = useAppSelector(selectActiveIndex);
+
     const handleItemClick = (index: number) => {
-        setActiveIndex(index);
+        dispatch(updateActiveIndex(index));
         setAccountActive(false);
     }
     const handleAccountClick = () => {
-        setActiveIndex(null); //rest the active menu item whenever the account is active
+        dispatch(updateActiveIndex(6))
         setAccountActive(true);
-        navigate("/profileImage");
     }
     return (
         <div className={styles.container}>
