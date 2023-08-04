@@ -142,3 +142,9 @@ textarea::placeholder {
     top: 35px;
 }
 
+.errorBoxContainer {
+    position: absolute;
+    right: 400px;
+    top : 20px;
+}
+

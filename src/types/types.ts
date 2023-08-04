@@ -1,5 +1,5 @@
 export interface User {
-    user_id?: number,
+    id?: number,
     username?: string,
     first_name?: string,
     last_name?: string,
@@ -17,7 +17,7 @@ export interface UserProfile {
     country?: string;
     rating?: number;
     is_provider?: boolean;
-    bio?: string;
+    description?: string;
 }
 
 export interface Dashboard {

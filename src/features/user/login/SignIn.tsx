@@ -54,6 +54,7 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
+                console.log(res.data)
                 dispatch(updateUserData(res.data.user));
             })
             .catch((err) => {

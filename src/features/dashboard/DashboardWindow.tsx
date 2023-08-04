@@ -7,11 +7,14 @@ import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../hooks";
 import {selectActiveIndex} from "./dashboardSlice";
 import {selectUserData} from "../user/userSlice";
+import {useAppDispatch} from "../../hooks";
+import {updateActiveIndex} from "./dashboardSlice";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
     const activeIndex = useAppSelector(selectActiveIndex);
     const user = useAppSelector(selectUserData);
+    const dispatch = useAppDispatch();
     // the pages list should be always sorted as the items appear in the sidebar menu.
     const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
         <Profile firstName={user.first_name}
@@ -22,7 +25,7 @@ export function DashboardWindow() {
                  city={user.city}
                  country={user.country}
                  email={user.email}
-                 bio={user.bio}
+                 bio={user.description}
                  img="https://picsum.photos/200"/>,
     <UpdateProfile />
     ];
@@ -36,6 +39,7 @@ export function DashboardWindow() {
         await axios.post(`${API}accounts/logout/`, {}, options)
             .then((res) => {
                 navigate("/");
+                dispatch(updateActiveIndex(0));
                 console.log("success");
             })
             .catch((err) => {

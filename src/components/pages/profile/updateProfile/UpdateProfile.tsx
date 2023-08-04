@@ -6,23 +6,36 @@ import {InputField} from "../../../inputField/InputField";
 import {ProfileImage} from "../../../profileImage/ProfileImage";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
-import {useAppDispatch} from "../../../../hooks";
+import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
-import {UserProfile, API} from "../../../../types/types";
-import {useAppSelector} from "../../../../hooks";
-import {selectUserData} from "../../../../features/user/userSlice";
+import {API, UserProfile} from "../../../../types/types";
+import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
+import {ErrorBox} from "../../../errorbox/ErrorBox";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 export function UpdateProfile() {
-    let initState: UserProfile = {
-        "user": {}
-    }
     const userData = useAppSelector(selectUserData);
+    let initState: UserProfile = {
+        user: {
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            id: userData.id,
+            username: userData.username,
+            email: userData.email
+        },
+        phone: userData.phone,
+        address: userData.address,
+        city: userData.city,
+        country: userData.country,
+        description: userData.description,
+    }
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
     const dispatch = useAppDispatch();
-
+    const navigate = useNavigate();
     const handleChange = (event: FormEvent) => {
+        event.preventDefault();
         const target = event.target as HTMLInputElement
         const properties = ['username', 'password', 'password2', 'first_name', 'last_name', 'email'];
         if (properties.includes(target.name)) {
@@ -46,7 +59,7 @@ export function UpdateProfile() {
         const password = profileData.user.password as string;
         const email = profileData.user.email;
         const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true};
-        if (1 <= password.length && password.length < 8) {
+        if (password && 1 <= password.length && password.length < 8) {
             setErrorMessage("Password must be at least 8 characters long");
             return;
         }
@@ -59,19 +72,25 @@ export function UpdateProfile() {
             return
         }
         delete profileData.user.password2;
-        await axios.put(`${API}accounts/${userData.user_id}/`, JSON.stringify(profileData), options)
+        await axios.put(`${API}accounts/${userData.id}/`, JSON.stringify(profileData), options)
             .then((res) => {
                 dispatch(updateActiveIndex(6));
+                dispatch(updateUserData({...res.data, ...res.data.user}))
             })
             .catch((err) => {
-                setErrorMessage(err.response.data[0]);
-                console.log(err);
+                if (err.response.status === 401) {
+                    navigate("/");
+                    dispatch(updateActiveIndex(0));
+                } else {
+                    setErrorMessage(err.response.data['detail']);
+                }
             })
     }
 
     return (
         <form>
             <div className={styles.container}>
+
                 <div className={styles.upperBarContainer}>
                     <UpperBar left="795px"
                               title="Update Profile"
@@ -101,6 +120,9 @@ export function UpdateProfile() {
                 <div className={styles.lowerContainer}>
                     <div className={`${styles.largeCardContainer} ${styles.text}`}>
                         <div className={styles.header}>
+                            <div className={styles.errorBoxContainer}>
+                                {errorMessage ? <ErrorBox message={errorMessage}/> : null}
+                            </div>
                             <div className={styles.profileImageContainer}>
                                 <div className={styles.uploadContainer}>
                                     <ProfileImage src="#" alt="profile image"/>
@@ -132,7 +154,7 @@ export function UpdateProfile() {
                                                     type="text"
                                                     name="first_name"
                                                     id="firstName"
-                                                    value={userData.first_name}
+                                                    value={profileData.user.first_name}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -146,7 +168,7 @@ export function UpdateProfile() {
                                                     type="text"
                                                     name="last_name"
                                                     id="lastName"
-                                                    value={userData.last_name}
+                                                    value={profileData.user.last_name}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -175,7 +197,7 @@ export function UpdateProfile() {
                                                     type="text"
                                                     name="username"
                                                     id="username"
-                                                    value={userData.username}
+                                                    value={profileData.user.username}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -189,7 +211,7 @@ export function UpdateProfile() {
                                                     type="email"
                                                     name="email"
                                                     id="email"
-                                                    value={userData.email}
+                                                    value={profileData.user.email}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -225,7 +247,7 @@ export function UpdateProfile() {
                                                 type="tel"
                                                 name="phone"
                                                 id="phone"
-                                                value={userData.phone}
+                                                value={profileData.phone}
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
@@ -239,7 +261,7 @@ export function UpdateProfile() {
                                                 type="text"
                                                 name="address"
                                                 id="address"
-                                                value={userData.address}
+                                                value={profileData.address}
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
@@ -253,7 +275,7 @@ export function UpdateProfile() {
                                                 type="text"
                                                 name="city"
                                                 id="city"
-                                                value={userData.city}
+                                                value={profileData.city}
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
@@ -267,15 +289,16 @@ export function UpdateProfile() {
                                                 type="text"
                                                 name="country"
                                                 id="country"
-                                                value={userData.country}
+                                                value={profileData.country}
                                     />
                                 </div>
                             </div>
                             <div className={styles.bioContainer}>
                                 <div className={styles.fieldContainer}>
-                                    <label htmlFor="bio">Bio</label>
+                                    <label htmlFor="description">Bio</label>
                                     <textarea placeholder="Describe what you do here"
-                                              value={userData.bio}
+                                              value={profileData.description}
+                                              name="description"
                                               onChange={handleChange}/>
                                 </div>
                             </div>
