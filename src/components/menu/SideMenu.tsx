@@ -5,7 +5,9 @@ import styles from './SideMenu.module.css';
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../hooks";
 import {selectActiveIndex, updateActiveIndex} from "../../features/dashboard/dashboardSlice";
+import {selectUserData} from "../../features/user/userSlice";
 import {useAppSelector} from "../../hooks";
+import {ProfileImage} from "../profileImage/ProfileImage";
 
 interface SideMenuProps {
     handleDashboard: () => void;
@@ -36,6 +38,7 @@ export function SideMenu({
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const activeIndex = useAppSelector(selectActiveIndex);
+    const userData = useAppSelector(selectUserData);
 
     const handleItemClick = (index: number) => {
         dispatch(updateActiveIndex(index));
@@ -68,10 +71,11 @@ export function SideMenu({
                  onClick={handleAccountClick}
                  style={{backgroundColor: isAccountActive ? "#877b04" : "#706500"}}
             >
-                <div className={styles.profile_picture}>
-                    <p>MB</p>
+                <div>
+                    <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"} alt="Profile picture"
+                                  width="50px" height="50px"/>
                 </div>
-                <div className={styles.profile_name}>
+                <div style={{color: "#fff"}}>
                     <p>Account</p>
                 </div>
 

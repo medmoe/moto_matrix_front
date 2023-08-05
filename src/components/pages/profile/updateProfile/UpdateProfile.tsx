@@ -32,6 +32,7 @@ export function UpdateProfile() {
     }
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const handleChange = (event: FormEvent) => {
@@ -82,8 +83,29 @@ export function UpdateProfile() {
                     navigate("/");
                     dispatch(updateActiveIndex(0));
                 } else {
-                    setErrorMessage(err.response.data['detail']);
+                    setErrorMessage(err.response.data.detail);
                 }
+            })
+    }
+
+    const fileSelectedHandler = (event: FormEvent) => {
+        const target = event.target as HTMLInputElement
+        const files = target.files as FileList
+        const file = files[0] as File
+        setSelectedFile(file);
+        const formData = new FormData();
+        formData.append('profile_pic', file);
+        axios.put(`${API}accounts/files/${userData.id}/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true
+        })
+            .then((res) => {
+                dispatch(updateUserData({...userData, profile_pic: res.data.file}))
+            })
+            .catch((err) => {
+                setErrorMessage(err.data['detail']);
             })
     }
 
@@ -125,7 +147,9 @@ export function UpdateProfile() {
                             </div>
                             <div className={styles.profileImageContainer}>
                                 <div className={styles.uploadContainer}>
-                                    <ProfileImage src="#" alt="profile image"/>
+                                    <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"}
+                                                  alt="profile image"
+                                                  width="140px" height="140px"/>
                                     <label htmlFor="file-upload" className={styles.customFileUpload}>
                                         <div className={styles.cameraContainer}>
                                             <MaterialIcon icon="photo_camera" size={40} color="#fff"/>
@@ -133,9 +157,7 @@ export function UpdateProfile() {
                                     </label>
                                     <input id="file-upload"
                                            type="file"
-                                           onChange={() => {
-                                               console.log("foto uploaded")
-                                           }}
+                                           onChange={fileSelectedHandler}
                                            style={{display: 'none'}}
                                     />
                                 </div>

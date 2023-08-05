@@ -6,8 +6,9 @@ import {Rating} from "../../../rating/Rating";
 import {Button} from "../../../button/Button";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
-import {useAppDispatch} from "../../../../hooks";
+import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
+import {selectUserData} from "../../../../features/user/userSlice";
 
 interface ProfileProps {
     firstName?: string,
@@ -35,6 +36,7 @@ export function Profile({
                             img
                         }: ProfileProps) {
     const dispatch = useAppDispatch()
+    const userData = useAppSelector(selectUserData);
     return (
         <div className={styles.container}>
             <div className={styles.upperBar}>
@@ -44,7 +46,9 @@ export function Profile({
                                                backgroundColor="#007bff"
                                                textColor="#fff"
                                                border="none"
-                                               handleClick={() => {dispatch(updateActiveIndex(7))}}
+                                               handleClick={() => {
+                                                   dispatch(updateActiveIndex(7))
+                                               }}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
                 />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>
             </div>
@@ -52,7 +56,8 @@ export function Profile({
                 <div className={styles.card}>
                     <div className={styles.header}>
                         <div className={styles.imageNameContainer}>
-                            <ProfileImage src={img as string} alt="Profile image"/>
+                            <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"} alt="Profile image"
+                                          width="140px" height="140px"/>
                             <p>{firstName} {lastName}</p>
                         </div>
                         <div className={styles.ratingContainer}>

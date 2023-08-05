@@ -23,3 +23,4 @@ export {UpperBar} from "./upperBar/UpperBar";
 export {Dashboard} from "./pages/dashboard/Dashboard";
 export {Profile} from "./pages/profile/profile/Profile";
 export {UpdateProfile} from "./pages/profile/updateProfile/UpdateProfile";
+export {CheckCircle} from "./checkCircle/CheckCircle";

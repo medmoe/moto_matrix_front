@@ -25,7 +25,7 @@ export function SignIn() {
         withCredentials: true,
     }
     useEffect(() => {
-        axios.get(`${API}/accounts/check-auth`, options)
+        axios.get(`${API}accounts/check-auth/`, options)
             .then((res) => {
                 setIsAuthenticated(true);
                 setIsLoading(false);
@@ -54,11 +54,10 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                console.log(res.data)
                 dispatch(updateUserData(res.data.user));
             })
             .catch((err) => {
-                setErrorMessage(err.response.data['detail']);
+                err.response? setErrorMessage(err.response.data.detail): setErrorMessage(err.message);
             })
     }
     if (isLoading) {

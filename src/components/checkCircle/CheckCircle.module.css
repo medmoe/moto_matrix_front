@@ -1,0 +1,7 @@
+@keyframes fadeaway {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+.fade_away {
+    animation: fadeaway 2s;
+}
