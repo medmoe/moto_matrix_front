@@ -40,7 +40,6 @@ export function DashboardWindow() {
             .then((res) => {
                 navigate("/");
                 dispatch(updateActiveIndex(0));
-                console.log("success");
             })
             .catch((err) => {
                 if (err.response.status === 401) {

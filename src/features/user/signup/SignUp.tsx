@@ -84,10 +84,8 @@ export function SignUp() {
         await axios.post(`${API}accounts/signup/`, JSON.stringify(userInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                console.log(res);
             })
             .catch((err) => {
-                console.log(err);
                 setErrorMessage(err.response.data[0]);
             })
     }
