@@ -2,6 +2,12 @@ import React, {useState} from "react";
 import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
+import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../hooks";
+import {selectActiveIndex, updateActiveIndex} from "../../features/dashboard/dashboardSlice";
+import {selectUserData} from "../../features/user/userSlice";
+import {useAppSelector} from "../../hooks";
+import {ProfileImage} from "../profileImage/ProfileImage";
 
 interface SideMenuProps {
     handleDashboard: () => void;
@@ -12,7 +18,14 @@ interface SideMenuProps {
     handleNotifications: () => void;
 }
 
-export function SideMenu({handleDashboard, handleOrders, handleInventory, handleAnalytics, handleLogout, handleNotifications}: SideMenuProps) {
+export function SideMenu({
+                             handleDashboard,
+                             handleOrders,
+                             handleInventory,
+                             handleAnalytics,
+                             handleLogout,
+                             handleNotifications
+                         }: SideMenuProps) {
     const menuItems: [string, string, () => void][] = [
         ["dashboard", "Dashboard", handleDashboard],
         ["list_alt", "Orders", handleOrders],
@@ -21,14 +34,18 @@ export function SideMenu({handleDashboard, handleOrders, handleInventory, handle
         ["notifications", "Notifications", handleNotifications],
         ["logout", "Logout", handleLogout],
     ]
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isAccountActive, setAccountActive] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const activeIndex = useAppSelector(selectActiveIndex);
+    const userData = useAppSelector(selectUserData);
+
     const handleItemClick = (index: number) => {
-        setActiveIndex(index);
+        dispatch(updateActiveIndex(index));
         setAccountActive(false);
     }
     const handleAccountClick = () => {
-        setActiveIndex(null); //rest the active menu item whenever the account is active
+        dispatch(updateActiveIndex(6))
         setAccountActive(true);
     }
     return (
@@ -54,10 +71,11 @@ export function SideMenu({handleDashboard, handleOrders, handleInventory, handle
                  onClick={handleAccountClick}
                  style={{backgroundColor: isAccountActive ? "#877b04" : "#706500"}}
             >
-                <div className={styles.profile_picture}>
-                    <p>MB</p>
+                <div>
+                    <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"} alt="Profile picture"
+                                  width="50px" height="50px"/>
                 </div>
-                <div className={styles.profile_name}>
+                <div style={{color: "#fff"}}>
                     <p>Account</p>
                 </div>
 

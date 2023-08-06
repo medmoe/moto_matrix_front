@@ -55,7 +55,8 @@ export function SignUp() {
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         /* Validating data before submitting*/
-        if (userInfo.user.password.length < 8) {
+        const password = userInfo.user.password as string;
+        if (password.length < 8) {
             setErrorMessage("Password must be at least 8 characters long");
             return
         }
@@ -83,10 +84,8 @@ export function SignUp() {
         await axios.post(`${API}accounts/signup/`, JSON.stringify(userInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                console.log(res);
             })
             .catch((err) => {
-                console.log(err);
                 setErrorMessage(err.response.data[0]);
             })
     }

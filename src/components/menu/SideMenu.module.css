@@ -22,7 +22,9 @@
     height: 65px;
     top: 743px;
     cursor: pointer;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .profile_picture {
@@ -45,12 +47,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-}
-
-.profile_name {
-    position: absolute;
-    left: 88px;
-    top: 7px;
 }
 
 .profile_name p {

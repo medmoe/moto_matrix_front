@@ -15,7 +15,7 @@ export function PrivateRoutes ()  {
     }
 
     useEffect(() => {
-        axios.get(`${API}/accounts/check-auth`, options)
+        axios.get(`${API}accounts/check-auth/`, options)
             .then(() => {
                 setIsAuthenticated(true);
                 setIsLoading(false);

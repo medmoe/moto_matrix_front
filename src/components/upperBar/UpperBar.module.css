@@ -1,0 +1,40 @@
+.container {
+    width: 1047px;
+    height: 82px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.title {
+    color: #000;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    height: 30px;
+}
+
+.subtitle {
+    color: #CCC;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.right {
+    display: flex;
+    gap: 5px;
+    position: absolute;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    left: 23px;
+    position: absolute;
+}

@@ -1,8 +1,6 @@
 import React from 'react';
 import './App.css';
-import {SignIn} from "./features/user/login/SignIn";
-import {SignUp} from "./features/user/signup/SignUp";
-import {Dashboard} from "./features/dashboard/Dashboard";
+import {DashboardWindow, SignIn, SignUp} from "./features";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {PrivateRoutes} from "./components/auth/PrivateRoutes";
 
@@ -11,12 +9,11 @@ function App() {
         <Router>
             <Routes>
                 /* authentication routes */
-                <Route path="/" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
+                <Route path="/" element={<SignIn/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
                 /* app routes */
-                {/*<Route path="/dashboard" element={<Dashboard />} />*/}
-                <Route element={<PrivateRoutes />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
+                <Route element={<PrivateRoutes/>}>
+                    <Route path="/dashboard" element={<DashboardWindow/>}/>
                 </Route>
             </Routes>
         </Router>

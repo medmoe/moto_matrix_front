@@ -1,23 +1,38 @@
 export interface User {
-    user_id?: number,
-    username: string,
+    id?: number,
+    username?: string,
     first_name?: string,
     last_name?: string,
     email?: string,
-    password: string,
+    password?: string,
     password2?: string,
 }
 
 export interface UserProfile {
-    user: User,
-    profile_pic?: string,
-    phone?: string,
-    address?: string,
-    city?: string,
-    country?: string,
-    rating?: number,
-    is_provider?: boolean,
+    user: User;
+    profile_pic?: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    country?: string;
+    rating?: number;
+    is_provider?: boolean;
+    description?: string;
 }
+
+export interface Dashboard {
+    items?: number;
+}
+
+type UserProfileWithoutUser = Omit<UserProfile, 'user'>;
+export type CombinedUser = User & UserProfileWithoutUser;
+
+export interface LoginData {
+    user: CombinedUser;
+    dashboard: Dashboard;
+}
+
+
 
 export interface GeneralInfo {
     itemsInStock: string,
