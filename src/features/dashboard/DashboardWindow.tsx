@@ -2,7 +2,7 @@ import React, {JSX} from "react";
 import axios from "axios";
 import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
-import {Dashboard, Profile, SideMenu, UpdateProfile} from "../../components";
+import {Dashboard, Profile, SideMenu, UpdateProfile, ProductsList} from "../../components";
 import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../hooks";
 import {selectActiveIndex} from "./dashboardSlice";
@@ -15,8 +15,9 @@ export function DashboardWindow() {
     const activeIndex = useAppSelector(selectActiveIndex);
     const user = useAppSelector(selectUserData);
     const dispatch = useAppDispatch();
+
     // the pages list should be always sorted as the items appear in the sidebar menu.
-    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
+    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <ProductsList />, <div></div>, <div></div>, <div></div>,
         <Profile firstName={user.first_name}
                  lastName={user.last_name}
                  rating={user.rating}
@@ -50,19 +51,20 @@ export function DashboardWindow() {
             })
     }
     const handleDashboard = () => {
-        console.log("dashboard");
+        // console.log("dashboard");
     }
     const handleInventory = () => {
-        console.log("inventory");
+        // console.log("inventory");
     }
+
     const handleOrders = () => {
-        console.log("orders");
+        // console.log("orders");
     }
     const handleAnalytics = () => {
-        console.log("analytics");
+        // console.log("analytics");
     }
     const handleNotifications = () => {
-        console.log("notifications");
+        // console.log("notifications");
     }
     return (
         <div className={styles.container}>

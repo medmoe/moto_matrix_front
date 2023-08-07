@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./Table.module.css";
-import {STATUS_COLORS} from "../../types/types";
+import {STATUS_COLORS, TableRow} from "../../types/types";
+import {capitalize} from "../../utils/functools";
 
-type Row = { [key: string]: any}
 
 interface TableProps {
-    data: Row[],
+    data: TableRow,
     columns: string[],
 }
 
@@ -15,12 +15,12 @@ export function Table({data, columns}: TableProps) {
             <thead>
             <tr>
                 {columns.map((column, index) => {
-                    return <th key={index}>{column}</th>;
+                    return <th key={index}>{capitalize(column)}</th>;
                 })}
             </tr>
             </thead>
             <tbody>
-            {data.map((row, index) => {
+            {data.map((row: any, index) => {
                 return <tr key={index}>
                     {columns.map((column, colIdx) => {
                         const key= row[column] as string;
