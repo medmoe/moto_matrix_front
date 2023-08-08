@@ -7,7 +7,7 @@ import {ProfileImage} from "../../../profileImage/ProfileImage";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
+import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {API, UserProfile} from "../../../../types/types";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
 import {ErrorBox} from "../../../errorbox/ErrorBox";
@@ -75,7 +75,7 @@ export function UpdateProfile() {
         delete profileData.user.password2;
         await axios.put(`${API}accounts/${userData.id}/`, JSON.stringify(profileData), options)
             .then((res) => {
-                dispatch(updateActiveIndex(6));
+                dispatch(updatePageName("account"));
                 dispatch(updateUserData({...res.data, ...res.data.user}))
             })
             .catch((err) => {
@@ -125,7 +125,7 @@ export function UpdateProfile() {
                                               border="1px solid #007BFF"
                                               backgroundColor="#FFF"
                                               handleClick={() => {
-                                                  dispatch(updateActiveIndex(6))
+                                                  dispatch(updatePageName("account"));
                                               }}
                                               textColor="#007BFF"/>,
                                       <Button label="Submit"

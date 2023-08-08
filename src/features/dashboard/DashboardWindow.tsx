@@ -2,34 +2,34 @@ import React, {JSX} from "react";
 import axios from "axios";
 import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
-import {Dashboard, Profile, SideMenu, UpdateProfile, ProductsList} from "../../components";
+import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../components";
 import {useNavigate} from "react-router-dom";
-import {useAppSelector} from "../../hooks";
-import {selectActiveIndex} from "./dashboardSlice";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {selectPageName, updateActiveIndex, updatePageName} from "./dashboardSlice";
 import {selectUserData} from "../user/userSlice";
-import {useAppDispatch} from "../../hooks";
-import {updateActiveIndex} from "./dashboardSlice";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
-    const activeIndex = useAppSelector(selectActiveIndex);
     const user = useAppSelector(selectUserData);
+    const pageName = useAppSelector(selectPageName);
     const dispatch = useAppDispatch();
-
-    // the pages list should be always sorted as the items appear in the sidebar menu.
-    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <ProductsList />, <div></div>, <div></div>, <div></div>,
-        <Profile firstName={user.first_name}
-                 lastName={user.last_name}
-                 rating={user.rating}
-                 phone={user.phone}
-                 address={user.address}
-                 city={user.city}
-                 country={user.country}
-                 email={user.email}
-                 bio={user.description}
-                 img="https://picsum.photos/200"/>,
-    <UpdateProfile />
-    ];
+    const pages: { [key: string]: JSX.Element } = {
+        'dashboard': <Dashboard/>,
+        'inventory': <ProductsList/>,
+        'account': <Profile firstName={user.first_name}
+                            lastName={user.last_name}
+                            rating={user.rating}
+                            phone={user.phone}
+                            address={user.address}
+                            city={user.city}
+                            country={user.country}
+                            email={user.email}
+                            bio={user.description}
+                            img={user.profile_pic}
+        />,
+        'update profile': <UpdateProfile/>,
+        'add product': <AddProduct/>
+    }
     const handleLogout = async () => {
         const options = {
             headers: {
@@ -41,6 +41,7 @@ export function DashboardWindow() {
             .then((res) => {
                 navigate("/");
                 dispatch(updateActiveIndex(0));
+                dispatch(updatePageName("dashboard"));
             })
             .catch((err) => {
                 if (err.response.status === 401) {
@@ -77,7 +78,7 @@ export function DashboardWindow() {
                           handleNotifications={handleNotifications}/>
             </div>
             <div className={styles.dashboard}>
-                {pages[activeIndex]}
+                {pages[pageName]}
             </div>
         </div>
     );

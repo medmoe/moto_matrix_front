@@ -9,13 +9,16 @@ import {ProductStatus} from "../productStatus/ProductStatus";
 import MaterialIcon from 'material-icons-react';
 import {PRODUCTS_LIST} from "../../../../utils/mockData";
 import {reorderWithPriority} from "../../../../utils/functools";
+import {useAppDispatch} from "../../../../hooks";
+import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 
 interface StatusOrder {
     [key: string]: number,
 }
 
 export function ProductsList() {
-    const productStatus = ['All products', 'New', 'Used', 'Refurbished']
+    const productStatus: string[] = ['All products', 'New', 'Used', 'Refurbished']
+    const dispatch = useAppDispatch()
     const statusOrder: StatusOrder = {"New": 1, "Used": 2, "Refurbished": 3}
     const columns = ['id', 'image', 'name', 'stock', 'make', 'model', 'supplier', 'total', 'date', 'status']
     const [productStatusActiveIndex, setProductStatusActiveIndex] = useState(0);
@@ -51,11 +54,12 @@ export function ProductsList() {
                                     backgroundColor="#007bff"
                                     textColor="#fff"
                                     border="none"
-                                    handleClick={() => console.log("add product")}/>
+                                    handleClick={() => dispatch(updatePageName("add product"))}/>
                         </div>
                     </div>
                     <div className={styles.tableContainer}>
-                        <Table data={productsList} columns={columns}/>
+                        <Table data={productsList}
+                               columns={columns}/>
                     </div>
                     <div className={styles.footerContainer}>
                         <div className={styles.footerText}>

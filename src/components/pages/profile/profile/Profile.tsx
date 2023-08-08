@@ -7,7 +7,7 @@ import {Button} from "../../../button/Button";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
+import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
 
 interface ProfileProps {
@@ -47,7 +47,7 @@ export function Profile({
                                                textColor="#fff"
                                                border="none"
                                                handleClick={() => {
-                                                   dispatch(updateActiveIndex(7))
+                                                   dispatch(updatePageName("update profile"))
                                                }}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
                 />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>

@@ -26,3 +26,7 @@
 .container:hover {
     filter: brightness(90%);
 }
+
+button {
+    cursor: pointer;
+}

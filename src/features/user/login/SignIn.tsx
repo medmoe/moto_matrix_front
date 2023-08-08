@@ -6,6 +6,7 @@ import {API, User} from "../../../types/types";
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {updateUserData} from "../userSlice";
+import {updatePageName} from "../../dashboard/dashboardSlice";
 
 export function SignIn() {
     let initState: User = {
@@ -55,6 +56,7 @@ export function SignIn() {
             .then((res) => {
                 navigate("/dashboard");
                 dispatch(updateUserData(res.data.user));
+                dispatch(updatePageName("dashboard"));
             })
             .catch((err) => {
                 err.response? setErrorMessage(err.response.data.detail): setErrorMessage(err.message);

@@ -4,7 +4,7 @@ import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../hooks";
-import {selectActiveIndex, updateActiveIndex} from "../../features/dashboard/dashboardSlice";
+import {selectActiveIndex, updateActiveIndex, updatePageName} from "../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../features/user/userSlice";
 import {useAppSelector} from "../../hooks";
 import {ProfileImage} from "../profileImage/ProfileImage";
@@ -45,7 +45,8 @@ export function SideMenu({
         setAccountActive(false);
     }
     const handleAccountClick = () => {
-        dispatch(updateActiveIndex(6))
+        dispatch(updateActiveIndex(6)) // 6 because the length of the menuItems is 5 and the account is the 6th.
+        dispatch(updatePageName("account"))
         setAccountActive(true);
     }
     return (
@@ -62,6 +63,7 @@ export function SideMenu({
                         backgroundColor={index === activeIndex ? "#877B04" : "#706500"}
                         handleClick={() => {
                             handleItemClick(index);
+                            dispatch(updatePageName(title.toLowerCase()));
                             action();
                         }}
                     />
