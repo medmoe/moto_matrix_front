@@ -7,7 +7,7 @@ import {Button} from "../../../button/Button";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
+import {updatePageName} from "../../../../features/dashboard/providerDashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
 
 interface ProfileProps {
@@ -20,7 +20,6 @@ interface ProfileProps {
     country?: string,
     email?: string,
     bio?: string,
-    img?: string
 }
 
 export function Profile({
@@ -33,7 +32,6 @@ export function Profile({
                             country,
                             email,
                             bio,
-                            img
                         }: ProfileProps) {
     const dispatch = useAppDispatch()
     const userData = useAppSelector(selectUserData);

@@ -46,14 +46,6 @@ export interface Dashboard {
 }
 
 export type TableRow = Product[] | RecentOrder[];
-type UserProfileWithoutUser = Omit<UserProfile, 'user'>;
-export type CombinedUser = User & UserProfileWithoutUser;
-
-
-export interface LoginData {
-    user: CombinedUser;
-    dashboard: Dashboard;
-}
 
 export interface GeneralInfo {
     itemsInStock: string,

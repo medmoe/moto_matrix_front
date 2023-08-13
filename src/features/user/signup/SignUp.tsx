@@ -4,6 +4,8 @@ import {Banner, Signup, ErrorBox, Spinner} from "../../../components";
 import styles from './SignUp.module.css'
 import {API, UserProfile} from "../../../types/types";
 import {useNavigate, Navigate} from "react-router-dom";
+import {useAppDispatch} from "../../../hooks";
+import {updateUserData} from "../userSlice";
 
 export function SignUp() {
     let initState: UserProfile = {
@@ -16,6 +18,7 @@ export function SignUp() {
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const dispatch = useAppDispatch();
     const options = {
         headers: {
             'Content-Type': 'application/json'
@@ -72,6 +75,12 @@ export function SignUp() {
             setErrorMessage("Enter a valid email address")
             return
         }
+        if (!userInfo.is_provider) {
+            setErrorMessage("Please select either Consumer or Seller!")
+            return
+        }
+
+
 
         /* Sending the form */
         const options = {
@@ -84,9 +93,18 @@ export function SignUp() {
         await axios.post(`${API}accounts/signup/`, JSON.stringify(userInfo), options)
             .then((res) => {
                 navigate("/dashboard");
+                dispatch(updateUserData(res.data))
             })
             .catch((err) => {
-                setErrorMessage(err.response.data[0]);
+                if (err.response.data && err.response.data.user && err.response.data.user.email) {
+                    setErrorMessage(err.response.data.user.email[0])
+                    return
+                }
+                if (err.response.data && err.response.data.user && err.response.data.user.username) {
+                    setErrorMessage(err.response.data.user.username[0])
+                    return
+                }
+                console.log(err)
             })
     }
     if (isLoading) {

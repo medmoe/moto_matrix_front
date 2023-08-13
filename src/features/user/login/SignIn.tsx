@@ -6,7 +6,7 @@ import {API, User} from "../../../types/types";
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {updateUserData} from "../userSlice";
-import {updatePageName} from "../../dashboard/dashboardSlice";
+import {updatePageName} from "../../dashboard/providerDashboard/dashboardSlice";
 
 export function SignIn() {
     let initState: User = {
@@ -55,7 +55,7 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                dispatch(updateUserData(res.data.user));
+                dispatch(updateUserData(res.data));
                 dispatch(updatePageName("dashboard"));
             })
             .catch((err) => {

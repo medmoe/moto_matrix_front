@@ -1,31 +1,30 @@
 import React, {JSX} from "react";
 import axios from "axios";
-import {API} from '../../types/types';
+import {API} from '../../../types/types';
 import styles from './Dashboard.module.css';
-import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../components";
+import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../hooks";
+import {useAppDispatch, useAppSelector} from "../../../hooks";
 import {selectPageName, updateActiveIndex, updatePageName} from "./dashboardSlice";
-import {selectUserData} from "../user/userSlice";
+import {selectUserData} from "../../user/userSlice";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
-    const user = useAppSelector(selectUserData);
+    const userData = useAppSelector(selectUserData);
     const pageName = useAppSelector(selectPageName);
     const dispatch = useAppDispatch();
     const pages: { [key: string]: JSX.Element } = {
         'dashboard': <Dashboard/>,
         'inventory': <ProductsList/>,
-        'account': <Profile firstName={user.first_name}
-                            lastName={user.last_name}
-                            rating={user.rating}
-                            phone={user.phone}
-                            address={user.address}
-                            city={user.city}
-                            country={user.country}
-                            email={user.email}
-                            bio={user.description}
-                            img={user.profile_pic}
+        'account': <Profile firstName={userData.user.first_name}
+                            lastName={userData.user.last_name}
+                            rating={userData.rating}
+                            phone={userData.phone}
+                            address={userData.address}
+                            city={userData.city}
+                            country={userData.country}
+                            email={userData.user.email}
+                            bio={userData.description}
         />,
         'update profile': <UpdateProfile/>,
         'add product': <AddProduct/>

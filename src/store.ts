@@ -1,11 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import userReducer from '../src/features/user/userSlice';
-import dashboardReducer from '../src/features/dashboard/dashboardSlice';
+import dashboardReducer from './features/dashboard/providerDashboard/dashboardSlice';
 import {useDispatch} from "react-redux";
 
 export const store = configureStore({
     reducer: {
-        user: userReducer,
+        userData: userReducer,
         dashboard: dashboardReducer,
     }
 });

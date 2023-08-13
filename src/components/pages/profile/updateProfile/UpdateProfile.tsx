@@ -7,7 +7,7 @@ import {ProfileImage} from "../../../profileImage/ProfileImage";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
+import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/providerDashboard/dashboardSlice";
 import {API, UserProfile} from "../../../../types/types";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
 import {ErrorBox} from "../../../errorbox/ErrorBox";
@@ -16,20 +16,7 @@ import axios from "axios";
 
 export function UpdateProfile() {
     const userData = useAppSelector(selectUserData);
-    let initState: UserProfile = {
-        user: {
-            first_name: userData.first_name,
-            last_name: userData.last_name,
-            id: userData.id,
-            username: userData.username,
-            email: userData.email
-        },
-        phone: userData.phone,
-        address: userData.address,
-        city: userData.city,
-        country: userData.country,
-        description: userData.description,
-    }
+    let initState: UserProfile = userData
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -73,7 +60,7 @@ export function UpdateProfile() {
             return
         }
         delete profileData.user.password2;
-        await axios.put(`${API}accounts/${userData.id}/`, JSON.stringify(profileData), options)
+        await axios.put(`${API}accounts/${userData.user.id}/`, JSON.stringify(profileData), options)
             .then((res) => {
                 dispatch(updatePageName("account"));
                 dispatch(updateUserData({...res.data, ...res.data.user}))
@@ -95,7 +82,7 @@ export function UpdateProfile() {
         setSelectedFile(file);
         const formData = new FormData();
         formData.append('profile_pic', file);
-        axios.put(`${API}accounts/files/${userData.id}/`, formData, {
+        axios.put(`${API}accounts/files/${userData.is_provider? "true": "false"}/${userData.user.id}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -105,7 +92,11 @@ export function UpdateProfile() {
                 dispatch(updateUserData({...userData, profile_pic: res.data.file}))
             })
             .catch((err) => {
-                setErrorMessage(err.data['detail']);
+                if (err.data && err.data.detail) {
+                    setErrorMessage(err.data.detail);
+                }else{
+                    console.log(err);
+                }
             })
     }
 

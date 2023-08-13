@@ -1,29 +1,31 @@
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import type {RootState} from "../../store";
-import {CombinedUser} from "../../types/types";
+import {UserProfile} from "../../types/types";
 
 
 // define a type for the slice state
 export interface UserState {
-    user: CombinedUser,
+    userData: UserProfile,
 }
 
 const initialState: UserState = {
-    user: {},
+    userData: {
+        user: {}
+    },
 }
 
 export const userSlice = createSlice({
-    name: 'user',
+    name: 'userData',
     initialState,
     reducers: {
-        updateUserData: (state, action: PayloadAction<CombinedUser>) => {
-            state.user = action.payload;
+        updateUserData: (state, action: PayloadAction<UserProfile>) => {
+            state.userData = action.payload;
         },
     }
 })
 
-export const selectUserData = (state: RootState) => state.user.user;
+export const selectUserData = (state: RootState) => state.userData.userData;
 
 export const {updateUserData} = userSlice.actions;
 

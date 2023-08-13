@@ -3,10 +3,13 @@ import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../hooks";
-import {selectActiveIndex, updateActiveIndex, updatePageName} from "../../features/dashboard/dashboardSlice";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {
+    selectActiveIndex,
+    updateActiveIndex,
+    updatePageName
+} from "../../features/dashboard/providerDashboard/dashboardSlice";
 import {selectUserData} from "../../features/user/userSlice";
-import {useAppSelector} from "../../hooks";
 import {ProfileImage} from "../profileImage/ProfileImage";
 
 interface SideMenuProps {
@@ -35,7 +38,6 @@ export function SideMenu({
         ["logout", "Logout", handleLogout],
     ]
     const [isAccountActive, setAccountActive] = useState(false);
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const activeIndex = useAppSelector(selectActiveIndex);
     const userData = useAppSelector(selectUserData);

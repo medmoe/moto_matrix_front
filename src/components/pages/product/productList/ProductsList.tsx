@@ -10,7 +10,7 @@ import MaterialIcon from 'material-icons-react';
 import {PRODUCTS_LIST} from "../../../../utils/mockData";
 import {reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
-import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
+import {updatePageName} from "../../../../features/dashboard/providerDashboard/dashboardSlice";
 
 interface StatusOrder {
     [key: string]: number,
