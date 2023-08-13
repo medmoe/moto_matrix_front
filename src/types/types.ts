@@ -30,6 +30,7 @@ export interface User {
 
 export interface UserProfile {
     user: User;
+    id?: number;
     profile_pic?: string;
     phone?: string;
     address?: string;

@@ -22,6 +22,8 @@ export function UpdateProfile() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const UNAUTHORIZED: number = 401;
+    const EMAIL_REGEX: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const handleChange = (event: FormEvent) => {
         event.preventDefault();
         const target = event.target as HTMLInputElement
@@ -55,18 +57,23 @@ export function UpdateProfile() {
             setErrorMessage("Password didn't match!");
             return;
         }
-        if (email && !(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(profileData.user.email as string))) {
+        if (email && !(EMAIL_REGEX.test(profileData.user.email as string))) {
             setErrorMessage("Enter a valid email address")
             return
         }
+        if (!profileData.user.username) {
+            setErrorMessage("Username cannot be blank");
+            return
+        }
         delete profileData.user.password2;
-        await axios.put(`${API}accounts/${userData.user.id}/`, JSON.stringify(profileData), options)
+        delete profileData.profile_pic;
+        await axios.put(`${API}accounts/${userData.user.username}/`, JSON.stringify(profileData), options)
             .then((res) => {
                 dispatch(updatePageName("account"));
                 dispatch(updateUserData({...res.data, ...res.data.user}))
             })
             .catch((err) => {
-                if (err.response.status === 401) {
+                if (err.response.status === UNAUTHORIZED) {
                     navigate("/");
                     dispatch(updateActiveIndex(0));
                 } else {
@@ -82,7 +89,7 @@ export function UpdateProfile() {
         setSelectedFile(file);
         const formData = new FormData();
         formData.append('profile_pic', file);
-        axios.put(`${API}accounts/files/${userData.is_provider? "true": "false"}/${userData.user.id}/`, formData, {
+        axios.put(`${API}accounts/files/${userData.user.username}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -94,7 +101,7 @@ export function UpdateProfile() {
             .catch((err) => {
                 if (err.data && err.data.detail) {
                     setErrorMessage(err.data.detail);
-                }else{
+                } else {
                     console.log(err);
                 }
             })

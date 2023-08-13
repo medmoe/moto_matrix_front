@@ -41,6 +41,7 @@ export function SideMenu({
     const dispatch = useAppDispatch();
     const activeIndex = useAppSelector(selectActiveIndex);
     const userData = useAppSelector(selectUserData);
+    console.log(userData);
 
     const handleItemClick = (index: number) => {
         dispatch(updateActiveIndex(index));
