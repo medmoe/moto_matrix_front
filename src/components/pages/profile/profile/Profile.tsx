@@ -7,7 +7,7 @@ import {Button} from "../../../button/Button";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updatePageName} from "../../../../features/dashboard/providerDashboard/dashboardSlice";
+import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
 
 interface ProfileProps {

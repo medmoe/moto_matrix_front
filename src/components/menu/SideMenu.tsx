@@ -2,13 +2,12 @@ import React, {useState} from "react";
 import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
-import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {
     selectActiveIndex,
     updateActiveIndex,
     updatePageName
-} from "../../features/dashboard/providerDashboard/dashboardSlice";
+} from "../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../features/user/userSlice";
 import {ProfileImage} from "../profileImage/ProfileImage";
 
@@ -41,7 +40,6 @@ export function SideMenu({
     const dispatch = useAppDispatch();
     const activeIndex = useAppSelector(selectActiveIndex);
     const userData = useAppSelector(selectUserData);
-    console.log(userData);
 
     const handleItemClick = (index: number) => {
         dispatch(updateActiveIndex(index));

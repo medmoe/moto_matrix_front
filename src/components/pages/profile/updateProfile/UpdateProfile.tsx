@@ -7,7 +7,7 @@ import {ProfileImage} from "../../../profileImage/ProfileImage";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/providerDashboard/dashboardSlice";
+import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {API, UserProfile} from "../../../../types/types";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
 import {ErrorBox} from "../../../errorbox/ErrorBox";
@@ -82,14 +82,14 @@ export function UpdateProfile() {
             })
     }
 
-    const fileSelectedHandler = (event: FormEvent) => {
+    const fileSelectedHandler = async (event: FormEvent) => {
         const target = event.target as HTMLInputElement
         const files = target.files as FileList
         const file = files[0] as File
         setSelectedFile(file);
         const formData = new FormData();
         formData.append('profile_pic', file);
-        axios.put(`${API}accounts/files/${userData.user.username}/`, formData, {
+        await axios.put(`${API}accounts/files/${userData.user.username}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

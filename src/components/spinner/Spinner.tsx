@@ -1,8 +1,13 @@
 import React from "react";
 import styles from "./Spinner.module.css"
-export function Spinner() {
+
+interface SpinnerProps {
+    width: string;
+    height: string;
+}
+export function Spinner({width, height}: SpinnerProps) {
     return (
-        <div className={styles.loader}>
+        <div className={styles.loader} style={{width:width, height: height}}>
 
         </div>
     )

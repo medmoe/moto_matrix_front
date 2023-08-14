@@ -5,7 +5,7 @@ import styles from './Dashboard.module.css';
 import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
-import {selectPageName, updateActiveIndex, updatePageName} from "./dashboardSlice";
+import {selectPageName, updateActiveIndex, updatePageName} from '../dashboardSlice'
 import {selectUserData} from "../../user/userSlice";
 
 export function DashboardWindow() {

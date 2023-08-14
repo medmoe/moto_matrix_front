@@ -6,7 +6,7 @@ import {API, User} from "../../../types/types";
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {updateUserData} from "../userSlice";
-import {updatePageName} from "../../dashboard/providerDashboard/dashboardSlice";
+import {updatePageName} from "../../dashboard/dashboardSlice";
 
 export function SignIn() {
     let initState: User = {
@@ -64,7 +64,7 @@ export function SignIn() {
     }
     if (isLoading) {
         return (
-            <Spinner/>
+            <Spinner height={"120px"} width={"120px"}/>
         )
     }
     return (

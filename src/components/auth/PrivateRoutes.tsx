@@ -26,7 +26,7 @@ export function PrivateRoutes ()  {
     }, [])
     if (isLoading) {
         // you could return a loading spinner here
-        return <Spinner />;
+        return <Spinner width={"120px"} height={"120px"}/>;
     }
     return (
         isAuthenticated ? <Outlet /> : <Navigate to="/" />

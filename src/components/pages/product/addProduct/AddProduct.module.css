@@ -117,6 +117,10 @@ textarea::placeholder {
     position: absolute;
     left: 430px;
     top: 113px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .divider {

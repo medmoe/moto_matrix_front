@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Loading: Story = {
     args: {
-
+        height: "120px",
+        width: "120px",
     }
 }

@@ -1,4 +1,3 @@
-// types
 export interface Product {
     id: number,
     image: JSX.Element,
@@ -10,6 +9,24 @@ export interface Product {
     total: number,
     date: string,
     status: 'New' | 'Used' | 'Refurbished',
+}
+
+export interface AutoPartDetail {
+    name?: string,
+    description?: string,
+    manufacturer?: string,
+    price?: number,
+    stock?: number,
+    weight?: number,
+    dimensions?: string,
+    location?: string,
+    category?: string,
+    vehicle_make?: string,
+    vehicle_model?: string,
+    vehicle_year?: string,
+    condition?: string,
+    OEM_number?: string,
+    OPC_number?: string
 }
 
 export interface RecentOrder {

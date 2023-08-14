@@ -108,7 +108,7 @@ export function SignUp() {
             })
     }
     if (isLoading) {
-        return <Spinner />
+        return <Spinner height={"120px"} width={"120px"}/>
     }
     return (
         isAuthenticated? <Navigate to="/dashboard" />:
