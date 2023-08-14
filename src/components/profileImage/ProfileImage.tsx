@@ -12,10 +12,10 @@ interface ProfileProps {
 export function ProfileImage({src, alt, width, height}: ProfileProps) {
     const [hasLoaded, setHasLoaded] = useState(true);
     const handleError = () => {
-        setHasLoaded(false);
+        setHasLoaded(false)
+        console.log("error")
     }
     return (
-
         hasLoaded ?
             <div className={styles.container}>
                 <img src={src} alt={alt} onError={handleError} width={width} height={height}/>

@@ -26,3 +26,4 @@ export {UpdateProfile} from "./pages/profile/updateProfile/UpdateProfile";
 export {CheckCircle} from "./checkCircle/CheckCircle";
 export {ProductsList} from "./pages/product/productList/ProductsList";
 export {AddProduct} from "./pages/product/addProduct/AddProduct";
+export {Select} from "./select/Select";

@@ -1,6 +1,6 @@
 import React, {JSX} from "react";
 import axios from "axios";
-import {API} from '../../../types/types';
+import {API, DASHBOARD_PAGES} from '../../../types/types';
 import styles from './Dashboard.module.css';
 import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
 import {useNavigate} from "react-router-dom";
@@ -13,10 +13,11 @@ export function DashboardWindow() {
     const userData = useAppSelector(selectUserData);
     const pageName = useAppSelector(selectPageName);
     const dispatch = useAppDispatch();
+    const {DASHBOARD, INVENTORY, ACCOUNT, UPDATE_ACCOUNT, ADD_PRODUCT} = DASHBOARD_PAGES
     const pages: { [key: string]: JSX.Element } = {
-        'dashboard': <Dashboard/>,
-        'inventory': <ProductsList/>,
-        'account': <Profile firstName={userData.user.first_name}
+        'DASHBOARD': <Dashboard/>,
+        'INVENTORY': <ProductsList/>,
+        'ACCOUNT': <Profile firstName={userData.user.first_name}
                             lastName={userData.user.last_name}
                             rating={userData.rating}
                             phone={userData.phone}
@@ -26,8 +27,8 @@ export function DashboardWindow() {
                             email={userData.user.email}
                             bio={userData.description}
         />,
-        'update profile': <UpdateProfile/>,
-        'add product': <AddProduct/>
+        'UPDATE_ACCOUNT': <UpdateProfile/>,
+        'ADD_PRODUCT': <AddProduct/>
     }
     const handleLogout = async () => {
         const options = {
@@ -40,7 +41,7 @@ export function DashboardWindow() {
             .then((res) => {
                 navigate("/");
                 dispatch(updateActiveIndex(0));
-                dispatch(updatePageName("dashboard"));
+                dispatch(updatePageName(DASHBOARD));
             })
             .catch((err) => {
                 if (err.response.status === 401) {

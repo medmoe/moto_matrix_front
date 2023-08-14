@@ -7,29 +7,80 @@ import styles from './AddProduct.module.css';
 import MaterialIcon from 'material-icons-react';
 import {Divider} from "../../../divider/Divider";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
+import {selectAutoPartDetail, updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
-import {API} from "../../../../types/types";
-import axios from "axios";
+import {API, AutoPartCategory, Condition, AutoPartDetail, DASHBOARD_PAGES} from "../../../../types/types";
+import axios, {all} from "axios";
 import {Spinner} from "../../../spinner/Spinner";
-import {selectAutoPartDetail} from "../../../../features/dashboard/dashboardSlice";
+import {Select} from "../../../select/Select";
 
 export function AddProduct() {
     const dispatch = useAppDispatch();
+    const autoPartDetails = useAppSelector(selectAutoPartDetail);
     const userData = useAppSelector(selectUserData);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploaded, setIsUploaded] = useState<boolean>(false);
     const [isUploading, setIsUploading] = useState<boolean>(false);
     const [isNotUploaded, setIsNotUploaded] = useState<boolean>(false)
-    const autoPartDetails = useAppSelector(selectAutoPartDetail);
+    const [autoPartFormData, setAutoPartFromData] = useState<AutoPartDetail>(autoPartDetails);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const submitForm = async (event:FormEvent) => {
+
+    const conditions: [string, string][] = Object.keys(Condition)
+        .filter(key => isNaN(Number(key))) // filter out numeric keys
+        .map(key => [key, Condition[key as keyof typeof Condition]]);
+
+    const categories: [string, string][] = Object.keys(AutoPartCategory)
+        .filter(key => isNaN(Number(key))) // filter out numeric keys
+        .map(key => [key, AutoPartCategory[key as keyof typeof AutoPartCategory]]);
+
+
+    const submitForm = async (event: FormEvent) => {
         event.preventDefault()
+        // Validate data before submission
+        if (!isValidYear(autoPartFormData.vehicle_year)){
+            setErrorMessage("Please enter a valid vehicle year");
+            return
+        }
+        if (isNaN(Number(autoPartFormData.price))) {
+            setErrorMessage("Please enter a valid price");
+            return
+        }
+        if (isNaN(Number(autoPartFormData.stock))) {
+            setErrorMessage("Please enter a valid quantity");
+            return
+        }
+        if (isNaN(Number(autoPartFormData.weight))) {
+            setErrorMessage("Please enter a valid weight");
+            return
+        }
+        const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true}
+        await axios.post(`${API}components/auto-parts/`, JSON.stringify(autoPartFormData), options)
+            .then((res) => {
+                dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+    }
+
+    const isValidYear = (year: string): boolean => {
+        const startYear = 1950;
+        const endYear = new Date().getFullYear();
+        return year.length === 4 &&
+            !isNaN(Number(year)) &&
+            parseInt(year, 10) >= startYear &&
+            parseInt(year, 10) <= endYear
     }
 
     const handleChange = (event: FormEvent) => {
         event.preventDefault()
         const target = event.target as HTMLInputElement | HTMLSelectElement
+        setAutoPartFromData({
+            ...autoPartFormData,
+            [target.name]: target.value
+        })
 
     }
 
@@ -77,7 +128,7 @@ export function AddProduct() {
                                         width="100px"
                                         textColor={"#007bff"}
                                         backgroundColor={"#fff"} border={"1px solid #007bff"}
-                                        handleClick={() => dispatch(updatePageName('inventory'))}/>
+                                        handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))}/>
                                 <Button label={"Submit"}
                                         height={"40px"}
                                         width={"100px"}
@@ -103,8 +154,8 @@ export function AddProduct() {
                                                     type={"text"}
                                                     placeholder={"Enter product name"}
                                                     backgroundColor={"#fff"}
-                                                    name={"productName"}
-                                                    value={autoPartDetails.name}
+                                                    name={"name"}
+                                                    value={autoPartFormData.name}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -118,7 +169,7 @@ export function AddProduct() {
                                                     placeholder={"Enter manufacturer"}
                                                     backgroundColor={"#fff"}
                                                     name={"manufacturer"}
-                                                    value={autoPartDetails.manufacturer}
+                                                    value={autoPartFormData.manufacturer}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -132,7 +183,7 @@ export function AddProduct() {
                                                     placeholder={"Enter location in stock"}
                                                     backgroundColor={"#fff"}
                                                     name={"location"}
-                                                    value={autoPartDetails.location}
+                                                    value={autoPartFormData.location}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -146,7 +197,7 @@ export function AddProduct() {
                                                     placeholder={"Enter dimensions"}
                                                     backgroundColor={"#fff"}
                                                     name={"dimensions"}
-                                                    value={autoPartDetails.dimensions}
+                                                    value={autoPartFormData.dimensions}
                                         />
                                     </div>
                                 </div>
@@ -163,10 +214,10 @@ export function AddProduct() {
                                                         width={"80px"}
                                                         height={"30px"}
                                                         id={"quantity"}
-                                                        type={"number"}
+                                                        type={"text"}
                                                         backgroundColor={"#fff"}
-                                                        name={"quantity"}
-                                                        value={`${autoPartDetails.stock}`}
+                                                        name={"stock"}
+                                                        value={`${autoPartFormData.stock}`}
                                             />
                                         </div>
                                         <div className={styles.col}>
@@ -176,22 +227,23 @@ export function AddProduct() {
                                                         width={"80px"}
                                                         height={"30px"}
                                                         id={"price"}
-                                                        type={"number"}
+                                                        type={"text"}
                                                         backgroundColor={"#fff"}
                                                         name={"price"}
-                                                        value={`${autoPartDetails.price}`}
+                                                        value={`${autoPartFormData.price}`}
                                             />
                                         </div>
                                         <div className={styles.col}>
                                             <label htmlFor={"weight"}>Weight</label>
                                             <InputField border={"1px solid 9e9d9d"}
-                                                        handleChange={() => console.log("weight")}
+                                                        handleChange={handleChange}
                                                         width={"80px"}
                                                         height={"30px"}
                                                         id={"weight"}
-                                                        type={"number"}
+                                                        type={"text"}
                                                         backgroundColor={"#fff"}
                                                         name={"weight"}
+                                                        value={`${autoPartFormData.weight}`}
                                             />
                                         </div>
                                     </div>
@@ -242,8 +294,8 @@ export function AddProduct() {
                                                     type={"text"}
                                                     placeholder={"Enter vehicle make"}
                                                     backgroundColor={"#fff"}
-                                                    name={"make"}
-                                                    value={autoPartDetails.vehicle_make}
+                                                    name={"vehicle_make"}
+                                                    value={autoPartFormData.vehicle_make}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -257,7 +309,7 @@ export function AddProduct() {
                                                     placeholder={"Enter OEM number"}
                                                     backgroundColor={"#fff"}
                                                     name={"OEM Number"}
-                                                    value={autoPartDetails.OEM_number}
+                                                    value={autoPartFormData.OEM_number}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -271,7 +323,7 @@ export function AddProduct() {
                                                     placeholder={"Enter UPC number"}
                                                     backgroundColor={"#fff"}
                                                     name={"UPC"}
-                                                    value={autoPartDetails.OPC_number}
+                                                    value={autoPartFormData.OPC_number}
                                         />
                                     </div>
                                 </div>
@@ -286,38 +338,40 @@ export function AddProduct() {
                                                     type={"text"}
                                                     placeholder={"Enter vehicle model"}
                                                     backgroundColor={"#fff"}
-                                                    name={"model"}
-                                                    value={autoPartDetails.vehicle_model}
+                                                    name={"vehicle_model"}
+                                                    value={autoPartFormData.vehicle_model}
+                                        />
+
+                                        <label htmlFor={"year"}>Enter vehicle year</label>
+                                        <InputField border={"1px solid #9e9d9d"}
+                                                    handleChange={handleChange}
+                                                    width={"195px"}
+                                                    height={"30px"}
+                                                    id={"year"}
+                                                    type={"text"}
+                                                    placeholder={"Enter vehicle year"}
+                                                    backgroundColor={"#fff"}
+                                                    name={"vehicle_year"}
+                                                    value={autoPartFormData.vehicle_year}
                                         />
                                     </div>
                                 </div>
                                 <div className={styles.thirdCol}>
                                     <div className={styles.col}>
-                                        <label htmlFor={"year"}>year</label>
-                                        <InputField border={"1px solid 9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"80px"}
-                                                    height={"30px"}
-                                                    id={"year"}
-                                                    type={"number"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"year"}
-                                                    value={autoPartDetails.vehicle_year}
+                                        <label htmlFor={"condition"}>Select condition</label>
+                                        <Select options={conditions}
+                                                handleChange={handleChange}
+                                                currentValue={autoPartFormData.condition}
+                                                name={"condition"}
                                         />
                                     </div>
                                     <div className={styles.col}>
-                                        <select value={"New"} onChange={handleChange}>
-                                            <option value="" disabled>Condition</option>
-                                            <option value="New">New</option>
-                                            <option value="Used">Used</option>
-                                            <option value="Refurbished">Refurbished</option>
-                                        </select>
-                                    </div>
-                                    <div className={styles.col}>
-                                        <select value={"Some"} onChange={handleChange}>
-                                            <option value="1">One</option>
-                                            <option value={"2"}>Two</option>
-                                        </select>
+                                        <label htmlFor={"category"}>Select category</label>
+                                        <Select options={categories}
+                                                handleChange={handleChange}
+                                                currentValue={autoPartFormData.category}
+                                                name={"category"}
+                                        />
                                     </div>
                                 </div>
                             </div>

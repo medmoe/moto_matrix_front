@@ -11,6 +11,7 @@ import {PRODUCTS_LIST} from "../../../../utils/mockData";
 import {reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
 import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
+import {DASHBOARD_PAGES} from "../../../../types/types";
 
 interface StatusOrder {
     [key: string]: number,
@@ -54,7 +55,7 @@ export function ProductsList() {
                                     backgroundColor="#007bff"
                                     textColor="#fff"
                                     border="none"
-                                    handleClick={() => dispatch(updatePageName("add product"))}/>
+                                    handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT))}/>
                         </div>
                     </div>
                     <div className={styles.tableContainer}>

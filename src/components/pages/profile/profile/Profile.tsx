@@ -9,6 +9,7 @@ import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
+import {DASHBOARD_PAGES} from "../../../../types/types";
 
 interface ProfileProps {
     firstName?: string,
@@ -45,7 +46,7 @@ export function Profile({
                                                textColor="#fff"
                                                border="none"
                                                handleClick={() => {
-                                                   dispatch(updatePageName("update profile"))
+                                                   dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))
                                                }}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
                 />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>

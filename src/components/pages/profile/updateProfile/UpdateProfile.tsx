@@ -8,7 +8,7 @@ import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {API, UserProfile} from "../../../../types/types";
+import {API, DASHBOARD_PAGES, UserProfile} from "../../../../types/types";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
 import {ErrorBox} from "../../../errorbox/ErrorBox";
 import {useNavigate} from "react-router-dom";
@@ -69,7 +69,7 @@ export function UpdateProfile() {
         delete profileData.profile_pic;
         await axios.put(`${API}accounts/${userData.user.username}/`, JSON.stringify(profileData), options)
             .then((res) => {
-                dispatch(updatePageName("account"));
+                dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                 dispatch(updateUserData({...res.data, ...res.data.user}))
             })
             .catch((err) => {
@@ -123,7 +123,7 @@ export function UpdateProfile() {
                                               border="1px solid #007BFF"
                                               backgroundColor="#FFF"
                                               handleClick={() => {
-                                                  dispatch(updatePageName("account"));
+                                                  dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                                               }}
                                               textColor="#007BFF"/>,
                                       <Button label="Submit"

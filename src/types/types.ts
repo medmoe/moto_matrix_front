@@ -1,3 +1,4 @@
+// types
 export interface Product {
     id: number,
     image: JSX.Element,
@@ -12,21 +13,21 @@ export interface Product {
 }
 
 export interface AutoPartDetail {
-    name?: string,
-    description?: string,
-    manufacturer?: string,
-    price?: number,
-    stock?: number,
-    weight?: number,
-    dimensions?: string,
-    location?: string,
-    category?: string,
-    vehicle_make?: string,
-    vehicle_model?: string,
-    vehicle_year?: string,
-    condition?: string,
-    OEM_number?: string,
-    OPC_number?: string
+    name: string,
+    description: string,
+    manufacturer: string,
+    price: number,
+    stock: number,
+    weight: number,
+    dimensions: string,
+    location: string,
+    category: string,
+    vehicle_make: string,
+    vehicle_model: string,
+    vehicle_year: string,
+    condition: string,
+    OEM_number: string,
+    OPC_number: string
 }
 
 export interface RecentOrder {
@@ -64,12 +65,26 @@ export interface Dashboard {
 }
 
 export type TableRow = Product[] | RecentOrder[];
+export type DashboardPageKeys = 'DASHBOARD' | 'INVENTORY' | 'ACCOUNT' | 'UPDATE_ACCOUNT' | 'ADD_PRODUCT';
 
-export interface GeneralInfo {
-    itemsInStock: string,
-    inventoryTurnOver: string,
-    ordersThisWeek: string,
-    totalOrders: string,
+// Enumerators
+export enum Condition {
+    New = "NEW",
+    Used = "USED",
+    Refurbished = "REFURBISHED",
+}
+
+export enum AutoPartCategory {
+    Engine = "ENGINE",
+    Transmission = "TRANSMISSION",
+    Suspension = "SUSPENSION",
+    Brakes = "BRAKES",
+    Electrical = "ELECTRICAL",
+    Body = "BODY",
+    Interior = "INTERIOR",
+    Tires = "TIRES",
+    Wheels = "WHEELS",
+    Accessories = "ACCESSORIES",
 }
 
 
@@ -87,3 +102,11 @@ export const STATUS_COLORS: {[key: string]: string} = {
 }
 
 export const BAR_COLORS: string[] = ["#F94144", "#F3722C","#F8961E", "#F9C74F", "#90BE6D"]
+
+export const DASHBOARD_PAGES: Record<DashboardPageKeys, string> = {
+    DASHBOARD: 'DASHBOARD',
+    INVENTORY: 'INVENTORY',
+    ACCOUNT: 'ACCOUNT',
+    UPDATE_ACCOUNT: 'UPDATE_ACCOUNT',
+    ADD_PRODUCT: 'ADD_PRODUCT',
+}
