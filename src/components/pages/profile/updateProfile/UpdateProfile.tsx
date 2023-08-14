@@ -10,8 +10,8 @@ import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {API, DASHBOARD_PAGES, UserProfile} from "../../../../types/types";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
-import {ErrorBox} from "../../../errorbox/ErrorBox";
 import {useNavigate} from "react-router-dom";
+import {Alert} from "../../../alert/Alert";
 import axios from "axios";
 
 export function UpdateProfile() {
@@ -49,6 +49,11 @@ export function UpdateProfile() {
         const password = profileData.user.password as string;
         const email = profileData.user.email;
         const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true};
+        const {user: {password2, ...restOfUserInfo}, profile_pic, ...restOfDataToSend} = profileData;
+        const newDataToSend = {
+            ...restOfDataToSend,
+            user: restOfUserInfo
+        }
         if (password && 1 <= password.length && password.length < 8) {
             setErrorMessage("Password must be at least 8 characters long");
             return;
@@ -65,9 +70,7 @@ export function UpdateProfile() {
             setErrorMessage("Username cannot be blank");
             return
         }
-        delete profileData.user.password2;
-        delete profileData.profile_pic;
-        await axios.put(`${API}accounts/${userData.user.username}/`, JSON.stringify(profileData), options)
+        await axios.put(`${API}accounts/${userData.user.username}/`, JSON.stringify(newDataToSend), options)
             .then((res) => {
                 dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                 dispatch(updateUserData({...res.data, ...res.data.user}))
@@ -141,7 +144,8 @@ export function UpdateProfile() {
                     <div className={`${styles.largeCardContainer} ${styles.text}`}>
                         <div className={styles.header}>
                             <div className={styles.errorBoxContainer}>
-                                {errorMessage ? <ErrorBox message={errorMessage}/> : null}
+                                {errorMessage ?
+                                    <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
                             </div>
                             <div className={styles.profileImageContainer}>
                                 <div className={styles.uploadContainer}>

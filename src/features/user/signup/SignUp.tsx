@@ -1,6 +1,6 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import axios from 'axios';
-import {Banner, Signup, ErrorBox, Spinner} from "../../../components";
+import {Banner, Signup, Alert, Spinner} from "../../../components";
 import styles from './SignUp.module.css'
 import {API, UserProfile} from "../../../types/types";
 import {useNavigate, Navigate} from "react-router-dom";
@@ -113,7 +113,7 @@ export function SignUp() {
     return (
         isAuthenticated? <Navigate to="/dashboard" />:
         <div className={styles.container}>
-            {errorMessage ? <ErrorBox message={errorMessage}/> : null}
+            {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")} />: null}
             <Banner/>
             <Signup handleChange={handleChange} handleSubmit={handleSubmit}/>
         </div>

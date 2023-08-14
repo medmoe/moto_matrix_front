@@ -1,5 +1,5 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import {Banner, ErrorBox, Login, Spinner} from "../../../components";
+import {Banner, Alert, Login, Spinner} from "../../../components";
 import styles from './SignIn.module.css';
 import axios from "axios";
 import {API, User} from "../../../types/types";
@@ -71,7 +71,7 @@ export function SignIn() {
     return (
         isAuthenticated ? <Navigate to="/dashboard"/> :
             <div className={styles.container}>
-                {errorMessage ? <ErrorBox message={errorMessage}/> : null}
+                {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")} />: null}
                 <Banner/>
                 <Login handleChange={handleChange} handleSubmit={handleSubmit}/>
             </div>

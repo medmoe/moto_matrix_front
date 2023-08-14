@@ -13,6 +13,7 @@ import {API, AutoPartCategory, Condition, AutoPartDetail, DASHBOARD_PAGES} from 
 import axios, {all} from "axios";
 import {Spinner} from "../../../spinner/Spinner";
 import {Select} from "../../../select/Select";
+import {Alert} from "../../../alert/Alert";
 
 export function AddProduct() {
     const dispatch = useAppDispatch();
@@ -111,6 +112,7 @@ export function AddProduct() {
     }
     return (
         <div>
+            {errorMessage? <Alert message={errorMessage} onClose={() => setErrorMessage("")} />: null}
             <div className={styles.container}>
                 <div className={styles.upperBarContainer}>
                     <UpperBar components={[<SearchField/>]}
