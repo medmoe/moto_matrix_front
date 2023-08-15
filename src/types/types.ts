@@ -14,6 +14,7 @@ export interface Product {
 
 export interface AutoPartDetail {
     name: string,
+    image?: string,
     description: string,
     manufacturer: string,
     price: number,
@@ -64,7 +65,7 @@ export interface Dashboard {
     items?: number;
 }
 
-export type TableRow = Product[] | RecentOrder[];
+export type TableRow = AutoPartDetail[] | RecentOrder[];
 export type DashboardPageKeys = 'DASHBOARD' | 'INVENTORY' | 'ACCOUNT' | 'UPDATE_ACCOUNT' | 'ADD_PRODUCT';
 
 // Enumerators

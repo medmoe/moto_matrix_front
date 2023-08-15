@@ -58,6 +58,7 @@ export function AddProduct() {
         const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true}
         await axios.post(`${API}components/auto-parts/`, JSON.stringify(autoPartFormData), options)
             .then((res) => {
+                console.log(res);
                 dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
             })
             .catch((err) => {

@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Table.module.css";
-import {STATUS_COLORS, TableRow} from "../../types/types";
+import {TableRow} from "../../types/types";
 import {capitalize} from "../../utils/functools";
+import MaterialIcon from 'material-icons-react';
 
 
 interface TableProps {
@@ -24,9 +25,16 @@ export function Table({data, columns}: TableProps) {
                 return <tr key={index}>
                     {columns.map((column, colIdx) => {
                         const key= row[column] as string;
-                        return <td key={colIdx}
-                                   style={{color: row[column] in STATUS_COLORS? STATUS_COLORS[key]: "#000"}}
-                        >{row[column]}</td>
+                        return column === 'image' ?
+                            <td key={colIdx}>
+                                {
+                                    row[column] && row[column].startsWith("http") ?
+                                        <img src={row[column]} alt={"Auto part"} width={35} height={35}/> :
+                                        <MaterialIcon icon={"inventory_2"} size={34} color={"#d9d9d9"}/>
+                                }
+                            </td>
+                            :
+                            <td key={colIdx}>{row[column]}</td>
                     })}
                 </tr>
             })}

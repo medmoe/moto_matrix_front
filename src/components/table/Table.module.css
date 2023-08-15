@@ -1,5 +1,5 @@
 .table {
-
+    overflow-x: auto;
 }
 .thead {
     align-items: normal;
