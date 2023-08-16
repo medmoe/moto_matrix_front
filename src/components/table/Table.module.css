@@ -1,5 +1,7 @@
 .table {
     overflow-x: auto;
+    border: none;
+    border-collapse: collapse;
 }
 .thead {
     align-items: normal;
@@ -27,5 +29,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
 
+.table tbody tr:hover {
+    background-color: #eeeeff;
+    cursor: pointer;
 }

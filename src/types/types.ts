@@ -88,6 +88,13 @@ export enum AutoPartCategory {
     Accessories = "ACCESSORIES",
 }
 
+export enum ResponseStatusCodes {
+    Unauthorized = 401,
+    Forbidden = 403,
+    BadRequest= 400,
+    NotFound = 404
+}
+
 
 
 
@@ -111,3 +118,5 @@ export const DASHBOARD_PAGES: Record<DashboardPageKeys, string> = {
     UPDATE_ACCOUNT: 'UPDATE_ACCOUNT',
     ADD_PRODUCT: 'ADD_PRODUCT',
 }
+
+export const PRODUCT_LIST_PAGE_SIZE: number = 8;

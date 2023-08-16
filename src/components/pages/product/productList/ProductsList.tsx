@@ -10,9 +10,16 @@ import MaterialIcon from 'material-icons-react';
 import {reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
 import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {API, AutoPartDetail, DASHBOARD_PAGES} from "../../../../types/types";
+import {
+    API,
+    AutoPartDetail,
+    DASHBOARD_PAGES,
+    PRODUCT_LIST_PAGE_SIZE,
+    ResponseStatusCodes
+} from "../../../../types/types";
 import axios from "axios";
 import {Spinner} from "../../../spinner/Spinner";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
 interface StatusOrder {
     [key: string]: number,
@@ -33,6 +40,7 @@ export function ProductsList() {
         nextPage: `${API}components/auto-parts/`,
         previousPage: null
     }
+    const navigate: NavigateFunction = useNavigate();
     const dispatch = useAppDispatch()
     const statusOrder: StatusOrder = {"New": 1, "Used": 2, "Refurbished": 3}
     const columns = [
@@ -56,29 +64,62 @@ export function ProductsList() {
     const [productStatusActiveIndex, setProductStatusActiveIndex] = useState(0);
     const [autoPartsList, setAutoPartsList] = useState<AutoPartsResponse>(autoPartsResponseInitialState)
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [activePage, setActivePage] = useState<number>(1) // first page is active by default
+    const {autoParts, autoPartCount, nextPage, previousPage} = autoPartsList
+    const numberOfPages = Math.ceil(autoPartCount / PRODUCT_LIST_PAGE_SIZE)
+
+    const fetchAutoParts = async (url: string | null) => {
+        if (!url) return;
+        await axios.get(url, {withCredentials: true})
+            .then((res) => {
+                setAutoPartsList({
+                    autoParts: res.data.results,
+                    autoPartCount: res.data.count,
+                    nextPage: res.data.next,
+                    previousPage: res.data.previous
+                })
+                setIsLoading(false);
+                setActivePage(deriveActivePage(res.data.next, res.data.previous));
+            })
+            .catch((err) => {
+                if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
+                    navigate('/');
+                }else{
+                    console.error(err);
+                    setIsLoading(false);
+                }
+            })
+    }
+
+    const activatePage = (event: React.MouseEvent<HTMLDivElement>, pageNumber: number) => {
+        const url: string | null = `${API}components/auto-parts/?pageSize=${PRODUCT_LIST_PAGE_SIZE}&page=${pageNumber}`;
+        void fetchAutoParts(url);
+    }
 
     useEffect(() => {
-        // get the list of products
-        const getProductsList = async () => {
-            const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true};
-            await axios.get(`${API}components/auto-parts/`, options)
-                .then((res) => {
-                    setAutoPartsList({
-                        autoParts: res.data.results,
-                        autoPartCount: res.data.count,
-                        nextPage: res.data.next,
-                        previousPage: res.data.previous
-                    })
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    setIsLoading(false);
-                })
-        }
-        getProductsList();
+        void fetchAutoParts(`${API}components/auto-parts/?pageSize=${PRODUCT_LIST_PAGE_SIZE}`);
     }, [])
-    const length: number = autoPartsList.autoParts.length ? autoPartsList.autoParts.length : autoPartsList.autoPartCount ? autoPartsList.autoPartCount : 1; // prevent 0 division
+
+    const goToNextPage = () => {
+        void fetchAutoParts(nextPage);
+    };
+
+    const goToPreviousPage = () => {
+        void fetchAutoParts(previousPage);
+    }
+
+    const extractPageNumber = (url: string | null): number => {
+        if (!url) return 1;
+        const match: RegExpMatchArray | null = url.match(/page=(\d+)/);
+        if (!match) return 1;
+        return parseInt(match[1], 10)
+    }
+
+    const deriveActivePage = (next: string | null, previous: string | null): number => {
+        if (!previous) return 1;
+        if (next) return extractPageNumber(next) - 1;
+        return extractPageNumber(previous) + 1
+    }
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -99,7 +140,7 @@ export function ProductsList() {
                                                               setProductStatusActiveIndex(index)
                                                               setAutoPartsList({
                                                                       ...autoPartsList,
-                                                                      autoParts: reorderWithPriority(autoPartsList.autoParts, "status", productStatus[index])
+                                                                      autoParts: reorderWithPriority(autoParts, "condition", productStatus[index])
                                                                   }
                                                               )
                                                           }}/>
@@ -117,16 +158,20 @@ export function ProductsList() {
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
-                            <Table data={autoPartsList.autoParts}
+                            <Table data={autoParts}
                                    columns={columns}/>
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>
-                                <p>Showing 1 to 100 entries</p>
+                                <p>Showing 1 to {autoPartCount}</p>
                             </div>
                             <div>
                                 <Pagination
-                                    numberOfPages={Math.floor(autoPartsList.autoPartCount / length)}/>
+                                    numberOfPages={numberOfPages}
+                                    getPage={activatePage}
+                                    activePage={activePage}
+                                    goToNextPage={goToNextPage}
+                                    goToPreviousPage={goToPreviousPage}/>
                             </div>
                         </div>
                     </div>
