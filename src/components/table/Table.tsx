@@ -1,40 +1,42 @@
 import React from "react";
 import styles from "./Table.module.css";
-import {TableRow} from "../../types/types";
-import {capitalize} from "../../utils/functools";
+import {AutoPartDetail, TableRow} from "../../types/types";
 import MaterialIcon from 'material-icons-react';
+import {getUniqueKey} from "../../utils/functools";
 
 
 interface TableProps {
     data: TableRow,
-    columns: string[],
+    tableColumnsMapping: Record<string, string>,
 }
 
-export function Table({data, columns}: TableProps) {
+function renderCellContent(key: string, value: string | null | undefined, defaultImage: JSX.Element) {
+    if (key === 'image') {
+        return value && true && value.startsWith('http') ?
+            <img src={value} alt={'auto part'} width={35} height={35}/> : defaultImage;
+    }
+    return value
+}
+
+export function Table({data, tableColumnsMapping}: TableProps) {
+    const defaultImage: JSX.Element = <MaterialIcon icon={'image'} size={35} color={"#d9d9d9"}/>
+
     return (
         <table className={styles.table}>
             <thead>
             <tr>
-                {columns.map((column, index) => {
-                    return <th key={index}>{capitalize(column)}</th>;
+                {Object.keys(tableColumnsMapping).map((key, idx) => {
+                    return <th key={getUniqueKey()}>{key}</th>
                 })}
             </tr>
             </thead>
             <tbody>
             {data.map((row: any, index) => {
-                return <tr key={index}>
-                    {columns.map((column, colIdx) => {
-                        const key= row[column] as string;
-                        return column === 'image' ?
-                            <td key={colIdx}>
-                                {
-                                    row[column] && row[column].startsWith("http") ?
-                                        <img src={row[column]} alt={"Auto part"} width={35} height={35}/> :
-                                        <MaterialIcon icon={"inventory_2"} size={34} color={"#d9d9d9"}/>
-                                }
-                            </td>
-                            :
-                            <td key={colIdx}>{row[column]}</td>
+                return <tr key={getUniqueKey()}>
+                    {Object.keys(tableColumnsMapping).map((key: string, i: number) => {
+                        return <td key={getUniqueKey()}>
+                            {renderCellContent(tableColumnsMapping[key], row[tableColumnsMapping[key]], defaultImage)}
+                        </td>
                     })}
                 </tr>
             })}

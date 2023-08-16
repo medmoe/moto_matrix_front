@@ -9,13 +9,14 @@ import {ProductStatus} from "../productStatus/ProductStatus";
 import MaterialIcon from 'material-icons-react';
 import {reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
-import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
+import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice"
 import {
     API,
     AutoPartDetail,
     DASHBOARD_PAGES,
     PRODUCT_LIST_PAGE_SIZE,
-    ResponseStatusCodes
+    ResponseStatusCodes,
+    inventoryTableColumnsMapping,
 } from "../../../../types/types";
 import axios from "axios";
 import {Spinner} from "../../../spinner/Spinner";
@@ -43,24 +44,7 @@ export function ProductsList() {
     const navigate: NavigateFunction = useNavigate();
     const dispatch = useAppDispatch()
     const statusOrder: StatusOrder = {"New": 1, "Used": 2, "Refurbished": 3}
-    const columns = [
-        "image",
-        "name",
-        "manufacturer",
-        "price",
-        "stock",
-        "weight",
-        "dimensions",
-        "location",
-        "category",
-        "make",
-        "model",
-        "year",
-        "condition",
-        "OEM",
-        "UPC",
-        "description"
-    ]
+
     const [productStatusActiveIndex, setProductStatusActiveIndex] = useState(0);
     const [autoPartsList, setAutoPartsList] = useState<AutoPartsResponse>(autoPartsResponseInitialState)
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -83,6 +67,7 @@ export function ProductsList() {
             })
             .catch((err) => {
                 if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
+                    dispatch(updateActiveIndex(0))
                     navigate('/');
                 }else{
                     console.error(err);
@@ -158,8 +143,7 @@ export function ProductsList() {
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
-                            <Table data={autoParts}
-                                   columns={columns}/>
+                            <Table data={autoParts} tableColumnsMapping={inventoryTableColumnsMapping}/>
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>

@@ -26,9 +26,8 @@ const initialState: DashboardState = {
         location: "",
         category: AutoPartCategory.Engine,
         condition: Condition.New,
-        OPC_number: "",
-        OEM_number: "",
-
+        oem_number: "",
+        upc_number: "",
     },
     activeIndex: 0,
     pageName: 'dashboardPage',

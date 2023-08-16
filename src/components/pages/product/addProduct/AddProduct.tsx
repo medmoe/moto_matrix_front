@@ -9,13 +9,22 @@ import {Divider} from "../../../divider/Divider";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {selectAutoPartDetail, updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
-import {API, AutoPartCategory, Condition, AutoPartDetail, DASHBOARD_PAGES} from "../../../../types/types";
-import axios, {all} from "axios";
+import {
+    API,
+    AutoPartCategory,
+    AutoPartDetail,
+    Condition,
+    DASHBOARD_PAGES,
+    ResponseStatusCodes
+} from "../../../../types/types";
+import axios from "axios";
 import {Spinner} from "../../../spinner/Spinner";
 import {Select} from "../../../select/Select";
 import {Alert} from "../../../alert/Alert";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
 export function AddProduct() {
+    const navigate:NavigateFunction = useNavigate();
     const dispatch = useAppDispatch();
     const autoPartDetails = useAppSelector(selectAutoPartDetail);
     const userData = useAppSelector(selectUserData);
@@ -39,7 +48,7 @@ export function AddProduct() {
     const submitForm = async (event: FormEvent) => {
         event.preventDefault()
         // Validate data before submission
-        if (!isValidYear(autoPartFormData.vehicle_year)){
+        if (!isValidYear(autoPartFormData.vehicle_year)) {
             setErrorMessage("Please enter a valid vehicle year");
             return
         }
@@ -62,7 +71,11 @@ export function AddProduct() {
                 dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
             })
             .catch((err) => {
-                console.log(err)
+                if(err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
+                    navigate("/");
+                } else {
+                    console.error(err);
+                }
             })
 
     }
@@ -109,11 +122,16 @@ export function AddProduct() {
                 setIsNotUploaded(true);
                 setIsUploading(false);
                 setIsUploaded(false);
+                if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
+                    navigate("/");
+                }else{
+                    console.error(err);
+                }
             })
     }
     return (
         <div>
-            {errorMessage? <Alert message={errorMessage} onClose={() => setErrorMessage("")} />: null}
+            {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
             <div className={styles.container}>
                 <div className={styles.upperBarContainer}>
                     <UpperBar components={[<SearchField/>]}
@@ -207,7 +225,10 @@ export function AddProduct() {
                                 <div className={styles.row}>
                                     <div className={styles.col}>
                                         <label htmlFor={"description"}>Description</label>
-                                        <textarea placeholder={"Enter a description"}/>
+                                        <textarea placeholder={"Enter a description"}
+                                                  name={"description"}
+                                                  value={autoPartFormData.description}
+                                                  onChange={handleChange}/>
                                     </div>
                                     <div className={styles.numberFields}>
                                         <div className={styles.col}>
@@ -302,31 +323,31 @@ export function AddProduct() {
                                         />
                                     </div>
                                     <div className={styles.col}>
-                                        <label htmlFor={"OEM"}>OEM Number</label>
+                                        <label htmlFor={"oem_number"}>OEM Number</label>
                                         <InputField border={"1px solid #9e9d9d"}
                                                     handleChange={handleChange}
                                                     width={"195px"}
                                                     height={"30px"}
-                                                    id={"OEM Number"}
+                                                    id={"oem_number"}
                                                     type={"text"}
                                                     placeholder={"Enter OEM number"}
                                                     backgroundColor={"#fff"}
-                                                    name={"OEM Number"}
-                                                    value={autoPartFormData.OEM_number}
+                                                    name={"oem_number"}
+                                                    value={autoPartFormData.oem_number}
                                         />
                                     </div>
                                     <div className={styles.col}>
-                                        <label htmlFor={"UPC"}>UPC Number</label>
+                                        <label htmlFor={"upc_number"}>UPC Number</label>
                                         <InputField border={"1px solid #9e9d9d"}
                                                     handleChange={handleChange}
                                                     width={"195px"}
                                                     height={"30px"}
-                                                    id={"UPC"}
+                                                    id={"upc_number"}
                                                     type={"text"}
                                                     placeholder={"Enter UPC number"}
                                                     backgroundColor={"#fff"}
-                                                    name={"UPC"}
-                                                    value={autoPartFormData.OPC_number}
+                                                    name={"upc_number"}
+                                                    value={autoPartFormData.upc_number}
                                         />
                                     </div>
                                 </div>

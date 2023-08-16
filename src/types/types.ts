@@ -27,8 +27,8 @@ export interface AutoPartDetail {
     vehicle_model: string,
     vehicle_year: string,
     condition: string,
-    OEM_number: string,
-    OPC_number: string
+    oem_number: string,
+    upc_number: string
 }
 
 export interface RecentOrder {
@@ -37,6 +37,7 @@ export interface RecentOrder {
     date: string,
     status: 'Paid' | 'Pending' | 'Canceled',
 }
+
 export interface User {
     id?: number,
     username?: string,
@@ -91,25 +92,49 @@ export enum AutoPartCategory {
 export enum ResponseStatusCodes {
     Unauthorized = 401,
     Forbidden = 403,
-    BadRequest= 400,
+    BadRequest = 400,
     NotFound = 404
 }
 
+export const inventoryTableColumnsMapping: Record<string, string> = {
+    'Image': 'image',
+    'Name': 'name',
+    'Manufacturer': 'manufacturer',
+    'Price': 'price',
+    'Stock': 'stock',
+    'Weight': 'weight',
+    'Dimensions': 'dimensions',
+    'Location': 'location',
+    'Category': 'category',
+    'Vehicle Make': 'vehicle_make',
+    'Vehicle Model': 'vehicle_model',
+    'Vehicle Year': 'vehicle_year',
+    'Condition': 'condition',
+    'OEM Number': 'oem_number',
+    'UPC Number': 'upc_number',
+    'Description': 'description'
+}
 
+export const recentOrdersTableMapping: Record<string, string> = {
+    'Name': 'name',
+    'Quantity': 'quantity',
+    'Date': 'date',
+    'Status': 'status',
+}
 
 
 // constants
 export const API = "http://localhost:8000/";
-export const STATUS_COLORS: {[key: string]: string} = {
+export const STATUS_COLORS: { [key: string]: string } = {
     "Paid": "#4ECB71",
     "Pending": "#F9d100",
     "Canceled": "#FF0000",
-    "New" : "#4Ecb71",
+    "New": "#4Ecb71",
     "Used": "#f9d100",
     "Refurbished": "#FF0000",
 }
 
-export const BAR_COLORS: string[] = ["#F94144", "#F3722C","#F8961E", "#F9C74F", "#90BE6D"]
+export const BAR_COLORS: string[] = ["#F94144", "#F3722C", "#F8961E", "#F9C74F", "#90BE6D"]
 
 export const DASHBOARD_PAGES: Record<DashboardPageKeys, string> = {
     DASHBOARD: 'DASHBOARD',

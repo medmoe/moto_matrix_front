@@ -27,3 +27,7 @@ export function reorderWithPriority<T, U>(list: T[], property: string, value: U)
     }
     return [...hasPropertyValue, ...hasNoPropertyValue]
 }
+
+export function getUniqueKey(): string {
+    return `${new Date().toISOString()}-${Math.random()}`
+}
