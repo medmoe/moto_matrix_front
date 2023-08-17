@@ -2,28 +2,52 @@ import React from "react";
 import {Page} from "./page/Page";
 import MaterialIcon from "material-icons-react";
 import styles from './Pagination.module.css';
+import {PAGES_TO_DISPLAY} from "../../constants";
 
 interface PaginationProps {
     numberOfPages: number;
     getPage: (event: React.MouseEvent<HTMLDivElement>, pageNumber: number) => void;
+    count: number;
     activePage: number;
     goToNextPage: () => void;
     goToPreviousPage: () => void;
 }
 
-export function Pagination({numberOfPages, getPage, activePage, goToPreviousPage, goToNextPage}: PaginationProps) {
+export function Pagination({
+                               numberOfPages,
+                               getPage,
+                               activePage,
+                               goToPreviousPage,
+                               goToNextPage,
+                               count
+                           }: PaginationProps) {
+    const generatePages = (numberOfPages: number): JSX.Element[] => {
+        const startingIndex = activePage > PAGES_TO_DISPLAY ? activePage - PAGES_TO_DISPLAY : 1
+        return Array.from({length: numberOfPages === PAGES_TO_DISPLAY ? numberOfPages + 1 : numberOfPages}, (_, idx) => {
+            const pageNumber = startingIndex + idx;
+            return <Page pageNumber={pageNumber} isActive={activePage === pageNumber} getPage={getPage}
+                         key={pageNumber}/>
+        })
+    }
+    console.log(count)
+    console.log(activePage)
     return (
         <div className={styles.container}>
-            <div className={styles.icons} onClick={goToPreviousPage}>
-                <MaterialIcon icon="arrow_left" color="#007bff" size={35}/>
+            <div className={styles.iconButtonContainer}>
+                <button className={styles.icons} onClick={goToPreviousPage} aria-label="Go to previous page"
+                        style={{cursor: activePage === 1 ? "not-allowed" : "pointer"}}>
+                    <MaterialIcon icon="arrow_left" color="#007bff" size={35}/>
+                </button>
             </div>
-            {new Array(numberOfPages).fill(0).map((page, index) => {
-                return <Page pageNumber={index + 1} isActive={index + 1 === activePage} key={index} getPage={getPage}/>
-            })}
-            <div className={styles.icons} onClick={goToNextPage}>
-                <MaterialIcon icon="arrow_right" color="#007bff" size={35}/>
 
-            </div>
+            {generatePages(Math.min(numberOfPages, PAGES_TO_DISPLAY))}
+
+            <button className={styles.icons}
+                    onClick={goToNextPage}
+                    aria-label="Go to next page"
+                    style={{cursor: activePage === count ? "not-allowed" : "pointer"}}>
+                <MaterialIcon icon="arrow_right" color="#007bff" size={35}/>
+            </button>
         </div>
     )
 }

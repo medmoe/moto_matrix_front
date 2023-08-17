@@ -1,5 +1,7 @@
 
 // constants
+import {number} from "prop-types";
+
 export const API = "http://localhost:8000/";
 export const STATUS_COLORS: { [key: string]: string } = {
     "Paid": "#4ECB71",
@@ -14,3 +16,4 @@ export const BAR_COLORS: string[] = ["#F94144", "#F3722C", "#F8961E", "#F9C74F",
 
 
 export const PRODUCT_LIST_PAGE_SIZE: number = 1;
+export const PAGES_TO_DISPLAY: number = 7;

@@ -10,7 +10,7 @@ import MaterialIcon from 'material-icons-react';
 import {getUniqueKey, reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice"
-import {AutoPartDetail, inventoryTableColumnsMapping, Condition} from "../../../../types/productTypes";
+import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../types/productTypes";
 import {API, PRODUCT_LIST_PAGE_SIZE} from "../../../../constants";
 import {ResponseStatusCodes} from "../../../../types/generalTypes";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
@@ -40,8 +40,7 @@ export function ProductsList() {
     const [autoPartsList, setAutoPartsList] = useState<AutoPartsResponse>(autoPartsResponseInitialState)
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [activePage, setActivePage] = useState<number>(1) // first page is active by default
-    const {autoParts, autoPartCount, nextPage, previousPage} = autoPartsList
-    const numberOfPages = Math.ceil(autoPartCount / PRODUCT_LIST_PAGE_SIZE)
+    const numberOfPages = Math.ceil(autoPartsList.autoPartCount / PRODUCT_LIST_PAGE_SIZE)
 
     const fetchAutoParts = async (url: string | null) => {
         if (!url) return;
@@ -77,11 +76,11 @@ export function ProductsList() {
     }, [])
 
     const goToNextPage = () => {
-        void fetchAutoParts(nextPage);
+        void fetchAutoParts(autoPartsList.nextPage);
     };
 
     const goToPreviousPage = () => {
-        void fetchAutoParts(previousPage);
+        void fetchAutoParts(autoPartsList.previousPage);
     }
 
     const extractPageNumber = (url: string | null): number => {
@@ -117,7 +116,7 @@ export function ProductsList() {
                                                               setProductStatusActiveIndex(index)
                                                               setAutoPartsList({
                                                                       ...autoPartsList,
-                                                                      autoParts: reorderWithPriority(autoParts, "condition", productStatus[index].toUpperCase())
+                                                                      autoParts: reorderWithPriority(autoPartsList.autoParts, "condition", productStatus[index].toUpperCase())
                                                                   }
                                                               )
                                                           }}/>
@@ -135,11 +134,12 @@ export function ProductsList() {
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
-                            <Table<AutoPartDetail> data={autoParts} tableColumnsMapping={inventoryTableColumnsMapping}/>
+                            <Table<AutoPartDetail> data={autoPartsList.autoParts}
+                                                   tableColumnsMapping={inventoryTableColumnsMapping}/>
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>
-                                <p>Showing 1 to {autoPartCount}</p>
+                                <p>Showing 1 to {autoPartsList.autoPartCount}</p>
                             </div>
                             <div>
                                 <Pagination
@@ -147,7 +147,9 @@ export function ProductsList() {
                                     getPage={activatePage}
                                     activePage={activePage}
                                     goToNextPage={goToNextPage}
-                                    goToPreviousPage={goToPreviousPage}/>
+                                    goToPreviousPage={goToPreviousPage}
+                                    count={autoPartsList.autoPartCount}
+                                />
                             </div>
                         </div>
                     </div>

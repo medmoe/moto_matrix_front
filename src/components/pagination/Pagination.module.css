@@ -6,5 +6,20 @@
 }
 
 .icons {
-    cursor: pointer;
+    border: 1px solid #007Bff;
+    border-radius: 5px;
+    width: 52px;
+    height: 37px;
+    background-color: #FFFFFF;
+
+}
+
+.iconButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icons:hover {
+    filter: brightness(90%);
 }
