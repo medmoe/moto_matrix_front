@@ -7,7 +7,6 @@ import {PAGES_TO_DISPLAY} from "../../constants";
 interface PaginationProps {
     numberOfPages: number;
     getPage: (event: React.MouseEvent<HTMLDivElement>, pageNumber: number) => void;
-    count: number;
     activePage: number;
     goToNextPage: () => void;
     goToPreviousPage: () => void;
@@ -19,7 +18,6 @@ export function Pagination({
                                activePage,
                                goToPreviousPage,
                                goToNextPage,
-                               count
                            }: PaginationProps) {
     const generatePages = (numberOfPages: number): JSX.Element[] => {
         const startingIndex = activePage > PAGES_TO_DISPLAY ? activePage - PAGES_TO_DISPLAY : 1
@@ -29,7 +27,6 @@ export function Pagination({
                          key={pageNumber}/>
         })
     }
-    console.log(count)
     console.log(activePage)
     return (
         <div className={styles.container}>
@@ -45,7 +42,7 @@ export function Pagination({
             <button className={styles.icons}
                     onClick={goToNextPage}
                     aria-label="Go to next page"
-                    style={{cursor: activePage === count ? "not-allowed" : "pointer"}}>
+                    style={{cursor: activePage === numberOfPages ? "not-allowed" : "pointer"}}>
                 <MaterialIcon icon="arrow_right" color="#007bff" size={35}/>
             </button>
         </div>

@@ -148,7 +148,6 @@ export function ProductsList() {
                                     activePage={activePage}
                                     goToNextPage={goToNextPage}
                                     goToPreviousPage={goToPreviousPage}
-                                    count={autoPartsList.autoPartCount}
                                 />
                             </div>
                         </div>

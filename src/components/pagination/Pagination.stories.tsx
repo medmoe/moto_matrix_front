@@ -16,7 +16,6 @@ type Story = StoryObj<typeof meta>;
 
 export const PaginationBar: Story =  {
     args: {
-        count: 45,
         numberOfPages: 10,
         activePage: 1,
     }
