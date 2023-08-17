@@ -13,4 +13,4 @@ export const STATUS_COLORS: { [key: string]: string } = {
 export const BAR_COLORS: string[] = ["#F94144", "#F3722C", "#F8961E", "#F9C74F", "#90BE6D"]
 
 
-export const PRODUCT_LIST_PAGE_SIZE: number = 8;
+export const PRODUCT_LIST_PAGE_SIZE: number = 1;

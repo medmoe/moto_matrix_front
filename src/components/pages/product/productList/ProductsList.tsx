@@ -7,10 +7,10 @@ import {UpperBar} from "../../../upperBar/UpperBar";
 import {Pagination} from "../../../pagination/Pagination";
 import {ProductStatus} from "../productStatus/ProductStatus";
 import MaterialIcon from 'material-icons-react';
-import {reorderWithPriority} from "../../../../utils/functools";
+import {getUniqueKey, reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice"
-import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../types/productTyps";
+import {AutoPartDetail, inventoryTableColumnsMapping, Condition} from "../../../../types/productTypes";
 import {API, PRODUCT_LIST_PAGE_SIZE} from "../../../../constants";
 import {ResponseStatusCodes} from "../../../../types/generalTypes";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
@@ -111,12 +111,13 @@ export function ProductsList() {
                             <div className={styles.productStatus}>
                                 {productStatus.map((status, index) => {
                                     return <ProductStatus title={status}
-                                                          isActive={index === productStatusActiveIndex} key={index}
+                                                          isActive={index === productStatusActiveIndex}
+                                                          key={getUniqueKey()}
                                                           handleClick={() => {
                                                               setProductStatusActiveIndex(index)
                                                               setAutoPartsList({
                                                                       ...autoPartsList,
-                                                                      autoParts: reorderWithPriority(autoParts, "condition", productStatus[index])
+                                                                      autoParts: reorderWithPriority(autoParts, "condition", productStatus[index].toUpperCase())
                                                                   }
                                                               )
                                                           }}/>

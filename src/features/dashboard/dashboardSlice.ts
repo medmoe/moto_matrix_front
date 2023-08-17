@@ -1,7 +1,7 @@
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import type {RootState} from "../../store";
-import {AutoPartCategory, AutoPartDetail, Condition} from "../../types/productTyps";
+import {AutoPartCategory, AutoPartDetail, Condition} from "../../types/productTypes";
 
 // define a type for the slice state
 export interface DashboardState {

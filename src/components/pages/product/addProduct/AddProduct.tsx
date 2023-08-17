@@ -8,7 +8,7 @@ import MaterialIcon from 'material-icons-react';
 import {Divider} from "../../../divider/Divider";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {selectAutoPartDetail, updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {AutoPartCategory, AutoPartDetail, Condition} from "../../../../types/productTyps";
+import {AutoPartCategory, AutoPartDetail, Condition} from "../../../../types/productTypes";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 import {API} from "../../../../constants";
 import {ResponseStatusCodes} from "../../../../types/generalTypes";
