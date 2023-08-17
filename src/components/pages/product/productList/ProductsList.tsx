@@ -10,21 +10,13 @@ import MaterialIcon from 'material-icons-react';
 import {reorderWithPriority} from "../../../../utils/functools";
 import {useAppDispatch} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice"
-import {
-    API,
-    AutoPartDetail,
-    DASHBOARD_PAGES,
-    PRODUCT_LIST_PAGE_SIZE,
-    ResponseStatusCodes,
-    inventoryTableColumnsMapping,
-} from "../../../../types/types";
+import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../types/productTyps";
+import {API, PRODUCT_LIST_PAGE_SIZE} from "../../../../constants";
+import {ResponseStatusCodes} from "../../../../types/generalTypes";
+import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 import axios from "axios";
 import {Spinner} from "../../../spinner/Spinner";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-
-interface StatusOrder {
-    [key: string]: number,
-}
 
 interface AutoPartsResponse {
     autoParts: AutoPartDetail[];
@@ -43,7 +35,6 @@ export function ProductsList() {
     }
     const navigate: NavigateFunction = useNavigate();
     const dispatch = useAppDispatch()
-    const statusOrder: StatusOrder = {"New": 1, "Used": 2, "Refurbished": 3}
 
     const [productStatusActiveIndex, setProductStatusActiveIndex] = useState(0);
     const [autoPartsList, setAutoPartsList] = useState<AutoPartsResponse>(autoPartsResponseInitialState)
@@ -69,7 +60,7 @@ export function ProductsList() {
                 if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
                     dispatch(updateActiveIndex(0))
                     navigate('/');
-                }else{
+                } else {
                     console.error(err);
                     setIsLoading(false);
                 }
@@ -143,7 +134,7 @@ export function ProductsList() {
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
-                            <Table data={autoParts} tableColumnsMapping={inventoryTableColumnsMapping}/>
+                            <Table<AutoPartDetail> data={autoParts} tableColumnsMapping={inventoryTableColumnsMapping}/>
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>

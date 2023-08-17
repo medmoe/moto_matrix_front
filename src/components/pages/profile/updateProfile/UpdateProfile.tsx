@@ -8,18 +8,19 @@ import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {API, DASHBOARD_PAGES, UserProfile} from "../../../../types/types";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
 import {useNavigate} from "react-router-dom";
 import {Alert} from "../../../alert/Alert";
 import axios from "axios";
+import {UserProfile} from "../../../../types/userTypes";
+import {API} from "../../../../constants";
+import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 
 export function UpdateProfile() {
     const userData = useAppSelector(selectUserData);
     let initState: UserProfile = userData
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const UNAUTHORIZED: number = 401;
@@ -89,7 +90,6 @@ export function UpdateProfile() {
         const target = event.target as HTMLInputElement
         const files = target.files as FileList
         const file = files[0] as File
-        setSelectedFile(file);
         const formData = new FormData();
         formData.append('profile_pic', file);
         await axios.put(`${API}accounts/files/${userData.user.username}/`, formData, {

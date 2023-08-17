@@ -10,7 +10,8 @@ import {GraphDescriptors} from "../../graphDescriptors/GraphDescriptors";
 import {DonutChart} from "../../donutChart/DonutChart";
 import {Table} from "../../table/Table";
 import {zip} from "../../../utils/functools";
-import {BAR_COLORS, TableRow, recentOrdersTableMapping} from "../../../types/types";
+import {BAR_COLORS} from "../../../constants";
+import {RecentOrder, recentOrdersTableMapping} from "../../../types/orderTypes";
 import {INVENTORY_LEVELS_DATA, POPULAR_PRODUCTS, DASHBOARD_CARDS_DATA, RECENT_ORDERS} from "../../../utils/mockData";
 
 export function Dashboard() {
@@ -108,7 +109,7 @@ export function Dashboard() {
                                 <p>Recent Orders</p>
                             </div>
                             <div className={styles.recentOrdersDetails}>
-                                <Table data={RECENT_ORDERS} tableColumnsMapping={recentOrdersTableMapping}/>
+                                <Table <RecentOrder> data={RECENT_ORDERS} tableColumnsMapping={recentOrdersTableMapping}/>
                             </div>
                         </div>
                     </div>

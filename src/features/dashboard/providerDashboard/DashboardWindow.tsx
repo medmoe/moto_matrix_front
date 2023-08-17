@@ -1,7 +1,8 @@
 import React, {JSX} from "react";
 import axios from "axios";
-import {API, DASHBOARD_PAGES} from '../../../types/types';
 import styles from './Dashboard.module.css';
+import {DASHBOARD_PAGES} from "../../../types/dashboardTypes";
+import {API} from "../../../constants";
 import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
@@ -13,7 +14,7 @@ export function DashboardWindow() {
     const userData = useAppSelector(selectUserData);
     const pageName = useAppSelector(selectPageName);
     const dispatch = useAppDispatch();
-    const {DASHBOARD, INVENTORY, ACCOUNT, UPDATE_ACCOUNT, ADD_PRODUCT} = DASHBOARD_PAGES
+    const {DASHBOARD, ...restOfPages} = DASHBOARD_PAGES
     const pages: { [key: string]: JSX.Element } = {
         'DASHBOARD': <Dashboard/>,
         'INVENTORY': <ProductsList/>,

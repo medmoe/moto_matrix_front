@@ -1,8 +1,8 @@
 import {Outlet, Navigate} from "react-router-dom";
 import { useState, useEffect} from "react";
 import axios from "axios";
-import {API} from "../../types/types";
 import {Spinner} from "../../components";
+import {API} from "../../constants";
 
 export function PrivateRoutes ()  {
     const [isLoading, setIsLoading] = useState(true);

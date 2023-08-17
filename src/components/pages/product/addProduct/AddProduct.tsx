@@ -8,15 +8,10 @@ import MaterialIcon from 'material-icons-react';
 import {Divider} from "../../../divider/Divider";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {selectAutoPartDetail, updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {selectUserData} from "../../../../features/user/userSlice";
-import {
-    API,
-    AutoPartCategory,
-    AutoPartDetail,
-    Condition,
-    DASHBOARD_PAGES,
-    ResponseStatusCodes
-} from "../../../../types/types";
+import {AutoPartCategory, AutoPartDetail, Condition} from "../../../../types/productTyps";
+import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
+import {API} from "../../../../constants";
+import {ResponseStatusCodes} from "../../../../types/generalTypes";
 import axios from "axios";
 import {Spinner} from "../../../spinner/Spinner";
 import {Select} from "../../../select/Select";
@@ -24,11 +19,9 @@ import {Alert} from "../../../alert/Alert";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
 export function AddProduct() {
-    const navigate:NavigateFunction = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
     const dispatch = useAppDispatch();
     const autoPartDetails = useAppSelector(selectAutoPartDetail);
-    const userData = useAppSelector(selectUserData);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploaded, setIsUploaded] = useState<boolean>(false);
     const [isUploading, setIsUploading] = useState<boolean>(false);
     const [isNotUploaded, setIsNotUploaded] = useState<boolean>(false)
@@ -71,7 +64,7 @@ export function AddProduct() {
                 dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
             })
             .catch((err) => {
-                if(err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
+                if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
                     navigate("/");
                 } else {
                     console.error(err);
@@ -104,7 +97,6 @@ export function AddProduct() {
         const target: HTMLInputElement = event.target as HTMLInputElement
         const files: FileList = target.files as FileList
         const file: File = files[0] as File
-        setSelectedFile(file);
         const formData = new FormData();
         formData.append('file', file);
         await axios.post(`${API}components/auto-parts/upload-image/`, formData, {
@@ -113,7 +105,7 @@ export function AddProduct() {
             },
             withCredentials: true
         })
-            .then((res) => {
+            .then(() => {
                 setIsUploaded(true);
                 setIsUploading(false);
                 setIsNotUploaded(false)
@@ -124,7 +116,7 @@ export function AddProduct() {
                 setIsUploaded(false);
                 if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
                     navigate("/");
-                }else{
+                } else {
                     console.error(err);
                 }
             })

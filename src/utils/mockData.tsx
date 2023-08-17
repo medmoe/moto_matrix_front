@@ -1,5 +1,5 @@
-import {Product, TableRow} from "../types/types";
-
+import {TableRows} from "../types/generalTypes";
+import {RecentOrder} from "../types/orderTypes";
 
 export const DASHBOARD_CARDS_DATA = [
     ["2.696", "Items in Stock"],
@@ -12,7 +12,7 @@ export const POPULAR_PRODUCTS = [
     [27, "Crankshaft"], [20, "Piston"], [36, "Camshaft"], [10, "Spark Plug"], [25, "Oil Pump"]
 ]
 
-export const RECENT_ORDERS: TableRow = [
+export const RECENT_ORDERS: TableRows<RecentOrder> = [
     {name: "Mohammed abdelghafour bekhouche ", quantity: 100, date: "2023-07-30", status: "Paid"},
     {name: "Noah David", quantity: 50, date: "2023-07-29", status: "Paid"},
     {name: "Joe Shmoe", quantity: 0, date: "2023-07-28", status: "Pending"},
@@ -63,101 +63,3 @@ export const INVENTORY_LEVELS_DATA = [
         amt: 2100,
     },
 ];
-export const PRODUCTS_LIST: Product[] = [
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'New',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'Used',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'New',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'New',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'New',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'Refurbished',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'Used',
-    },
-    {
-        id: 1,
-        image: <img src='https://picsum.photos/35/' alt="product image"/>,
-        name: 'Water Pump',
-        stock: 'In Stock',
-        make: 'Toyota',
-        model: 'Corolla',
-        supplier: 'XYZ Auto Parts',
-        total: 100,
-        date: '07-24-2023',
-        status: 'New',
-    }
-]

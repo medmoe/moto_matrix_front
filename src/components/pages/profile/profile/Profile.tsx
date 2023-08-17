@@ -9,7 +9,7 @@ import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
-import {DASHBOARD_PAGES} from "../../../../types/types";
+import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 
 interface ProfileProps {
     firstName?: string,

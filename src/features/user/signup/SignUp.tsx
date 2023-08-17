@@ -1,11 +1,12 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import axios from 'axios';
-import {Banner, Signup, Alert, Spinner} from "../../../components";
+import {Alert, Banner, Signup, Spinner} from "../../../components";
 import styles from './SignUp.module.css'
-import {API, UserProfile} from "../../../types/types";
-import {useNavigate, Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {updateUserData} from "../userSlice";
+import {API} from "../../../constants";
+import {UserProfile} from "../../../types/userTypes";
 
 export function SignUp() {
     let initState: UserProfile = {
@@ -81,7 +82,6 @@ export function SignUp() {
         }
 
 
-
         /* Sending the form */
         const options = {
             headers: {
@@ -111,11 +111,11 @@ export function SignUp() {
         return <Spinner height={"120px"} width={"120px"}/>
     }
     return (
-        isAuthenticated? <Navigate to="/dashboard" />:
-        <div className={styles.container}>
-            {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")} />: null}
-            <Banner/>
-            <Signup handleChange={handleChange} handleSubmit={handleSubmit}/>
-        </div>
+        isAuthenticated ? <Navigate to="/dashboard"/> :
+            <div className={styles.container}>
+                {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
+                <Banner/>
+                <Signup handleChange={handleChange} handleSubmit={handleSubmit}/>
+            </div>
     )
 }

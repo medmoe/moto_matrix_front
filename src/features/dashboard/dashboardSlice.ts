@@ -1,8 +1,7 @@
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import type {RootState} from "../../store";
-import {AutoPartDetail} from "../../types/types";
-import {Condition, AutoPartCategory} from "../../types/types";
+import {AutoPartCategory, AutoPartDetail, Condition} from "../../types/productTyps";
 
 // define a type for the slice state
 export interface DashboardState {
@@ -13,12 +12,12 @@ export interface DashboardState {
 
 const initialState: DashboardState = {
     autoPartDetail: {
-        name:"",
-        stock:0,
-        price:0,
-        weight:0,
-        vehicle_model:"",
-        vehicle_year:"1990",
+        name: "",
+        stock: 0,
+        price: 0,
+        weight: 0,
+        vehicle_model: "",
+        vehicle_year: "1990",
         vehicle_make: "",
         dimensions: "",
         description: "",

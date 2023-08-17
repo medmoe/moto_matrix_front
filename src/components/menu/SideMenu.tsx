@@ -10,7 +10,7 @@ import {
 } from "../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../features/user/userSlice";
 import {ProfileImage} from "../profileImage/ProfileImage";
-import {DASHBOARD_PAGES} from "../../types/types";
+import {DASHBOARD_PAGES} from "../../types/dashboardTypes";
 
 interface SideMenuProps {
     handleDashboard: () => void;
