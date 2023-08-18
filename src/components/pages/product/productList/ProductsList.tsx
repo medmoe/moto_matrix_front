@@ -99,7 +99,7 @@ export function ProductsList() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <UpperBar title="Products List"
-                          subtitle="100 products found"
+                          subtitle={`${autoPartsList.autoPartCount} products found`}
                           left="635px"
                           components={[<SearchField/>]}/>
             </div>
@@ -139,7 +139,7 @@ export function ProductsList() {
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>
-                                <p>Showing 1 to {autoPartsList.autoPartCount}</p>
+                                <p>Showing 1 to {PRODUCT_LIST_PAGE_SIZE}</p>
                             </div>
                             <div>
                                 <Pagination
