@@ -27,7 +27,6 @@ export function Pagination({
                          key={pageNumber}/>
         })
     }
-    console.log(activePage)
     return (
         <div className={styles.container}>
             <div className={styles.iconButtonContainer}>

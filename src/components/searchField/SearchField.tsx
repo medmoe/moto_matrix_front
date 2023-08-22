@@ -1,10 +1,15 @@
-import React from "react";
+import React, {FormEvent} from "react";
 import MaterialIcon from 'material-icons-react'
 import {InputField} from "../inputField/InputField";
 
 import styles from './SearchField.module.css';
 
-export function SearchField() {
+interface SearchFieldProps {
+    handleChangeOnSearchField: (event: FormEvent) => void
+    handleKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void
+}
+
+export function SearchField({handleChangeOnSearchField, handleKeyPress}: SearchFieldProps) {
     return (
         <div className={styles.container}>
             <div className={styles.icon}>
@@ -12,7 +17,7 @@ export function SearchField() {
             </div>
             <div className={styles.searchBar}>
                 <InputField border="none"
-                            handleChange={() => console.log("changed")}
+                            handleChange={handleChangeOnSearchField}
                             placeholder="Search"
                             width="336px"
                             height="40px"
@@ -21,6 +26,7 @@ export function SearchField() {
                             name="searchBar"
                             id="searchBar"
                             backgroundColor="#eee"
+                            handleKeyPress={handleKeyPress}
                 />
             </div>
         </div>

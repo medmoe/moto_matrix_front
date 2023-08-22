@@ -126,7 +126,7 @@ export function AddProduct() {
             {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
             <div className={styles.container}>
                 <div className={styles.upperBarContainer}>
-                    <UpperBar components={[<SearchField/>]}
+                    <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")}/>]}
                               left="635px"
                               title="Add Product"
                               subtitle="new product form"

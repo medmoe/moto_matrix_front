@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import styles from './ProductsList.module.css';
 import {SearchField} from "../../../searchField/SearchField";
 import {Button} from "../../../button/Button";
@@ -40,11 +40,14 @@ export function ProductsList() {
     const [autoPartsList, setAutoPartsList] = useState<AutoPartsResponse>(autoPartsResponseInitialState)
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [activePage, setActivePage] = useState<number>(1) // first page is active by default
+    const [searchText, setSearchText] = useState<string>("");
     const numberOfPages = Math.ceil(autoPartsList.autoPartCount / PRODUCT_LIST_PAGE_SIZE)
+    const startingItem: number = PRODUCT_LIST_PAGE_SIZE * (activePage - 1) + 1;
+    const endingItem: number = Math.min(PRODUCT_LIST_PAGE_SIZE * activePage, autoPartsList.autoPartCount);
 
-    const fetchAutoParts = async (url: string | null) => {
+    const fetchAutoParts = async (url: string | null, params: {[key:string]: string}={}) => {
         if (!url) return;
-        await axios.get(url, {withCredentials: true})
+        await axios.get(url,{withCredentials: true, params: params})
             .then((res) => {
                 setAutoPartsList({
                     autoParts: res.data.results,
@@ -95,13 +98,24 @@ export function ProductsList() {
         if (next) return extractPageNumber(next) - 1;
         return extractPageNumber(previous) + 1
     }
+
+    const handleChangeOnSearchField = (event: FormEvent) => {
+        const target = event.target as HTMLInputElement
+        setSearchText(target.value)
+    }
+
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            void fetchAutoParts(`${API}components/search/?pageSize=${PRODUCT_LIST_PAGE_SIZE}`, {'search': searchText})
+        }
+    }
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <UpperBar title="Products List"
                           subtitle={`${autoPartsList.autoPartCount} products found`}
                           left="635px"
-                          components={[<SearchField/>]}/>
+                          components={[<SearchField handleChangeOnSearchField={handleChangeOnSearchField} handleKeyPress={handleKeyPress}/>]}/>
             </div>
             <div className={styles.body}>
                 {isLoading ? <Spinner width={"140px"} height={"140px"}/> :
@@ -139,7 +153,7 @@ export function ProductsList() {
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>
-                                <p>Showing 1 to {PRODUCT_LIST_PAGE_SIZE}</p>
+                                <p>Showing {startingItem} to {endingItem}</p>
                             </div>
                             <div>
                                 <Pagination

@@ -13,6 +13,7 @@ interface InputFieldProps {
     backgroundColor?: string,
     value?: string,
     handleChange: (event: FormEvent) => void,
+    handleKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void,
 }
 
 export function InputField({
@@ -26,7 +27,8 @@ export function InputField({
                                name,
                                handleChange,
                                backgroundColor,
-                               type = "text"
+                               type = "text",
+                               handleKeyPress
                            }: InputFieldProps) {
     return (
         <input type={type}
@@ -43,6 +45,7 @@ export function InputField({
                name={name}
                value={value}
                onChange={handleChange}
+               onKeyDown={handleKeyPress}
                required/>
     )
 }
