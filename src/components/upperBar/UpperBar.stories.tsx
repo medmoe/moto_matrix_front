@@ -19,14 +19,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Dashboard: Story = {
     args: {
-        components: [<SearchField/>],
+        components: [<SearchField handleChangeOnSearchField={() => console.log("search")}/>],
         left: "635px",
     },
 }
 
 export const Orders: Story = {
     args: {
-        components: [<SearchField/>],
+        components: [<SearchField handleChangeOnSearchField={() => console.log("search")}/>],
         left: "635px",
         title: "Orders",
         subtitle: "15 orders found",

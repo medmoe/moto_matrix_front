@@ -7,8 +7,9 @@ import {Button} from "../../../button/Button";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
+import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../../../features/user/userSlice";
+import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 
 interface ProfileProps {
     firstName?: string,
@@ -20,7 +21,6 @@ interface ProfileProps {
     country?: string,
     email?: string,
     bio?: string,
-    img?: string
 }
 
 export function Profile({
@@ -33,7 +33,6 @@ export function Profile({
                             country,
                             email,
                             bio,
-                            img
                         }: ProfileProps) {
     const dispatch = useAppDispatch()
     const userData = useAppSelector(selectUserData);
@@ -47,7 +46,7 @@ export function Profile({
                                                textColor="#fff"
                                                border="none"
                                                handleClick={() => {
-                                                   dispatch(updateActiveIndex(7))
+                                                   dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))
                                                }}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
                 />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>

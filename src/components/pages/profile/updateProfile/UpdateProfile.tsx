@@ -7,34 +7,24 @@ import {ProfileImage} from "../../../profileImage/ProfileImage";
 import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex} from "../../../../features/dashboard/dashboardSlice";
-import {API, UserProfile} from "../../../../types/types";
+import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
-import {ErrorBox} from "../../../errorbox/ErrorBox";
 import {useNavigate} from "react-router-dom";
+import {Alert} from "../../../alert/Alert";
 import axios from "axios";
+import {UserProfile} from "../../../../types/userTypes";
+import {API} from "../../../../constants";
+import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 
 export function UpdateProfile() {
     const userData = useAppSelector(selectUserData);
-    let initState: UserProfile = {
-        user: {
-            first_name: userData.first_name,
-            last_name: userData.last_name,
-            id: userData.id,
-            username: userData.username,
-            email: userData.email
-        },
-        phone: userData.phone,
-        address: userData.address,
-        city: userData.city,
-        country: userData.country,
-        description: userData.description,
-    }
+    let initState: UserProfile = userData
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const UNAUTHORIZED: number = 401;
+    const EMAIL_REGEX: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const handleChange = (event: FormEvent) => {
         event.preventDefault();
         const target = event.target as HTMLInputElement
@@ -60,6 +50,11 @@ export function UpdateProfile() {
         const password = profileData.user.password as string;
         const email = profileData.user.email;
         const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true};
+        const {user: {password2, ...restOfUserInfo}, profile_pic, ...restOfDataToSend} = profileData;
+        const newDataToSend = {
+            ...restOfDataToSend,
+            user: restOfUserInfo
+        }
         if (password && 1 <= password.length && password.length < 8) {
             setErrorMessage("Password must be at least 8 characters long");
             return;
@@ -68,18 +63,21 @@ export function UpdateProfile() {
             setErrorMessage("Password didn't match!");
             return;
         }
-        if (email && !(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(profileData.user.email as string))) {
+        if (email && !(EMAIL_REGEX.test(profileData.user.email as string))) {
             setErrorMessage("Enter a valid email address")
             return
         }
-        delete profileData.user.password2;
-        await axios.put(`${API}accounts/${userData.id}/`, JSON.stringify(profileData), options)
+        if (!profileData.user.username) {
+            setErrorMessage("Username cannot be blank");
+            return
+        }
+        await axios.put(`${API}accounts/${userData.user.username}/`, JSON.stringify(newDataToSend), options)
             .then((res) => {
-                dispatch(updateActiveIndex(6));
+                dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                 dispatch(updateUserData({...res.data, ...res.data.user}))
             })
             .catch((err) => {
-                if (err.response.status === 401) {
+                if (err.response.status === UNAUTHORIZED) {
                     navigate("/");
                     dispatch(updateActiveIndex(0));
                 } else {
@@ -88,14 +86,13 @@ export function UpdateProfile() {
             })
     }
 
-    const fileSelectedHandler = (event: FormEvent) => {
+    const fileSelectedHandler = async (event: FormEvent) => {
         const target = event.target as HTMLInputElement
         const files = target.files as FileList
         const file = files[0] as File
-        setSelectedFile(file);
         const formData = new FormData();
         formData.append('profile_pic', file);
-        axios.put(`${API}accounts/files/${userData.id}/`, formData, {
+        await axios.put(`${API}accounts/files/${userData.user.username}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -105,7 +102,11 @@ export function UpdateProfile() {
                 dispatch(updateUserData({...userData, profile_pic: res.data.file}))
             })
             .catch((err) => {
-                setErrorMessage(err.data['detail']);
+                if (err.data && err.data.detail) {
+                    setErrorMessage(err.data.detail);
+                } else {
+                    console.log(err);
+                }
             })
     }
 
@@ -125,7 +126,7 @@ export function UpdateProfile() {
                                               border="1px solid #007BFF"
                                               backgroundColor="#FFF"
                                               handleClick={() => {
-                                                  dispatch(updateActiveIndex(6))
+                                                  dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                                               }}
                                               textColor="#007BFF"/>,
                                       <Button label="Submit"
@@ -143,7 +144,8 @@ export function UpdateProfile() {
                     <div className={`${styles.largeCardContainer} ${styles.text}`}>
                         <div className={styles.header}>
                             <div className={styles.errorBoxContainer}>
-                                {errorMessage ? <ErrorBox message={errorMessage}/> : null}
+                                {errorMessage ?
+                                    <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
                             </div>
                             <div className={styles.profileImageContainer}>
                                 <div className={styles.uploadContainer}>

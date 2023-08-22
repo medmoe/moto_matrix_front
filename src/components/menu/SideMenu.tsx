@@ -2,12 +2,15 @@ import React, {useState} from "react";
 import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
-import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../hooks";
-import {selectActiveIndex, updateActiveIndex} from "../../features/dashboard/dashboardSlice";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {
+    selectActiveIndex,
+    updateActiveIndex,
+    updatePageName
+} from "../../features/dashboard/dashboardSlice";
 import {selectUserData} from "../../features/user/userSlice";
-import {useAppSelector} from "../../hooks";
 import {ProfileImage} from "../profileImage/ProfileImage";
+import {DASHBOARD_PAGES} from "../../types/dashboardTypes";
 
 interface SideMenuProps {
     handleDashboard: () => void;
@@ -27,15 +30,14 @@ export function SideMenu({
                              handleNotifications
                          }: SideMenuProps) {
     const menuItems: [string, string, () => void][] = [
-        ["dashboard", "Dashboard", handleDashboard],
+        ["dashboard", DASHBOARD_PAGES.DASHBOARD, handleDashboard],
         ["list_alt", "Orders", handleOrders],
-        ["inventory_2", "Inventory", handleInventory],
+        ["inventory_2", DASHBOARD_PAGES.INVENTORY, handleInventory],
         ["analytics", "Analytics", handleAnalytics],
         ["notifications", "Notifications", handleNotifications],
         ["logout", "Logout", handleLogout],
     ]
     const [isAccountActive, setAccountActive] = useState(false);
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const activeIndex = useAppSelector(selectActiveIndex);
     const userData = useAppSelector(selectUserData);
@@ -45,7 +47,8 @@ export function SideMenu({
         setAccountActive(false);
     }
     const handleAccountClick = () => {
-        dispatch(updateActiveIndex(6))
+        dispatch(updateActiveIndex(6)) // 6 because the length of the menuItems is 5 and the account is the 6th.
+        dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT))
         setAccountActive(true);
     }
     return (
@@ -58,10 +61,11 @@ export function SideMenu({
                     return <MenuItem
                         key={index}
                         icon={icon}
-                        title={title}
+                        title={title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}
                         backgroundColor={index === activeIndex ? "#877B04" : "#706500"}
                         handleClick={() => {
                             handleItemClick(index);
+                            dispatch(updatePageName(title));
                             action();
                         }}
                     />
@@ -72,7 +76,7 @@ export function SideMenu({
                  style={{backgroundColor: isAccountActive ? "#877b04" : "#706500"}}
             >
                 <div>
-                    <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"} alt="Profile picture"
+                    <ProfileImage src={userData.profile_pic? userData.profile_pic : "#"} alt="Profile image"
                                   width="50px" height="50px"/>
                 </div>
                 <div style={{color: "#fff"}}>

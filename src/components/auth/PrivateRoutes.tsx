@@ -1,8 +1,8 @@
 import {Outlet, Navigate} from "react-router-dom";
 import { useState, useEffect} from "react";
 import axios from "axios";
-import {API} from "../../types/types";
 import {Spinner} from "../../components";
+import {API} from "../../constants";
 
 export function PrivateRoutes ()  {
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +26,7 @@ export function PrivateRoutes ()  {
     }, [])
     if (isLoading) {
         // you could return a loading spinner here
-        return <Spinner />;
+        return <Spinner width={"120px"} height={"120px"}/>;
     }
     return (
         isAuthenticated ? <Outlet /> : <Navigate to="/" />

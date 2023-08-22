@@ -10,84 +10,21 @@ import {GraphDescriptors} from "../../graphDescriptors/GraphDescriptors";
 import {DonutChart} from "../../donutChart/DonutChart";
 import {Table} from "../../table/Table";
 import {zip} from "../../../utils/functools";
-import {BAR_COLORS} from "../../../types/types";
+import {BAR_COLORS} from "../../../constants";
+import {RecentOrder, recentOrdersTableMapping} from "../../../types/orderTypes";
+import {INVENTORY_LEVELS_DATA, POPULAR_PRODUCTS, DASHBOARD_CARDS_DATA, RECENT_ORDERS} from "../../../utils/mockData";
 
 export function Dashboard() {
-    const data = [
-        {
-            name: 'Page A',
-            uv: 4000,
-            pv: 2400,
-            amt: 2400,
-        },
-        {
-            name: 'Page B',
-            uv: 3000,
-            pv: 1398,
-            amt: 2210,
-        },
-        {
-            name: 'Page C',
-            uv: 2000,
-            pv: 9800,
-            amt: 2290,
-        },
-        {
-            name: 'Page D',
-            uv: 2780,
-            pv: 3908,
-            amt: 2000,
-        },
-        {
-            name: 'Page E',
-            uv: 1890,
-            pv: 4800,
-            amt: 2181,
-        },
-        {
-            name: 'Page F',
-            uv: 2390,
-            pv: 3800,
-            amt: 2500,
-        },
-        {
-            name: 'Page G',
-            uv: 3490,
-            pv: 4300,
-            amt: 2100,
-        },
-    ];
 
-    const mockData: [string, string][] = [
-        ["2.696", "Items in Stock"],
-        ["$2.65M", "Inventory Turnover"],
-        ["62", "Orders This Week"],
-        ["505", "Total Orders"],
-    ]
-    let popularProducts: [number, string][] = [
-        [27, "Crankshaft"], [20, "Piston"], [36, "Camshaft"], [10, "Spark Plug"], [25, "Oil Pump"]
-    ]
-    const recentOrders = {
-        "data": [
-            {Name: "Mohammed abdelghafour bekhouche ", Quantity: 100, Date: "2023-07-30", Status: "Paid"},
-            {Name: "Noah David", Quantity: 50, Date: "2023-07-29", Status: "Paid"},
-            {Name: "Joe Shmoe", Quantity: 0, Date: "2023-07-28", Status: "Pending"},
-            {Name: "Joe Doe", Quantity: 200, Date: "2023-07-27", Status: "Canceled"},
-            {Name: "Xiang Li", Quantity: 30, Date: "2023-07-26", Status: "Paid"},
-        ],
-        "columns": [
-            "Name", "Quantity", "Date", "Status"
-        ]
-    }
-    const ret = zip(popularProducts, BAR_COLORS);
+    const ret = zip(POPULAR_PRODUCTS, BAR_COLORS);
     return (
         <div className={styles.container}>
             <div className={styles.upperBarContainer}>
-                <UpperBar components={[<SearchField/>]} left="635px"/>
+                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")}/>]} left="635px"/>
             </div>
             <div className={styles.body}>
                 <div className={styles.cardsContainer}>
-                    {mockData.map(([amount, description], index) => {
+                    {DASHBOARD_CARDS_DATA.map(([amount, description], index) => {
                         return <Card key={index}
                                      amount={amount}
                                      description={description}
@@ -108,7 +45,7 @@ export function Dashboard() {
                                 <AreaChart
                                     width={430}
                                     height={120}
-                                    data={data}
+                                    data={INVENTORY_LEVELS_DATA}
                                     margin={{
                                         top: 10,
                                         right: 30,
@@ -151,7 +88,7 @@ export function Dashboard() {
                                         return (
                                             <div key={index}
                                                  className={styles.bar}
-                                                 style={{height: 4 * amount, backgroundColor: color}}>
+                                                 style={{height: amount, backgroundColor: color}}>
                                             </div>
                                         )
                                     })}
@@ -160,7 +97,7 @@ export function Dashboard() {
                                     {ret.map(([[amount, name], color], index) => {
                                         return (
                                             <div key={index} style={{height: "20px"}}>
-                                                <GraphDescriptors description={name} color={color}/>
+                                                <GraphDescriptors description={name as string} color={color}/>
                                             </div>
                                         )
                                     })}
@@ -172,7 +109,7 @@ export function Dashboard() {
                                 <p>Recent Orders</p>
                             </div>
                             <div className={styles.recentOrdersDetails}>
-                                <Table data={recentOrders["data"]} columns={recentOrders["columns"]}/>
+                                <Table <RecentOrder> data={RECENT_ORDERS} tableColumnsMapping={recentOrdersTableMapping}/>
                             </div>
                         </div>
                     </div>

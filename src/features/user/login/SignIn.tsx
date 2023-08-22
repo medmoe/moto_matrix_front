@@ -1,11 +1,14 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import {Banner, ErrorBox, Login, Spinner} from "../../../components";
+import {Alert, Banner, Login, Spinner} from "../../../components";
 import styles from './SignIn.module.css';
 import axios from "axios";
-import {API, User} from "../../../types/types";
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {updateUserData} from "../userSlice";
+import {updatePageName} from "../../dashboard/dashboardSlice";
+import {DASHBOARD_PAGES} from "../../../types/dashboardTypes";
+import {API} from "../../../constants";
+import {User} from "../../../types/userTypes";
 
 export function SignIn() {
     let initState: User = {
@@ -26,11 +29,11 @@ export function SignIn() {
     }
     useEffect(() => {
         axios.get(`${API}accounts/check-auth/`, options)
-            .then((res) => {
+            .then(() => {
                 setIsAuthenticated(true);
                 setIsLoading(false);
             })
-            .catch((err) => {
+            .catch(() => {
                 setIsLoading(false);
             })
     }, [])
@@ -54,21 +57,22 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                dispatch(updateUserData(res.data.user));
+                dispatch(updateUserData(res.data));
+                dispatch(updatePageName(DASHBOARD_PAGES.DASHBOARD));
             })
             .catch((err) => {
-                err.response? setErrorMessage(err.response.data.detail): setErrorMessage(err.message);
+                err.response ? setErrorMessage(err.response.data.detail) : setErrorMessage(err.message);
             })
     }
     if (isLoading) {
         return (
-            <Spinner/>
+            <Spinner height={"120px"} width={"120px"}/>
         )
     }
     return (
         isAuthenticated ? <Navigate to="/dashboard"/> :
             <div className={styles.container}>
-                {errorMessage ? <ErrorBox message={errorMessage}/> : null}
+                {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
                 <Banner/>
                 <Login handleChange={handleChange} handleSubmit={handleSubmit}/>
             </div>

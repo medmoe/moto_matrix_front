@@ -1,34 +1,36 @@
 import React, {JSX} from "react";
 import axios from "axios";
-import {API} from '../../types/types';
 import styles from './Dashboard.module.css';
-import {Dashboard, Profile, SideMenu, UpdateProfile} from "../../components";
+import {DASHBOARD_PAGES} from "../../../types/dashboardTypes";
+import {API} from "../../../constants";
+import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
 import {useNavigate} from "react-router-dom";
-import {useAppSelector} from "../../hooks";
-import {selectActiveIndex} from "./dashboardSlice";
-import {selectUserData} from "../user/userSlice";
-import {useAppDispatch} from "../../hooks";
-import {updateActiveIndex} from "./dashboardSlice";
+import {useAppDispatch, useAppSelector} from "../../../hooks";
+import {selectPageName, updateActiveIndex, updatePageName} from '../dashboardSlice'
+import {selectUserData} from "../../user/userSlice";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
-    const activeIndex = useAppSelector(selectActiveIndex);
-    const user = useAppSelector(selectUserData);
+    const userData = useAppSelector(selectUserData);
+    const pageName = useAppSelector(selectPageName);
     const dispatch = useAppDispatch();
-    // the pages list should be always sorted as the items appear in the sidebar menu.
-    const pages: JSX.Element[] = [<Dashboard/>, <div></div>, <div></div>, <div></div>, <div></div>, <div></div>,
-        <Profile firstName={user.first_name}
-                 lastName={user.last_name}
-                 rating={user.rating}
-                 phone={user.phone}
-                 address={user.address}
-                 city={user.city}
-                 country={user.country}
-                 email={user.email}
-                 bio={user.description}
-                 img="https://picsum.photos/200"/>,
-    <UpdateProfile />
-    ];
+    const {DASHBOARD, ...restOfPages} = DASHBOARD_PAGES
+    const pages: { [key: string]: JSX.Element } = {
+        'DASHBOARD': <Dashboard/>,
+        'INVENTORY': <ProductsList/>,
+        'ACCOUNT': <Profile firstName={userData.user.first_name}
+                            lastName={userData.user.last_name}
+                            rating={userData.rating}
+                            phone={userData.phone}
+                            address={userData.address}
+                            city={userData.city}
+                            country={userData.country}
+                            email={userData.user.email}
+                            bio={userData.description}
+        />,
+        'UPDATE_ACCOUNT': <UpdateProfile/>,
+        'ADD_PRODUCT': <AddProduct/>
+    }
     const handleLogout = async () => {
         const options = {
             headers: {
@@ -40,6 +42,7 @@ export function DashboardWindow() {
             .then((res) => {
                 navigate("/");
                 dispatch(updateActiveIndex(0));
+                dispatch(updatePageName(DASHBOARD));
             })
             .catch((err) => {
                 if (err.response.status === 401) {
@@ -50,19 +53,20 @@ export function DashboardWindow() {
             })
     }
     const handleDashboard = () => {
-        console.log("dashboard");
+        // console.log("dashboard");
     }
     const handleInventory = () => {
-        console.log("inventory");
+        // console.log("inventory");
     }
+
     const handleOrders = () => {
-        console.log("orders");
+        // console.log("orders");
     }
     const handleAnalytics = () => {
-        console.log("analytics");
+        // console.log("analytics");
     }
     const handleNotifications = () => {
-        console.log("notifications");
+        // console.log("notifications");
     }
     return (
         <div className={styles.container}>
@@ -75,7 +79,7 @@ export function DashboardWindow() {
                           handleNotifications={handleNotifications}/>
             </div>
             <div className={styles.dashboard}>
-                {pages[activeIndex]}
+                {pages[pageName]}
             </div>
         </div>
     );
