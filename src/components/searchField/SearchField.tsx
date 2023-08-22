@@ -5,7 +5,7 @@ import {InputField} from "../inputField/InputField";
 import styles from './SearchField.module.css';
 
 interface SearchFieldProps {
-    handleChangeOnSearchField: (event: FormEvent) => void
+    handleChangeOnSearchField: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void
 }
 

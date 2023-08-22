@@ -12,7 +12,7 @@ interface InputFieldProps {
     type?: string,
     backgroundColor?: string,
     value?: string,
-    handleChange: (event: FormEvent) => void,
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
     handleKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void,
 }
 

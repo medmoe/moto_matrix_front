@@ -99,9 +99,9 @@ export function ProductsList() {
         return extractPageNumber(previous) + 1
     }
 
-    const handleChangeOnSearchField = (event: FormEvent) => {
-        const target = event.target as HTMLInputElement
-        setSearchText(target.value)
+    const handleChangeOnSearchField = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        setSearchText(event.target.value)
     }
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
