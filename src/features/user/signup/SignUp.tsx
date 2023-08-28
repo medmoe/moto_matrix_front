@@ -4,9 +4,9 @@ import {Alert, Banner, Signup, Spinner} from "../../../components";
 import styles from './SignUp.module.css'
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
-import {updateUserData} from "../userSlice";
+import {updateConsumerProfile, updateProviderProfile} from "../activeUserSlice";
 import {API} from "../../../constants";
-import {UserProfile} from "../../../types/userTypes";
+import {ProfileType, UserProfile} from "../../../types/userTypes";
 
 export function SignUp() {
     let initState: UserProfile = {
@@ -15,10 +15,10 @@ export function SignUp() {
             "password": "",
         },
     }
-    const [userInfo, setUserInfo] = useState(initState);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userInfo, setUserInfo] = useState<UserProfile>(initState);
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const options = {
         headers: {
@@ -53,7 +53,7 @@ export function SignUp() {
         }
         setUserInfo({
             ...userInfo,
-            [target.name]: target.name === "is_provider" ? target.value === "YES" : target.value
+            [target.name]: target.name === "profile_type" ? target.value === ProfileType.Provider : target.value
         })
     }
     const handleSubmit = async (event: FormEvent) => {
@@ -76,24 +76,20 @@ export function SignUp() {
             setErrorMessage("Enter a valid email address")
             return
         }
-        if (!userInfo.is_provider) {
+        if (!userInfo.profile_type) {
             setErrorMessage("Please select either Consumer or Seller!")
             return
         }
 
-
-        /* Sending the form */
-        const options = {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true,
-        };
         delete userInfo.user.password2;
         await axios.post(`${API}accounts/signup/`, JSON.stringify(userInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                dispatch(updateUserData(res.data))
+                if (userInfo.profile_type) {
+                    dispatch(updateProviderProfile(res.data))
+                } else {
+                    dispatch(updateConsumerProfile(res.data))
+                }
             })
             .catch((err) => {
                 if (err.response.data && err.response.data.user && err.response.data.user.email) {

@@ -8,34 +8,44 @@ import {Divider} from "../../../divider/Divider";
 import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {selectUserData} from "../../../../features/user/userSlice";
+import {selectProviderProfile} from "../../../../features/user/activeUserSlice";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 
 interface ProfileProps {
     firstName?: string,
     lastName?: string,
-    rating?: number,
+    email?: string,
+    username?: string,
     phone?: string,
     address?: string,
     city?: string,
     country?: string,
-    email?: string,
-    bio?: string,
+    zipCode?: string,
+    storeDescription?: string,
+    storeName?: string,
+    storeLogo?: string,
+    cashedAverageRating?: number,
+    numberOfSales?: number,
 }
 
 export function Profile({
                             firstName,
                             lastName,
-                            rating,
+                            email,
+                            username,
                             phone,
                             address,
                             city,
                             country,
-                            email,
-                            bio,
+                            zipCode,
+                            storeDescription,
+                            storeName,
+                            storeLogo,
+                            cashedAverageRating,
+                            numberOfSales
                         }: ProfileProps) {
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(selectUserData);
+    const providerProfile = useAppSelector(selectProviderProfile);
     return (
         <div className={styles.container}>
             <div className={styles.upperBar}>
@@ -55,13 +65,15 @@ export function Profile({
                 <div className={styles.card}>
                     <div className={styles.header}>
                         <div className={styles.imageNameContainer}>
-                            <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"} alt="Profile image"
-                                          width="140px" height="140px"/>
+                            <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
+                                          alt="Profile image"
+                                          width="140px"
+                                          height="140px"/>
                             <p>{firstName} {lastName}</p>
                         </div>
                         <div className={styles.ratingContainer}>
-                            <p>{rating}</p>
-                            <Rating rate={rating as number}/>
+                            <p>{cashedAverageRating}</p>
+                            <Rating rate={cashedAverageRating as number}/>
                         </div>
                     </div>
                     <div className={styles.dividerContainer}>
@@ -73,21 +85,28 @@ export function Profile({
                         </div>
                         <div className={styles.row}>
                             <div className={styles.col}>
+                                <p>Name</p>
                                 <p>Phone</p>
                                 <p>Address</p>
                                 <p>City</p>
                                 <p>Country</p>
+                                <p>Zip code</p>
                                 <p>E-mail</p>
-                                <p>Bio</p>
+                                <p>Description</p>
+                                <p>Username</p>
+                                <p>Store Logo</p>
+                                <p>Number of sales</p>
 
                             </div>
                             <div className={styles.col}>
+                                <p>{storeName}</p>
                                 <p>{phone}</p>
                                 <p>{address}</p>
                                 <p>{city}</p>
                                 <p>{country}</p>
+                                <p>{zipCode}</p>
                                 <p>{email}</p>
-                                <p className={styles.bio}>{bio}</p>
+                                <p className={styles.bio}>{storeDescription}</p>
                             </div>
                         </div>
                     </div>

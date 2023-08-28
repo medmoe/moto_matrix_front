@@ -8,17 +8,17 @@ import {Divider} from "../../../divider/Divider";
 import MaterialIcon from "material-icons-react";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {selectUserData, updateUserData} from "../../../../features/user/userSlice";
+import {selectProviderProfile, updateProviderProfile} from "../../../../features/user/activeUserSlice";
 import {useNavigate} from "react-router-dom";
 import {Alert} from "../../../alert/Alert";
 import axios from "axios";
-import {UserProfile} from "../../../../types/userTypes";
+import {Provider} from "../../../../types/userTypes";
 import {API} from "../../../../constants";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 
 export function UpdateProfile() {
-    const userData = useAppSelector(selectUserData);
-    let initState: UserProfile = userData
+    const providerProfile = useAppSelector(selectProviderProfile);
+    let initState: Provider = providerProfile
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
     const dispatch = useAppDispatch();
@@ -32,9 +32,12 @@ export function UpdateProfile() {
         if (properties.includes(target.name)) {
             setProfileData({
                 ...profileData,
-                user: {
-                    ...profileData.user,
-                    [target.name]: target.value
+                userprofile: {
+                    ...profileData.userprofile,
+                    user: {
+                        ...profileData.userprofile.user,
+                        [target.name]: target.value
+                    }
                 }
             })
             return;
@@ -47,10 +50,16 @@ export function UpdateProfile() {
 
     const submitForm = async (event: FormEvent) => {
         event.preventDefault();
-        const password = profileData.user.password as string;
-        const email = profileData.user.email;
+        const password = profileData.userprofile.user.password as string;
+        const email = profileData.userprofile.user.email;
         const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true};
-        const {user: {password2, ...restOfUserInfo}, profile_pic, ...restOfDataToSend} = profileData;
+        const {
+            userprofile: {
+                user: {password2, ...restOfUserInfo},
+                profile_pic, ...restOfUserProfileInfo
+            },
+            ...restOfDataToSend
+        } = profileData;
         const newDataToSend = {
             ...restOfDataToSend,
             user: restOfUserInfo
@@ -59,22 +68,22 @@ export function UpdateProfile() {
             setErrorMessage("Password must be at least 8 characters long");
             return;
         }
-        if (password && password !== profileData.user.password2) {
+        if (password && password !== profileData.userprofile.user.password2) {
             setErrorMessage("Password didn't match!");
             return;
         }
-        if (email && !(EMAIL_REGEX.test(profileData.user.email as string))) {
+        if (email && !(EMAIL_REGEX.test(profileData.userprofile.user.email as string))) {
             setErrorMessage("Enter a valid email address")
             return
         }
-        if (!profileData.user.username) {
+        if (!profileData.userprofile.user.username) {
             setErrorMessage("Username cannot be blank");
             return
         }
-        await axios.put(`${API}accounts/${userData.user.username}/`, JSON.stringify(newDataToSend), options)
+        await axios.put(`${API}accounts/${providerProfile.userprofile.user.username}/`, JSON.stringify(newDataToSend), options)
             .then((res) => {
                 dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
-                dispatch(updateUserData({...res.data, ...res.data.user}))
+                dispatch(updateProviderProfile({...res.data, ...res.data.user}))
             })
             .catch((err) => {
                 if (err.response.status === UNAUTHORIZED) {
@@ -92,14 +101,20 @@ export function UpdateProfile() {
         const file = files[0] as File
         const formData = new FormData();
         formData.append('profile_pic', file);
-        await axios.put(`${API}accounts/files/${userData.user.username}/`, formData, {
+        await axios.put(`${API}accounts/files/${providerProfile.userprofile.user.username}/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
             withCredentials: true
         })
             .then((res) => {
-                dispatch(updateUserData({...userData, profile_pic: res.data.file}))
+                dispatch(updateProviderProfile({
+                    ...providerProfile,
+                    userprofile: {
+                        ...providerProfile.userprofile,
+                        profile_pic: res.data.file
+                    }
+                }))
             })
             .catch((err) => {
                 if (err.data && err.data.detail) {
@@ -149,7 +164,7 @@ export function UpdateProfile() {
                             </div>
                             <div className={styles.profileImageContainer}>
                                 <div className={styles.uploadContainer}>
-                                    <ProfileImage src={userData.profile_pic ? userData.profile_pic : "#"}
+                                    <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
                                                   alt="profile image"
                                                   width="140px" height="140px"/>
                                     <label htmlFor="file-upload" className={styles.customFileUpload}>
@@ -178,7 +193,7 @@ export function UpdateProfile() {
                                                     type="text"
                                                     name="first_name"
                                                     id="firstName"
-                                                    value={profileData.user.first_name}
+                                                    value={profileData.userprofile.user.first_name}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -192,7 +207,7 @@ export function UpdateProfile() {
                                                     type="text"
                                                     name="last_name"
                                                     id="lastName"
-                                                    value={profileData.user.last_name}
+                                                    value={profileData.userprofile.user.last_name}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -221,7 +236,7 @@ export function UpdateProfile() {
                                                     type="text"
                                                     name="username"
                                                     id="username"
-                                                    value={profileData.user.username}
+                                                    value={profileData.userprofile.user.username}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -235,7 +250,7 @@ export function UpdateProfile() {
                                                     type="email"
                                                     name="email"
                                                     id="email"
-                                                    value={profileData.user.email}
+                                                    value={profileData.userprofile.user.email}
                                         />
                                     </div>
                                     <div className={styles.fieldContainer}>
@@ -271,7 +286,7 @@ export function UpdateProfile() {
                                                 type="tel"
                                                 name="phone"
                                                 id="phone"
-                                                value={profileData.phone}
+                                                value={profileData.userprofile.phone}
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
@@ -285,7 +300,7 @@ export function UpdateProfile() {
                                                 type="text"
                                                 name="address"
                                                 id="address"
-                                                value={profileData.address}
+                                                value={profileData.userprofile.address}
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
@@ -299,7 +314,7 @@ export function UpdateProfile() {
                                                 type="text"
                                                 name="city"
                                                 id="city"
-                                                value={profileData.city}
+                                                value={profileData.userprofile.city}
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
@@ -313,7 +328,21 @@ export function UpdateProfile() {
                                                 type="text"
                                                 name="country"
                                                 id="country"
-                                                value={profileData.country}
+                                                value={profileData.userprofile.country}
+                                    />
+                                </div>
+                                <div className={styles.fieldContainer}>
+                                    <label htmlFor="zipcode">Zip code</label>
+                                    <InputField border="1px solid #9e9d9d"
+                                                handleChange={handleChange}
+                                                height="30px"
+                                                width="200px"
+                                                backgroundColor="#fff"
+                                                placeholder="Enter zip code"
+                                                type="text"
+                                                name="zip_code"
+                                                id="zipcode"
+                                                value={profileData.userprofile.zip_code}
                                     />
                                 </div>
                             </div>
@@ -321,7 +350,7 @@ export function UpdateProfile() {
                                 <div className={styles.fieldContainer}>
                                     <label htmlFor="description">Bio</label>
                                     <textarea placeholder="Describe what you do here"
-                                              value={profileData.description}
+                                              value={profileData.store_description}
                                               name="description"
                                               onChange={handleChange}/>
                                 </div>

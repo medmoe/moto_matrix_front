@@ -7,26 +7,32 @@ import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} f
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
 import {selectPageName, updateActiveIndex, updatePageName} from '../dashboardSlice'
-import {selectUserData} from "../../user/userSlice";
+import {selectConsumerProfile, selectProviderProfile} from "../../user/activeUserSlice";
+import {Provider} from "../../../types/userTypes";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
-    const userData = useAppSelector(selectUserData);
+    const providerProfile = useAppSelector(selectProviderProfile) as Provider;
     const pageName = useAppSelector(selectPageName);
     const dispatch = useAppDispatch();
     const {DASHBOARD, ...restOfPages} = DASHBOARD_PAGES
     const pages: { [key: string]: JSX.Element } = {
         'DASHBOARD': <Dashboard/>,
         'INVENTORY': <ProductsList/>,
-        'ACCOUNT': <Profile firstName={userData.user.first_name}
-                            lastName={userData.user.last_name}
-                            rating={userData.rating}
-                            phone={userData.phone}
-                            address={userData.address}
-                            city={userData.city}
-                            country={userData.country}
-                            email={userData.user.email}
-                            bio={userData.description}
+        'ACCOUNT': <Profile firstName={providerProfile.userprofile.user.first_name}
+                            lastName={providerProfile.userprofile.user.last_name}
+                            email={providerProfile.userprofile.user.email}
+                            username={providerProfile.userprofile.user.username}
+                            phone={providerProfile.userprofile.phone}
+                            address={providerProfile.userprofile.address}
+                            city={providerProfile.userprofile.city}
+                            country={providerProfile.userprofile.country}
+                            zipCode={providerProfile.userprofile.zip_code}
+                            storeDescription={providerProfile.store_description}
+                            storeName={providerProfile.store_name}
+                            storeLogo={providerProfile.store_logo}
+                            cashedAverageRating={providerProfile.cached_average_rating}
+                            numberOfSales={providerProfile.number_of_sales}
         />,
         'UPDATE_ACCOUNT': <UpdateProfile/>,
         'ADD_PRODUCT': <AddProduct/>

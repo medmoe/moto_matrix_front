@@ -5,6 +5,7 @@ import {Radio} from "../radio/Radio";
 import {Button} from "../button/Button"
 import styles from './Signup.module.css';
 import {Link} from "react-router-dom";
+import {ProfileType} from "../../types/userTypes";
 
 interface SignupProps {
     handleChange: (event: FormEvent) => void
@@ -105,8 +106,8 @@ export function Signup({handleChange, handleSubmit}: SignupProps) {
                                 handleChange={handleChange}
                     />
                     <div className={styles.radios}>
-                        <Radio id="consumer" name="is_provider" value="NO" handleChange={handleChange}/>
-                        <Radio id="seller" name="is_provider" value="YES" handleChange={handleChange}/>
+                        <Radio id="consumer" name="profile_type" value={ProfileType.Consumer} handleChange={handleChange}/>
+                        <Radio id="seller" name="profile_type" value={ProfileType.Provider} handleChange={handleChange}/>
                     </div>
                 </div>
                 <div className={styles.row}>

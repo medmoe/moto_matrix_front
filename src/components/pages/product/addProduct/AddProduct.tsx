@@ -45,15 +45,15 @@ export function AddProduct() {
             setErrorMessage("Please enter a valid vehicle year");
             return
         }
-        if (isNaN(Number(autoPartFormData.price))) {
+        if (isNaN(Number(autoPartFormData.component.price))) {
             setErrorMessage("Please enter a valid price");
             return
         }
-        if (isNaN(Number(autoPartFormData.stock))) {
+        if (isNaN(Number(autoPartFormData.component.stock))) {
             setErrorMessage("Please enter a valid quantity");
             return
         }
-        if (isNaN(Number(autoPartFormData.weight))) {
+        if (isNaN(Number(autoPartFormData.component.weight))) {
             setErrorMessage("Please enter a valid weight");
             return
         }
@@ -168,7 +168,7 @@ export function AddProduct() {
                                                     placeholder={"Enter product name"}
                                                     backgroundColor={"#fff"}
                                                     name={"name"}
-                                                    value={autoPartFormData.name}
+                                                    value={autoPartFormData.component.name}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -182,7 +182,7 @@ export function AddProduct() {
                                                     placeholder={"Enter manufacturer"}
                                                     backgroundColor={"#fff"}
                                                     name={"manufacturer"}
-                                                    value={autoPartFormData.manufacturer}
+                                                    value={autoPartFormData.component.manufacturer}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -196,7 +196,7 @@ export function AddProduct() {
                                                     placeholder={"Enter location in stock"}
                                                     backgroundColor={"#fff"}
                                                     name={"location"}
-                                                    value={autoPartFormData.location}
+                                                    value={autoPartFormData.component.location}
                                         />
                                     </div>
                                     <div className={styles.col}>
@@ -210,7 +210,7 @@ export function AddProduct() {
                                                     placeholder={"Enter dimensions"}
                                                     backgroundColor={"#fff"}
                                                     name={"dimensions"}
-                                                    value={autoPartFormData.dimensions}
+                                                    value={autoPartFormData.component.dimensions}
                                         />
                                     </div>
                                 </div>
@@ -219,7 +219,7 @@ export function AddProduct() {
                                         <label htmlFor={"description"}>Description</label>
                                         <textarea placeholder={"Enter a description"}
                                                   name={"description"}
-                                                  value={autoPartFormData.description}
+                                                  value={autoPartFormData.component.description}
                                                   onChange={handleChange}/>
                                     </div>
                                     <div className={styles.numberFields}>
@@ -233,7 +233,7 @@ export function AddProduct() {
                                                         type={"text"}
                                                         backgroundColor={"#fff"}
                                                         name={"stock"}
-                                                        value={`${autoPartFormData.stock}`}
+                                                        value={`${autoPartFormData.component.stock}`}
                                             />
                                         </div>
                                         <div className={styles.col}>
@@ -246,7 +246,7 @@ export function AddProduct() {
                                                         type={"text"}
                                                         backgroundColor={"#fff"}
                                                         name={"price"}
-                                                        value={`${autoPartFormData.price}`}
+                                                        value={`${autoPartFormData.component.price}`}
                                             />
                                         </div>
                                         <div className={styles.col}>
@@ -259,7 +259,7 @@ export function AddProduct() {
                                                         type={"text"}
                                                         backgroundColor={"#fff"}
                                                         name={"weight"}
-                                                        value={`${autoPartFormData.weight}`}
+                                                        value={`${autoPartFormData.component.weight}`}
                                             />
                                         </div>
                                     </div>
