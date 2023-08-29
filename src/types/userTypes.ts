@@ -33,7 +33,7 @@ export interface Provider {
 }
 
 export interface Consumer {
-    userprofile?: UserProfile;
+    userprofile: UserProfile;
     wishlist?: AutoPartDetail;
     cart?: AutoPartDetail;
     favorite_providers?: Provider;
