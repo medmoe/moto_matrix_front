@@ -29,13 +29,9 @@ export function AddProduct() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 
-    const conditions: [string, string][] = Object.keys(Condition)
-        .filter(key => isNaN(Number(key))) // filter out numeric keys
-        .map(key => [key, Condition[key as keyof typeof Condition]]);
+    const conditions: [string, string][] = Object.entries(Condition);
 
-    const categories: [string, string][] = Object.keys(AutoPartCategory)
-        .filter(key => isNaN(Number(key))) // filter out numeric keys
-        .map(key => [key, AutoPartCategory[key as keyof typeof AutoPartCategory]]);
+    const categories: [string, string][] = Object.entries(AutoPartCategory);
 
 
     const submitForm = async (event: FormEvent) => {

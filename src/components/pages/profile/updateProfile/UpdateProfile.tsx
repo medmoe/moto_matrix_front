@@ -12,9 +12,10 @@ import {selectProviderProfile, updateProviderProfile} from "../../../../features
 import {useNavigate} from "react-router-dom";
 import {Alert} from "../../../alert/Alert";
 import axios from "axios";
-import {Provider} from "../../../../types/userTypes";
+import {propertyLocations, Provider, ProviderType} from "../../../../types/userTypes";
 import {API} from "../../../../constants";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
+import {Select} from "../../../select/Select";
 
 export function UpdateProfile() {
     const providerProfile = useAppSelector(selectProviderProfile);
@@ -25,71 +26,117 @@ export function UpdateProfile() {
     const navigate = useNavigate();
     const UNAUTHORIZED: number = 401;
     const EMAIL_REGEX: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const providerTypes: [string, string][] = Object.entries(ProviderType)
+
     const handleChange = (event: FormEvent) => {
         event.preventDefault();
         const target = event.target as HTMLInputElement
-        const properties = ['username', 'password', 'password2', 'first_name', 'last_name', 'email'];
-        if (properties.includes(target.name)) {
-            setProfileData({
-                ...profileData,
-                userprofile: {
-                    ...profileData.userprofile,
-                    user: {
-                        ...profileData.userprofile.user,
-                        [target.name]: target.value
+        const location = propertyLocations[target.name]
+        let updatedData = {...profileData};
+        switch (location) {
+            case 'user':
+                updatedData = {
+                    ...profileData,
+                    userprofile: {
+                        ...profileData.userprofile,
+                        user: {
+                            ...profileData.userprofile.user,
+                            [target.name]: target.value
+                        }
                     }
-                }
-            })
-            return;
+                };
+                break
+            case 'userprofile':
+                updatedData = {
+                    ...profileData,
+                    userprofile: {
+                        ...profileData.userprofile,
+                        [target.name]: target.value,
+                    }
+                };
+                break
+            default:
+                updatedData = {
+                    ...profileData,
+                    [target.name]: target.value,
+                };
+                break
         }
-        setProfileData({
-            ...profileData,
-            [target.name]: target.value
-        })
+        setProfileData(updatedData);
     }
+    const isValidPassword = (password: string): boolean =>
+        !(password && 1 <= password.length && password.length < 8);
+
+    const doPasswordsMatch = (password: string, password2: string): boolean =>
+        !(password && password !== password2);
+
+    const isValidEmail = (email: string): boolean =>
+        !(email && !EMAIL_REGEX.test(email));
 
     const submitForm = async (event: FormEvent) => {
         event.preventDefault();
-        const password = profileData.userprofile.user.password as string;
-        const email = profileData.userprofile.user.email;
-        const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true};
+
         const {
             userprofile: {
-                user: {password2, ...restOfUserInfo},
-                profile_pic, ...restOfUserProfileInfo
+                user: {password, password2, email, username, ...restOfUserInfo},
+                profile_pic,
+                ...restOfUserProfileInfo
             },
             ...restOfDataToSend
         } = profileData;
-        const newDataToSend = {
-            ...restOfDataToSend,
-            user: restOfUserInfo
-        }
-        if (password && 1 <= password.length && password.length < 8) {
+
+        if (password && !isValidPassword(password)) {
             setErrorMessage("Password must be at least 8 characters long");
             return;
         }
-        if (password && password !== profileData.userprofile.user.password2) {
+
+        if ((password && !password2) || (!password && password2) || (password && password2 && !doPasswordsMatch(password, password2))) {
             setErrorMessage("Password didn't match!");
             return;
         }
-        if (email && !(EMAIL_REGEX.test(profileData.userprofile.user.email as string))) {
-            setErrorMessage("Enter a valid email address")
-            return
+
+        if (!email || !isValidEmail(email)) {
+            setErrorMessage("Enter a valid email address");
+            return;
         }
-        if (!profileData.userprofile.user.username) {
+
+        if (!username) {
             setErrorMessage("Username cannot be blank");
-            return
+            return;
         }
-        await axios.put(`${API}accounts/${providerProfile.userprofile.user.username}/`, JSON.stringify(newDataToSend), options)
+
+        const newDataToSend = {
+            ...restOfDataToSend,
+            userprofile: {
+                ...restOfUserProfileInfo,
+                user: {
+                    username: username,
+                    email: email,
+                    password: password ? password : undefined,
+                    ...restOfUserInfo
+                }
+            }
+        }
+
+        const options = {
+            headers: {'Content-Type': 'application/json'},
+            withCredentials: true
+        };
+        await axios.put(
+            `${API}accounts/${providerProfile.userprofile.user.username}/`,
+            JSON.stringify(newDataToSend),
+            options
+        )
             .then((res) => {
                 dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
-                dispatch(updateProviderProfile({...res.data, ...res.data.user}))
+                dispatch(updateProviderProfile({...res.data, ...res.data.user}));
             })
             .catch((err) => {
                 if (err.response.status === UNAUTHORIZED) {
                     navigate("/");
                     dispatch(updateActiveIndex(0));
                 } else {
+                    console.log(err);
                     setErrorMessage(err.response.data.detail);
                 }
             })
@@ -129,7 +176,7 @@ export function UpdateProfile() {
         <form>
             <div className={styles.container}>
 
-                <div className={styles.upperBarContainer}>
+                <div>
                     <UpperBar left="795px"
                               title="Update Profile"
                               subtitle="Update Profile to Reflect the New You"
@@ -272,9 +319,12 @@ export function UpdateProfile() {
                         <div className={styles.divider}>
                             <Divider width="943px"/>
                         </div>
+
                         <div className={`${styles.body}`}>
-                            <div className={styles.left}>
-                                <p className={styles.title}>Contact Information</p>
+                            <div className={styles.col}>
+                                <div>
+                                    <p className={styles.title}>Contact Information</p>
+                                </div>
                                 <div className={styles.fieldContainer}>
                                     <label htmlFor="phone">Phone</label>
                                     <InputField border="1px solid #9e9d9d"
@@ -318,18 +368,23 @@ export function UpdateProfile() {
                                     />
                                 </div>
                                 <div className={styles.fieldContainer}>
-                                    <label htmlFor="country">Country</label>
+                                    <label htmlFor="state">State</label>
                                     <InputField border="1px solid #9e9d9d"
                                                 handleChange={handleChange}
                                                 height="30px"
                                                 width="200px"
                                                 backgroundColor="#fff"
-                                                placeholder="Enter country"
+                                                placeholder="Enter state"
                                                 type="text"
-                                                name="country"
-                                                id="country"
-                                                value={profileData.userprofile.country}
+                                                name="state"
+                                                id="state"
+                                                value={profileData.userprofile.state}
                                     />
+                                </div>
+                            </div>
+                            <div className={styles.col}>
+                                <div className={styles.titleHidden}>
+                                    <p className={styles.title}>Contact Information</p>
                                 </div>
                                 <div className={styles.fieldContainer}>
                                     <label htmlFor="zipcode">Zip code</label>
@@ -345,13 +400,51 @@ export function UpdateProfile() {
                                                 value={profileData.userprofile.zip_code}
                                     />
                                 </div>
-                            </div>
-                            <div className={styles.bioContainer}>
                                 <div className={styles.fieldContainer}>
-                                    <label htmlFor="description">Bio</label>
+                                    <label htmlFor="country">Country</label>
+                                    <InputField border="1px solid #9e9d9d"
+                                                handleChange={handleChange}
+                                                height="30px"
+                                                width="200px"
+                                                backgroundColor="#fff"
+                                                placeholder="Enter country"
+                                                type="text"
+                                                name="country"
+                                                id="country"
+                                                value={profileData.userprofile.country}
+                                    />
+                                </div>
+                                <div className={styles.fieldContainer}>
+                                    <label htmlFor="store_name">Business Name</label>
+                                    <InputField border="1px solid #9e9d9d"
+                                                handleChange={handleChange}
+                                                height="30px"
+                                                width="200px"
+                                                backgroundColor="#fff"
+                                                placeholder="Enter name"
+                                                type="text"
+                                                name="store_name"
+                                                id="store_name"
+                                                value={profileData.store_name}
+                                    />
+                                </div>
+                                <div className={styles.fieldContainer}>
+                                    <label htmlFor={"provider_type"}>Select business type</label>
+                                    <Select options={providerTypes}
+                                            handleChange={handleChange}
+                                            currentValue={profileData.provider_type}
+                                            name={"provider_type"}/>
+                                </div>
+                            </div>
+                            <div className={styles.col}>
+                                <div className={styles.titleHidden}>
+                                    <p className={styles.title}>Contact Information</p>
+                                </div>
+                                <div className={styles.fieldContainer}>
+                                    <label htmlFor="store_description">Bio</label>
                                     <textarea placeholder="Describe what you do here"
                                               value={profileData.store_description}
-                                              name="description"
+                                              name="store_description"
                                               onChange={handleChange}/>
                                 </div>
                             </div>
