@@ -5,19 +5,11 @@ interface UpperBarProps {
     title?: string,
     subtitle?: string,
     components?: JSX.Element[],
-    left?:string,
 }
 
-export function UpperBar ({title, subtitle, components, left}: UpperBarProps) {
+export function UpperBar ({title, subtitle, components}: UpperBarProps) {
     return (
         <div className={styles.container}>
-            <div className={styles.right} style={{left: left}}>
-                {components?.map((component, index) => {
-                    return (
-                        <div key={index}>{component}</div>
-                    )
-                })}
-            </div>
             <div className={styles.left}>
                 <div className={styles.title}>
                     <p>{title}</p>
@@ -25,6 +17,13 @@ export function UpperBar ({title, subtitle, components, left}: UpperBarProps) {
                 <div className={styles.subtitle}>
                     <p>{subtitle}</p>
                 </div>
+            </div>
+            <div className={styles.right}>
+                {components?.map((component, index) => {
+                    return (
+                        <div key={index}>{component}</div>
+                    )
+                })}
             </div>
         </div>
     )

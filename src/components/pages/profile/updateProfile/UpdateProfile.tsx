@@ -173,33 +173,33 @@ export function UpdateProfile() {
     }
 
     return (
-        <form>
-            <div className={styles.container}>
+        <div className={styles.container}>
+            <form>
 
                 <div>
-                    <UpperBar left="795px"
-                              title="Update Profile"
-                              subtitle="Update Profile to Reflect the New You"
-                              components={
-                                  [
-                                      <Button label="Cancel"
-                                              width="100px"
-                                              height="40px"
-                                              border="1px solid #007BFF"
-                                              backgroundColor="#FFF"
-                                              handleClick={() => {
-                                                  dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
-                                              }}
-                                              textColor="#007BFF"/>,
-                                      <Button label="Submit"
-                                              width="100px"
-                                              height="40px"
-                                              backgroundColor="#007BFF"
-                                              textColor="#fff"
-                                              handleClick={submitForm}
-                                              border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
-                                  ]
-                              }
+                    <UpperBar
+                        title="Update Profile"
+                        subtitle="Update Profile to Reflect the New You"
+                        components={
+                            [
+                                <Button label="Cancel"
+                                        width="100px"
+                                        height="40px"
+                                        border="1px solid #007BFF"
+                                        backgroundColor="#FFF"
+                                        handleClick={() => {
+                                            dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
+                                        }}
+                                        textColor="#007BFF"/>,
+                                <Button label="Submit"
+                                        width="100px"
+                                        height="40px"
+                                        backgroundColor="#007BFF"
+                                        textColor="#fff"
+                                        handleClick={submitForm}
+                                        border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
+                            ]
+                        }
                     />
                 </div>
                 <div className={styles.lowerContainer}>
@@ -451,9 +451,7 @@ export function UpdateProfile() {
                         </div>
                     </div>
                 </div>
-
-
-            </div>
-        </form>
+            </form>
+        </div>
     )
 }

@@ -20,7 +20,7 @@ export function Dashboard() {
     return (
         <div className={styles.container}>
             <div className={styles.upperBarContainer}>
-                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")}/>]} left="635px"/>
+                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")}/>]}/>
             </div>
             <div className={styles.body}>
                 <div className={styles.cardsContainer}>

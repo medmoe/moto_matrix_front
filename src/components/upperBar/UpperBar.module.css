@@ -1,10 +1,9 @@
 .container {
-    width: 1047px;
-    height: 82px;
+    width: 100%;
     background-color: #fff;
     display: flex;
     align-items: center;
-    position: relative;
+    height: 100%;
 }
 
 .title {
@@ -14,7 +13,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    height: 30px;
+    height: 50%;
 }
 
 .subtitle {
@@ -24,17 +23,22 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    height: 50%;
 }
 
 .right {
     display: flex;
-    gap: 5px;
-    position: absolute;
+    width: 50%;
+    height: 100%;
+    justify-content: right;
+    align-items: center;
+    padding-right: 30px;
 }
 
 .left {
     display: flex;
     flex-direction: column;
-    left: 23px;
-    position: absolute;
+    width: 50%;
+    height: 100%;
+    padding-left: 25px;
 }

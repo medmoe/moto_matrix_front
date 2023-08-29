@@ -114,7 +114,6 @@ export function ProductsList() {
             <div className={styles.header}>
                 <UpperBar title="Products List"
                           subtitle={`${autoPartsList.autoPartCount} products found`}
-                          left="635px"
                           components={[<SearchField handleChangeOnSearchField={handleChangeOnSearchField} handleKeyPress={handleKeyPress}/>]}/>
             </div>
             <div className={styles.body}>

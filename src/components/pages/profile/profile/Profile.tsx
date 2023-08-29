@@ -19,6 +19,7 @@ interface ProfileProps {
     phone?: string,
     address?: string,
     city?: string,
+    state?: string,
     country?: string,
     zipCode?: string,
     storeDescription?: string,
@@ -36,6 +37,7 @@ export function Profile({
                             phone,
                             address,
                             city,
+                            state,
                             country,
                             zipCode,
                             storeDescription,
@@ -46,9 +48,18 @@ export function Profile({
                         }: ProfileProps) {
     const dispatch = useAppDispatch()
     const providerProfile = useAppSelector(selectProviderProfile);
+
+    const formatStoreDescription = (description: string): string[] => {
+        const sentences: string[] = description.split(". ");
+        const paragraphs: string[] = [];
+        for (let i: number = 0; i < sentences.length; i += 2) {
+            paragraphs.push(sentences.slice(i, i + 2).join('. '));
+        }
+        return paragraphs;
+    }
     return (
         <div className={styles.container}>
-            <div className={styles.upperBar}>
+            <div className={styles.upperContainer}>
                 <UpperBar components={[<Button label="Edit"
                                                height="40px"
                                                width="72px"
@@ -59,54 +70,51 @@ export function Profile({
                                                    dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))
                                                }}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
-                />]} left="930px" title="Profile" subtitle="Innovative Trailblazer"/>
+                />]} title="Profile" subtitle="Innovative Trailblazer"/>
             </div>
             <div className={styles.lowerContainer}>
                 <div className={styles.card}>
                     <div className={styles.header}>
-                        <div className={styles.imageNameContainer}>
-                            <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
-                                          alt="Profile image"
-                                          width="140px"
-                                          height="140px"/>
-                            <p>{firstName} {lastName}</p>
+                        <div className={styles.headerLeft}>
+                            <div className={styles.profileImageContainer}>
+                                <div className={styles.imageNameContainer}>
+                                    <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
+                                                  alt="Profile image"
+                                                  width="140px"
+                                                  height="140px"/>
+                                </div>
+                                <div className={styles.ratingContainer}>
+                                    <p>{cashedAverageRating}</p>
+                                    <Rating rate={cashedAverageRating as number}/>
+                                </div>
+                            </div>
+                            <div className={styles.verticalDivider}></div>
                         </div>
-                        <div className={styles.ratingContainer}>
-                            <p>{cashedAverageRating}</p>
-                            <Rating rate={cashedAverageRating as number}/>
+                        <div className={styles.headerRight}>
+                            <div className={styles.row}>
+                                <MaterialIcon icon={"call"} size={35} color={"#ccc"}/>
+                                <p>{phone}</p>
+                            </div>
+                            <div className={styles.row}>
+                                <MaterialIcon icon={"location_on"} size={35} color={"#ccc"}/>
+                                <p>{address}, {city}, {state}, {zipCode}, {country}.</p>
+                            </div>
+                            <div className={styles.row}>
+                                <MaterialIcon icon={"mail"} size={35} color={"#ccc"}/>
+                                <p>{email}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={styles.dividerContainer}>
-                        <Divider width="921px"/>
                     </div>
                     <div className={styles.body}>
+                        <Divider width="90%"/>
                         <div className={styles.title}>
-                            <p>Contact information</p>
+                            <p>{storeName}</p>
                         </div>
-                        <div className={styles.row}>
-                            <div className={styles.col}>
-                                <p>Name</p>
-                                <p>Phone</p>
-                                <p>Address</p>
-                                <p>City</p>
-                                <p>Country</p>
-                                <p>Zip code</p>
-                                <p>E-mail</p>
-                                <p>Description</p>
-                                <p>Username</p>
-                                <p>Store Logo</p>
-                                <p>Number of sales</p>
-
-                            </div>
-                            <div className={styles.col}>
-                                <p>{storeName}</p>
-                                <p>{phone}</p>
-                                <p>{address}</p>
-                                <p>{city}</p>
-                                <p>{country}</p>
-                                <p>{zipCode}</p>
-                                <p>{email}</p>
-                                <p className={styles.bio}>{storeDescription}</p>
+                        <div className={styles.descriptionContainer}>
+                            <div className={styles.description}>
+                                {formatStoreDescription(providerProfile.store_description as string).map((paragraph, index) => {
+                                    return <p key={index}>{paragraph}</p>
+                                })}
                             </div>
                         </div>
                     </div>

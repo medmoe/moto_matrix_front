@@ -1,26 +1,18 @@
 .container {
     position: relative;
-    width: 202px;
-    height: 832px;
+    width: 100%;
+    height: 100%;
     background-color: #706500;
 }
 
 .logo {
-    position: absolute;
-    right: 0;
-    top: -55px;
 }
 
 .items {
-    position: absolute;
-    top: 104px;
+
 }
 
 .account {
-    position: absolute;
-    width: 202px;
-    height: 65px;
-    top: 743px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -35,9 +27,6 @@
     display: flex;
     justify-content: center;
     justify-items: center;
-    margin-left: 28px;
-    position: absolute;
-    top: 8px;
 }
 
 .profile_picture p {
