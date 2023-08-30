@@ -36,16 +36,12 @@ export const UpdateProfile: Story = {
         title: "Update ProfileImage",
         subtitle: "Update ProfileImage to Reflect the New You",
         components: [<Button label="Cancel"
-                             width="100px"
-                             height="40px"
                              border="1px solid #007BFF"
                              backgroundColor="#FFF"
-                             textColor="#007BFF"/>,
+                             color="#007BFF"/>,
             <Button label="Submit"
-                    width="100px"
-                    height="40px"
                     backgroundColor="#007BFF"
-                    textColor="#fff"
+                    color="#fff"
                     border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>]
     }
 }

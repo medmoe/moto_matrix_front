@@ -5,8 +5,9 @@ import logo from '../../assets/Parts Plaza-logos_transparent.png'
 export function Banner() {
     return (
         <div className={styles.container}>
-            <div className={styles.banner}></div>
-            <img src={logo} alt="logo" className={styles.logo} data-cy={"PartsPlazaBanner"}/>
+            <div className={styles.banner}>
+                <img src={logo} alt="logo" data-cy={"PartsPlazaBanner"}/>
+            </div>
         </div>
     )
 }

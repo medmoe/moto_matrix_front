@@ -61,10 +61,8 @@ export function Profile({
         <div className={styles.container}>
             <div className={styles.upperContainer}>
                 <UpperBar components={[<Button label="Edit"
-                                               height="40px"
-                                               width="72px"
                                                backgroundColor="#007bff"
-                                               textColor="#fff"
+                                               color="#fff"
                                                border="none"
                                                handleClick={() => {
                                                    dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))

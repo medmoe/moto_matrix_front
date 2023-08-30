@@ -137,11 +137,9 @@ export function ProductsList() {
                             </div>
                             <div className={styles.btn}>
                                 <Button label="Add Product"
-                                        height="40px"
-                                        width="130px"
                                         icon={<MaterialIcon icon="add" size={24} color="#fff"/>}
                                         backgroundColor="#007bff"
-                                        textColor="#fff"
+                                        color="#fff"
                                         border="none"
                                         handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT))}/>
                             </div>

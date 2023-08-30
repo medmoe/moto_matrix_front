@@ -3,17 +3,14 @@
     justify-content: center;
     background-color: #d9d9d9;
     width: 100%;
-    border: 1px solid red;
 }
 
 .sideMenu {
     width: 20%;
-    border: 1px solid blue;
 }
 
 .dashboard {
     width: 80%;
-    border: 1px solid green;
 }
 
 

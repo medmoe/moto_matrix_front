@@ -18,10 +18,8 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
     args: {
         label: "CONTINUE",
-        width: "401px",
-        height: "53px",
         backgroundColor: "#007BFF",
-        textColor: "#FFF",
+        color: "#FFF",
         border: "none",
     }
 }
@@ -29,10 +27,8 @@ export const Primary: Story = {
 export const Cancel: Story = {
     args: {
         label: "Cancel",
-        width: "100px",
-        height: "40px",
         backgroundColor: "#fff",
-        textColor: "#007BFF",
+        color: "#007BFF",
         border: "1px solid #007BFF",
     }
 }
@@ -40,10 +36,8 @@ export const Cancel: Story = {
 export const Submit: Story = {
     args: {
         label: "Submit",
-        width: "100px",
-        height: "40px",
         backgroundColor: "#007Bff",
-        textColor: "#fff",
+        color: "#fff",
         border: "none",
         icon: <MaterialIcon icon="send" size={24} color="#FFF"/>
     }
@@ -51,11 +45,9 @@ export const Submit: Story = {
 
 export const PrintOrder: Story = {
     args: {
-        width: "118px",
         label: "Print Order",
-        height: "40px",
         backgroundColor: "#007BFF",
-        textColor: "#FFF",
+        color: "#FFF",
         border: "none",
         icon: <MaterialIcon icon="print" size={24} color="#fff" />
     }

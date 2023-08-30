@@ -183,19 +183,15 @@ export function UpdateProfile() {
                         components={
                             [
                                 <Button label="Cancel"
-                                        width="100px"
-                                        height="40px"
                                         border="1px solid #007BFF"
                                         backgroundColor="#FFF"
                                         handleClick={() => {
                                             dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                                         }}
-                                        textColor="#007BFF"/>,
+                                        color="#007BFF"/>,
                                 <Button label="Submit"
-                                        width="100px"
-                                        height="40px"
                                         backgroundColor="#007BFF"
-                                        textColor="#fff"
+                                        color="#fff"
                                         handleClick={submitForm}
                                         border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
                             ]

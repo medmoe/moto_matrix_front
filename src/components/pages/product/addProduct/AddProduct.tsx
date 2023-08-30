@@ -132,15 +132,11 @@ export function AddProduct() {
                         <div className={styles.lowerCardContainer}>
                             <div className={styles.buttonsContainer}>
                                 <Button label="Cancel"
-                                        height="40px"
-                                        width="100px"
-                                        textColor={"#007bff"}
+                                        color={"#007bff"}
                                         backgroundColor={"#fff"} border={"1px solid #007bff"}
                                         handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))}/>
                                 <Button label={"Submit"}
-                                        height={"40px"}
-                                        width={"100px"}
-                                        textColor={"#fff"}
+                                        color={"#fff"}
                                         backgroundColor={"#007bff"}
                                         border={"none"}
                                         icon={<MaterialIcon icon={"send"} size={24} color={"#fff"}/>}

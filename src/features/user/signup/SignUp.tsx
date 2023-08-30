@@ -120,8 +120,12 @@ export function SignUp() {
         isAuthenticated ? <Navigate to="/dashboard"/> :
             <div className={styles.container}>
                 {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
-                <Banner/>
-                <Signup handleChange={handleChange} handleSubmit={handleSubmit}/>
+                <div className={styles.bannerContainer}>
+                    <Banner/>
+                </div>
+                <div className={styles.signupContainer}>
+                    <Signup handleChange={handleChange} handleSubmit={handleSubmit}/>
+                </div>
             </div>
     )
 }

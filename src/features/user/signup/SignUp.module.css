@@ -1,8 +1,13 @@
 .container {
     display: flex;
+    gap: 5%;
     justify-content: center;
-    align-items: center;
-    width: 1248px;
-    margin: 96px 96px;
-    position: relative;
+}
+
+.bannerContainer {
+    width: 30%;
+}
+
+.signupContainer {
+    width: 70%;
 }

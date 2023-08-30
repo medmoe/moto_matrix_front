@@ -1,11 +1,11 @@
 import React, {FormEvent} from "react";
 import {Text} from "../text/Text";
 import {InputField} from "../inputField/InputField";
-import {Radio} from "../radio/Radio";
 import {Button} from "../button/Button"
-import styles from './Signup.module.css';
 import {Link} from "react-router-dom";
 import {ProfileType} from "../../types/userTypes";
+import {Radio} from "../radio/Radio";
+import styles from './Signup.module.css'
 
 interface SignupProps {
     handleChange: (event: FormEvent) => void
@@ -13,120 +13,84 @@ interface SignupProps {
 }
 
 export function Signup({handleChange, handleSubmit}: SignupProps) {
-    return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.title}>
-                    <Text text="Register" fontSize="32px" fontWeight="600" color="#000"/>
-                </div>
-                <div className={styles.subtitle}>
-                    <Text text="Start exploring our extensive catalog" fontSize="18px" fontWeight="500" color="#000"/>
-                </div>
-                <div className={styles.text}>
-                    <p style={{
+    const inputFieldHeight: string = "50px"
+    const inputFieldWidth: string = "40%"
+    const inputFieldValues: [string, string, string][] = [
+        ["First Name", "first_name", "text"],
+        ["Last Name", 'last_name', "text"],
+        ['Phone', 'phone', "tel"],
+        ['Email', 'email', "email"],
+        ['Password', 'password', "password"],
+        ['Confirm Password', 'password2', 'password'],
+        ['Username', 'username', 'text']
+    ]
+    const inputTuples: any[] = [];
+    inputFieldValues.forEach(([placeholder, name, type], idx) => {
+        const inputField = (
+            <InputField border={"1px solid #9e9d9d"}
+                        handleChange={handleChange}
+                        id={name}
+                        name={name}
+                        height={inputFieldHeight}
+                        width={inputFieldWidth}
+                        placeholder={placeholder}
+                        type={type}
+                        padding={"0 14px"}
+            />
+        )
+        if (idx % 2 !== 0) {
+            inputTuples.push([inputTuples.pop()[0], inputField]);
+        } else {
+            inputTuples.push([inputField])
+        }
+    })
 
+    const radioOptions = (
+        <div>
+            <Radio id="consumer" name="profile_type" value={ProfileType.Consumer} handleChange={handleChange}/>
+            <Radio id="seller" name="profile_type" value={ProfileType.Provider} handleChange={handleChange}/>
+        </div>
+    );
+    inputTuples.push([inputTuples.pop()[0], radioOptions])
+
+    return (
+        <div className={styles.parentContainer}>
+            <div className={styles.container}>
+                <div>
+                    <Text text="Register" fontSize="32px" fontWeight="600" color="#000"/>
+                    <Text text="Start exploring our extensive catalog" fontSize="18px" fontWeight="500" color="#000"/>
+                    <p style={{
                         fontSize: "12px", color: "#9e9d9d"
                     }}>Let's get you all set up so you can verify your personal account and begin<br/>setting up your
                         profile.</p>
                 </div>
-            </div>
-            <form className={styles.body}>
-                <div className={styles.row}>
-                    <InputField border="1px solid #9e9d9d"
-                                id="first_name"
-                                name="first_name"
-                                height="53px"
-                                width="222px"
-                                placeholder="First Name"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                    <InputField border="1px solid #9e9d9d"
-                                id="last_name"
-                                name="last_name"
-                                height="53px"
-                                width="222px"
-                                placeholder="Last Name"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                </div>
-                <div className={styles.row}>
-                    <InputField border="1px solid #9e9d9d"
-                                id="phone"
-                                name="phone"
-                                height="53px"
-                                width="222px"
-                                placeholder="Phone"
-                                type="tel"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                    <InputField border="1px solid #9e9d9d"
-                                id="email"
-                                name="email"
-                                height="53px"
-                                width="222px"
-                                placeholder="Email"
-                                type="email"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                </div>
-                <div className={styles.row}>
-                    <InputField border="1px solid #9e9d9d"
-                                id="password"
-                                name="password"
-                                height="53px"
-                                width="222px"
-                                placeholder="Password"
-                                type="password"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                    <InputField border="1px solid #9e9d9d"
-                                id="password2"
-                                name="password2"
-                                height="53px"
-                                width="222px"
-                                placeholder="Confirm Password"
-                                type="password"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                </div>
-                <div className={styles.row}>
-                    <InputField border="1px solid #9e9d9d"
-                                id="username"
-                                name="username"
-                                height="53px"
-                                width="222px"
-                                placeholder="Username"
-                                padding="0 14px"
-                                handleChange={handleChange}
-                    />
-                    <div className={styles.radios}>
-                        <Radio id="consumer" name="profile_type" value={ProfileType.Consumer} handleChange={handleChange}/>
-                        <Radio id="seller" name="profile_type" value={ProfileType.Provider} handleChange={handleChange}/>
-                    </div>
-                </div>
-                <div className={styles.row}>
-                    <Button label="CONTINUE"
-                            height="53px"
-                            width="250px"
-                            border="none"
-                            backgroundColor="#007BFF"
-                            textColor="#FFF"
-                            handleClick={handleSubmit}
-                    />
-                    <p className={styles.helper_text}>Already have an account?
-                        <span
-                            style={{color: "#007BFF"}}>
+                <div>
+                    <form className={styles.formContainer}>
+                        {inputTuples.map(([first, second], idx) => {
+                            return <div className={styles.row} key={idx}>{first}{second}</div>
+                        })}
+                        <div className={styles.buttonsContainer}>
+                            <div className={styles.continueButton}>
+                                <Button label="CONTINUE"
+                                        border="none"
+                                        backgroundColor="#007BFF"
+                                        color="#FFF"
+                                        handleClick={handleSubmit}
+                                />
+                            </div>
+                            <div className={styles.signupLink}>
+                                <p>Already have an account?
+                                    <span
+                                        style={{color: "#007BFF"}}>
                             <Link to="/">Log in</Link>
                         </span>
-                    </p>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
-            </form>
+            </div>
         </div>
     )
 }

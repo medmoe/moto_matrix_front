@@ -1,5 +1,11 @@
 .container {
     display: flex;
-    margin: 96px 96px;
-    position: relative;
+}
+
+.bannerContainer {
+    width: 30%;
+}
+
+.loginContainer {
+    width: 70%;
 }

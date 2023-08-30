@@ -1,8 +1,8 @@
 .container {
     position: relative;
     width: 100%;
-    height: 100%;
     background-color: #706500;
+    height: 100vh;
 }
 
 .logo {

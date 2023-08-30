@@ -1,16 +1,15 @@
-.banner{
-    width: 548px;
-    height: 832px;
+.banner {
     background-color: #706500;
+    height: 100vh;
 }
 
-.logo {
-    position: absolute;
-    width: 462px;
-    height: 421px;
-    flex-shrink: 0;
-    top: 205px;
+.banner img {
+    width: 100%;
 }
+
 
 .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

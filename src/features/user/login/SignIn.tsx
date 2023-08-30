@@ -61,7 +61,7 @@ export function SignIn() {
                     dispatch(updateProviderProfile(res.data))
                 } else if (res.data.userprofile.profile_type == ProfileType.Consumer) {
                     dispatch(updateConsumerProfile(res.data))
-                }else {
+                } else {
                     // Add other profiles if needed
                 }
                 dispatch(updatePageName(DASHBOARD_PAGES.DASHBOARD));
@@ -79,8 +79,12 @@ export function SignIn() {
         isAuthenticated ? <Navigate to="/dashboard"/> :
             <div className={styles.container}>
                 {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
-                <Banner/>
-                <Login handleChange={handleChange} handleSubmit={handleSubmit}/>
+                <div className={styles.bannerContainer}>
+                    <Banner/>
+                </div>
+                <div className={styles.loginContainer}>
+                    <Login handleChange={handleChange} handleSubmit={handleSubmit}/>
+                </div>
             </div>
     )
 }

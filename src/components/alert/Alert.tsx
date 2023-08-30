@@ -13,10 +13,8 @@ export function Alert({message, onClose}: AlertProps) {
             <div className={styles.alertBox}>
                 <p>{message}</p>
                 <Button label={"close"}
-                        height={"30px"}
-                        width={"100px"}
                         handleClick={onClose}
-                        textColor={"#fff"}
+                        color={"#fff"}
                         backgroundColor={"#ff0000"}
                         border={"none"}
                 />
