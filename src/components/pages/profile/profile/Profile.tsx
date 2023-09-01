@@ -64,6 +64,7 @@ export function Profile({
                                                backgroundColor="#007bff"
                                                color="#fff"
                                                border="none"
+                                               width={"20%"}
                                                handleClick={() => {
                                                    dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))
                                                }}

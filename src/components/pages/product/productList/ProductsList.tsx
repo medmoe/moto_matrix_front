@@ -119,7 +119,7 @@ export function ProductsList() {
             <div className={styles.body}>
                 {isLoading ? <Spinner width={"140px"} height={"140px"}/> :
                     <div className={styles.largeCardContainer}>
-                        <div>
+                        <div className={styles.upper}>
                             <div className={styles.productStatus}>
                                 {productStatus.map((status, index) => {
                                     return <ProductStatus title={status}
@@ -136,7 +136,9 @@ export function ProductsList() {
                                 })}
                             </div>
                             <div className={styles.btn}>
-                                <Button label="Add Product"
+                                <Button
+                                    width={"20%"}
+                                    label="Add Product"
                                         icon={<MaterialIcon icon="add" size={24} color="#fff"/>}
                                         backgroundColor="#007bff"
                                         color="#fff"

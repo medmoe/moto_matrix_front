@@ -1,13 +1,17 @@
 .container {
-    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
 }
 
 .header {
-
+    height: 10%;
+    width: 100%;
 }
 
 .body {
-    height: 750px;
+    height: 90%;
+    width: 100%;
     background-color: #eeeeee;
     display: flex;
     justify-content: center;
@@ -15,35 +19,41 @@
 }
 
 .largeCardContainer {
-    width: 96%;
-    height: 85%;
+    width: 95%;
+    height: 95%;
     background-color: #fff;
     box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
-    position: absolute;
-    top: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+}
+
+.upper {
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .productStatus {
     display: flex;
-    gap: 36px;
-    position: absolute;
-    top: 43px;
-    left: 18px;
+    gap: 3%;
+    width: 50%;
+    padding-left: 2%;
 }
 
 .btn {
-    position: absolute;
-    top: 15px;
-    left: 835px;
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2%;
 }
 
 .tableContainer {
-    position: absolute;
-    top: 92px;
-    left: 18px;
     max-width: 96%;
     max-height: 75%;
     overflow: scroll;
+    padding-left: 2%;
 }
 
 .footerText {
@@ -60,9 +70,7 @@
     width: 95%;
     justify-content: space-between;
     align-items: center;
-    position: absolute;
-    left: 18px;
-    top: 639px;
+    padding-left: 2%;
 }
 
 /* Targeting the scrollbar container */

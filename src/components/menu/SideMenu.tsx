@@ -3,11 +3,7 @@ import {Logo} from "../logo/Logo";
 import {MenuItem} from "../menuItem/MenuItem";
 import styles from './SideMenu.module.css';
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {
-    selectActiveIndex,
-    updateActiveIndex,
-    updatePageName
-} from "../../features/dashboard/dashboardSlice";
+import {selectActiveIndex, updateActiveIndex, updatePageName} from "../../features/dashboard/dashboardSlice";
 import {selectProviderProfile} from "../../features/user/activeUserSlice";
 import {ProfileImage} from "../profileImage/ProfileImage";
 import {DASHBOARD_PAGES} from "../../types/dashboardTypes";
@@ -76,7 +72,7 @@ export function SideMenu({
                  style={{backgroundColor: isAccountActive ? "#877b04" : "#706500"}}
             >
                 <div>
-                    <ProfileImage src={providerProfile.userprofile.profile_pic? providerProfile.userprofile.profile_pic : "#"} alt="Profile image"
+                    <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"} alt="Profile image"
                                   width="50px" height="50px"/>
                 </div>
                 <div style={{color: "#fff"}}>

@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, JSX, useState} from "react";
 import styles from "./UpdateProfile.module.css";
 import {UpperBar} from "../../../upperBar/UpperBar";
 import {Button} from "../../../button/Button";
@@ -12,10 +12,23 @@ import {selectProviderProfile, updateProviderProfile} from "../../../../features
 import {useNavigate} from "react-router-dom";
 import {Alert} from "../../../alert/Alert";
 import axios from "axios";
-import {propertyLocations, Provider, ProviderType} from "../../../../types/userTypes";
+import {propertyLocations, Provider, ProviderType, UserProfile} from "../../../../types/userTypes";
 import {API} from "../../../../constants";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 import {Select} from "../../../select/Select";
+
+interface inputFieldType {
+    label: string,
+    placeholder: string,
+    name: string,
+    type: string,
+    value?: string
+}
+
+interface inputFieldValueTypes {
+    accountInformation: inputFieldType[];
+    contactInformation: inputFieldType[];
+}
 
 export function UpdateProfile() {
     const providerProfile = useAppSelector(selectProviderProfile);
@@ -27,12 +40,19 @@ export function UpdateProfile() {
     const UNAUTHORIZED: number = 401;
     const EMAIL_REGEX: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const providerTypes: [string, string][] = Object.entries(ProviderType)
-
     const handleChange = (event: FormEvent) => {
         event.preventDefault();
         const target = event.target as HTMLInputElement
         const location = propertyLocations[target.name]
-        let updatedData = {...profileData};
+        let updatedData: {
+            provider_type?: ProviderType;
+            store_logo?: string;
+            userprofile: UserProfile;
+            store_name?: string;
+            number_of_sales?: number;
+            cached_average_rating?: number;
+            store_description?: string
+        };
         switch (location) {
             case 'user':
                 updatedData = {
@@ -64,6 +84,47 @@ export function UpdateProfile() {
         }
         setProfileData(updatedData);
     }
+
+    const inputFieldCommonValues = {
+        border: "1px solid #9e9d9d",
+        height: "30px",
+        backgroundColor: "#fff",
+        handleChange: handleChange,
+    }
+
+    const inputFieldValues: inputFieldValueTypes = {
+        accountInformation: [
+            {label: "First name", placeholder: 'Enter first name', name: 'first_name', type: 'text', value: profileData.userprofile.user.first_name},
+            {label: "Last name", placeholder: 'Enter last name', name: 'last_name', type: 'text', value: profileData.userprofile.user.last_name},
+            {label: "Password", placeholder: "Enter password", name: 'password', type: "password"},
+            {label: "Username", placeholder: "Enter username", name: "username", type: "text", value: profileData.userprofile.user.username},
+            {label: "Email", placeholder: "Enter email", name: "email", type: "email", value: profileData.userprofile.user.email},
+            {label: "Confirm password", placeholder: "Re-enter password", name: 'password2', type: "password"},
+        ],
+        contactInformation: [
+            {label: "Phone", placeholder: 'Enter phone number', name: "phone", type: 'text', value: profileData.userprofile.phone},
+            {label: "Address", placeholder: 'Enter street address', name: 'address', type: 'text', value: profileData.userprofile.address},
+            {label: "City", placeholder: 'Enter city', name: 'city', type: 'text', value: profileData.userprofile.city},
+            {label: "State", placeholder: 'Enter state', name: 'state', type: 'text', value: profileData.userprofile.state},
+            {label: "Zip code", placeholder: 'Enter zip code', name: 'zip_code', type: 'text', value: profileData.userprofile.zip_code},
+            {label: "country", placeholder: 'Enter country', name: 'country', type: 'text', value: profileData.userprofile.country},
+            {label: "Business name", placeholder: 'Enter name', name: 'store_name', type: 'text', value: profileData.store_name}
+        ]
+    }
+    const accountInformationInputFields = inputFieldValues.accountInformation.reduce((acc: JSX.Element[][], {label, ...rest}, idx) => {
+        if (idx % 3 === 0) { // Start a new row every 3 elements
+            acc.push([]);
+        }
+        const field = (
+            <div className={styles.headerFieldContainer}>
+                <label htmlFor={rest.name}>{label}</label>
+                <InputField {...inputFieldCommonValues} {...rest} />
+            </div>
+        );
+        acc[acc.length - 1].push(field); // Add the field to the last row
+        return acc;
+    }, []).map(row => <div className={styles.row}>{row}</div>)
+
     const isValidPassword = (password: string): boolean =>
         !(password && 1 <= password.length && password.length < 8);
 
@@ -172,44 +233,60 @@ export function UpdateProfile() {
             })
     }
 
-    return (
-        <div className={styles.container}>
-            <form>
 
-                <div>
-                    <UpperBar
-                        title="Update Profile"
-                        subtitle="Update Profile to Reflect the New You"
-                        components={
-                            [
-                                <Button label="Cancel"
-                                        border="1px solid #007BFF"
-                                        backgroundColor="#FFF"
-                                        handleClick={() => {
-                                            dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
-                                        }}
-                                        color="#007BFF"/>,
-                                <Button label="Submit"
-                                        backgroundColor="#007BFF"
-                                        color="#fff"
-                                        handleClick={submitForm}
-                                        border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
-                            ]
-                        }
-                    />
-                </div>
-                <div className={styles.lowerContainer}>
-                    <div className={`${styles.largeCardContainer} ${styles.text}`}>
+    const [firstContactCol, secondContactCol] = inputFieldValues.contactInformation.reduce((acc: JSX.Element[][], {label, ...rest}, idx: number) => {
+        if (idx === 4) { // start new column
+            acc.push([]);
+        }
+        const field = (
+            <div className={styles.bodyFieldContainer}>
+                <label htmlFor={rest.name}>{label}</label>
+                <InputField {...inputFieldCommonValues} {...rest} />
+            </div>
+        );
+        acc[acc.length - 1].push(field); // push the field to the current column
+        return acc
+    }, [[]])
+
+    return (
+        <form className={styles.container}>
+            {errorMessage && <Alert message={errorMessage} onClose={() => setErrorMessage("")}/>}
+            <div className={styles.upperContainer}>
+                <UpperBar
+                    title="Update Profile"
+                    subtitle="Update Profile to Reflect the New You"
+                    components={[<Button
+                        label="Cancel"
+                        width={"20%"}
+                        border="1px solid #007BFF"
+                        backgroundColor="#FFF"
+                        handleClick={() => {
+                            dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT))
+                        }}
+                        color="#007BFF"
+                    />,
+                        <Button label="Submit"
+                                width={"20%"}
+                                backgroundColor="#007BFF"
+                                color="#fff"
+                                handleClick={submitForm}
+                                border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
+
+                    ]
+                    }
+                />
+            </div>
+            <div className={styles.lowerContainer}>
+                <div className={`${styles.largeCardContainer} ${styles.text}`}>
+                    <div className={styles.wrapper}>
                         <div className={styles.header}>
-                            <div className={styles.errorBoxContainer}>
-                                {errorMessage ?
-                                    <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
-                            </div>
                             <div className={styles.profileImageContainer}>
                                 <div className={styles.uploadContainer}>
                                     <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
                                                   alt="profile image"
                                                   width="140px" height="140px"/>
+                                </div>
+                                <div className={styles.fileUpload}>
                                     <label htmlFor="file-upload" className={styles.customFileUpload}>
                                         <div className={styles.cameraContainer}>
                                             <MaterialIcon icon="photo_camera" size={40} color="#fff"/>
@@ -224,207 +301,25 @@ export function UpdateProfile() {
                                 <p className={styles.title}>Account Information</p>
                             </div>
                             <div className={styles.accountInformationContainer}>
-                                <div className={styles.row}>
-                                    <div className={styles.fieldContainer}>
-                                        <label htmlFor="firstName">First Name</label>
-                                        <InputField border="1px solid #9e9d9d"
-                                                    handleChange={handleChange}
-                                                    height="30px"
-                                                    width="200px"
-                                                    backgroundColor="#fff"
-                                                    placeholder="Enter first name"
-                                                    type="text"
-                                                    name="first_name"
-                                                    id="firstName"
-                                                    value={profileData.userprofile.user.first_name}
-                                        />
-                                    </div>
-                                    <div className={styles.fieldContainer}>
-                                        <label htmlFor="lastName">Last Name</label>
-                                        <InputField border="1px solid #9e9d9d"
-                                                    handleChange={handleChange}
-                                                    height="30px"
-                                                    width="200px"
-                                                    backgroundColor="#fff"
-                                                    placeholder="Enter last name"
-                                                    type="text"
-                                                    name="last_name"
-                                                    id="lastName"
-                                                    value={profileData.userprofile.user.last_name}
-                                        />
-                                    </div>
-                                    <div className={styles.fieldContainer}>
-                                        <label htmlFor="password">Password</label>
-                                        <InputField border="1px solid #9e9d9d"
-                                                    handleChange={handleChange}
-                                                    height="30px"
-                                                    width="200px"
-                                                    backgroundColor="#fff"
-                                                    placeholder="Enter password"
-                                                    type="password"
-                                                    name="password"
-                                                    id="password"
-                                        />
-                                    </div>
-                                </div>
-                                <div className={styles.row}>
-                                    <div className={styles.fieldContainer}>
-                                        <label htmlFor="username">Username</label>
-                                        <InputField border="1px solid #9e9d9d"
-                                                    handleChange={handleChange}
-                                                    height="30px"
-                                                    width="200px"
-                                                    backgroundColor="#fff"
-                                                    placeholder="Enter username"
-                                                    type="text"
-                                                    name="username"
-                                                    id="username"
-                                                    value={profileData.userprofile.user.username}
-                                        />
-                                    </div>
-                                    <div className={styles.fieldContainer}>
-                                        <label htmlFor="email">Email</label>
-                                        <InputField border="1px solid #9e9d9d"
-                                                    handleChange={handleChange}
-                                                    height="30px"
-                                                    width="200px"
-                                                    backgroundColor="#fff"
-                                                    placeholder="Enter email"
-                                                    type="email"
-                                                    name="email"
-                                                    id="email"
-                                                    value={profileData.userprofile.user.email}
-                                        />
-                                    </div>
-                                    <div className={styles.fieldContainer}>
-                                        <label htmlFor="password2">Confirm Password</label>
-                                        <InputField border="1px solid #9e9d9d"
-                                                    handleChange={handleChange}
-                                                    height="30px"
-                                                    width="200px"
-                                                    backgroundColor="#fff"
-                                                    placeholder="Re-enter password"
-                                                    type="password"
-                                                    name="password2"
-                                                    id="password2"
-                                        />
-                                    </div>
-                                </div>
+                                {accountInformationInputFields}
                             </div>
                         </div>
                         <div className={styles.divider}>
-                            <Divider width="943px"/>
+                            <Divider width="90%"/>
                         </div>
-
                         <div className={`${styles.body}`}>
                             <div className={styles.col}>
                                 <div>
                                     <p className={styles.title}>Contact Information</p>
                                 </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="phone">Phone</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter phone number"
-                                                type="tel"
-                                                name="phone"
-                                                id="phone"
-                                                value={profileData.userprofile.phone}
-                                    />
-                                </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="address">Address</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter street address"
-                                                type="text"
-                                                name="address"
-                                                id="address"
-                                                value={profileData.userprofile.address}
-                                    />
-                                </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="city">City</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter city"
-                                                type="text"
-                                                name="city"
-                                                id="city"
-                                                value={profileData.userprofile.city}
-                                    />
-                                </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="state">State</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter state"
-                                                type="text"
-                                                name="state"
-                                                id="state"
-                                                value={profileData.userprofile.state}
-                                    />
-                                </div>
+                                {firstContactCol}
                             </div>
                             <div className={styles.col}>
                                 <div className={styles.titleHidden}>
                                     <p className={styles.title}>Contact Information</p>
                                 </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="zipcode">Zip code</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter zip code"
-                                                type="text"
-                                                name="zip_code"
-                                                id="zipcode"
-                                                value={profileData.userprofile.zip_code}
-                                    />
-                                </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="country">Country</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter country"
-                                                type="text"
-                                                name="country"
-                                                id="country"
-                                                value={profileData.userprofile.country}
-                                    />
-                                </div>
-                                <div className={styles.fieldContainer}>
-                                    <label htmlFor="store_name">Business Name</label>
-                                    <InputField border="1px solid #9e9d9d"
-                                                handleChange={handleChange}
-                                                height="30px"
-                                                width="200px"
-                                                backgroundColor="#fff"
-                                                placeholder="Enter name"
-                                                type="text"
-                                                name="store_name"
-                                                id="store_name"
-                                                value={profileData.store_name}
-                                    />
-                                </div>
-                                <div className={styles.fieldContainer}>
+                                {secondContactCol}
+                                <div className={styles.bodyFieldContainer}>
                                     <label htmlFor={"provider_type"}>Select business type</label>
                                     <Select options={providerTypes}
                                             handleChange={handleChange}
@@ -436,7 +331,7 @@ export function UpdateProfile() {
                                 <div className={styles.titleHidden}>
                                     <p className={styles.title}>Contact Information</p>
                                 </div>
-                                <div className={styles.fieldContainer}>
+                                <div className={styles.bodyFieldContainer}>
                                     <label htmlFor="store_description">Bio</label>
                                     <textarea placeholder="Describe what you do here"
                                               value={profileData.store_description}
@@ -447,7 +342,7 @@ export function UpdateProfile() {
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     )
 }

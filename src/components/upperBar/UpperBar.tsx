@@ -19,11 +19,7 @@ export function UpperBar ({title, subtitle, components}: UpperBarProps) {
                 </div>
             </div>
             <div className={styles.right}>
-                {components?.map((component, index) => {
-                    return (
-                        <div key={index}>{component}</div>
-                    )
-                })}
+                {components}
             </div>
         </div>
     )

@@ -3,6 +3,9 @@
     width: 100%;
     background-color: #706500;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 15%;
 }
 
 .logo {
@@ -16,7 +19,8 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    height: 65px;
 }
 
 .profile_picture {
