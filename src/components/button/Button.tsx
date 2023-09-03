@@ -3,62 +3,23 @@ import styles from './Button.module.css'
 
 interface args {
     label: string,
-    width?: string,
-    height?: string,
     backgroundColor?: string,
-    textColor?: string,
+    color?: string,
     border?: string,
     handleClick?: (event: FormEvent) => void,
     icon?: JSX.Element,
+    width?: string,
 
 }
 
-export function Button({
-                           icon,
-                           handleClick,
-                           label,
-                           width,
-                           height,
-                           backgroundColor,
-                           textColor,
-                           border,
-                       }: args) {
+export function Button({icon, handleClick, label, backgroundColor, color, border, width}: args) {
     return (
-        <div className={styles.container} onClick={handleClick}>
-            <div className={styles.icon}>
-                {icon}
-            </div>
-            {icon ? <div style={{
-                backgroundColor: backgroundColor,
-                width: "24px",
-                height: height,
-                borderTopLeftRadius: "5px",
-                borderBottomLeftRadius: "5px"
-            }}></div> : <div></div>}
-            <div>
-                {icon ? <button className={styles.storybook_button}
-                                style={{
-                                    width: `${width}`,
-                                    height: `${height}`,
-                                    backgroundColor: `${backgroundColor}`,
-                                    color: `${textColor}`,
-                                    border: `${border}`,
-                                    borderTopLeftRadius: 0,
-                                    borderBottomLeftRadius: 0,
-                                }}>
-                    {label}
-                </button> : <button className={styles.storybook_button}
-                                    style={{
-                                        width: `${width}`,
-                                        height: `${height}`,
-                                        backgroundColor: `${backgroundColor}`,
-                                        color: `${textColor}`,
-                                        border: `${border}`,
-                                    }}>
-                    {label}
-                </button>}
-
-            </div>
+        <div className={`${styles.container}`} onClick={handleClick} style={{width}}>
+            {icon && <div className={styles.icon}>{icon}</div>}
+            <button className={`${styles.storybook_button} ${icon? styles.iconPadding: ""}`} style={{backgroundColor, color, border}}>
+                {label}
+            </button>
         </div>
-    )
+    );
 }
+

@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {DashboardWindow, SignIn, SignUp} from "./features";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {PrivateRoutes} from "./components/auth/PrivateRoutes";

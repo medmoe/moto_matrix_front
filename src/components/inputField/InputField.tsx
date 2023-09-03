@@ -1,4 +1,4 @@
-import React, {FormEvent} from 'react';
+import React from 'react';
 import styles from './InputField.module.css';
 
 interface InputFieldProps {
@@ -32,13 +32,7 @@ export function InputField({
                            }: InputFieldProps) {
     return (
         <input type={type}
-               style={{
-                   width: width,
-                   height: height,
-                   border: border,
-                   padding: padding,
-                   backgroundColor: backgroundColor
-               }}
+               style={{width, height, border, padding, backgroundColor}}
                className={styles.storybook_inputField}
                placeholder={placeholder}
                id={id}

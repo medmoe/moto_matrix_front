@@ -2,14 +2,15 @@
     display: flex;
     justify-content: center;
     background-color: #d9d9d9;
+    width: 100%;
 }
 
 .sideMenu {
-
+    width: 20%;
 }
 
 .dashboard {
-
+    width: 80%;
 }
 
 

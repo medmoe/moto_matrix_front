@@ -4,11 +4,11 @@ import styles from './SignIn.module.css';
 import axios from "axios";
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
-import {updateUserData} from "../userSlice";
 import {updatePageName} from "../../dashboard/dashboardSlice";
 import {DASHBOARD_PAGES} from "../../../types/dashboardTypes";
 import {API} from "../../../constants";
-import {User} from "../../../types/userTypes";
+import {ProfileType, User} from "../../../types/userTypes";
+import {updateConsumerProfile, updateProviderProfile} from "../activeUserSlice";
 
 export function SignIn() {
     let initState: User = {
@@ -57,7 +57,13 @@ export function SignIn() {
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
                 navigate("/dashboard");
-                dispatch(updateUserData(res.data));
+                if (res.data.userprofile.profile_type === ProfileType.Provider) {
+                    dispatch(updateProviderProfile(res.data))
+                } else if (res.data.userprofile.profile_type == ProfileType.Consumer) {
+                    dispatch(updateConsumerProfile(res.data))
+                } else {
+                    // Add other profiles if needed
+                }
                 dispatch(updatePageName(DASHBOARD_PAGES.DASHBOARD));
             })
             .catch((err) => {
@@ -73,8 +79,12 @@ export function SignIn() {
         isAuthenticated ? <Navigate to="/dashboard"/> :
             <div className={styles.container}>
                 {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
-                <Banner/>
-                <Login handleChange={handleChange} handleSubmit={handleSubmit}/>
+                <div className={styles.bannerContainer}>
+                    <Banner/>
+                </div>
+                <div className={styles.loginContainer}>
+                    <Login handleChange={handleChange} handleSubmit={handleSubmit}/>
+                </div>
             </div>
     )
 }

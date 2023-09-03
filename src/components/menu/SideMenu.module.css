@@ -1,30 +1,26 @@
 .container {
     position: relative;
-    width: 202px;
-    height: 832px;
+    width: 100%;
     background-color: #706500;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 15%;
 }
 
 .logo {
-    position: absolute;
-    right: 0;
-    top: -55px;
 }
 
 .items {
-    position: absolute;
-    top: 104px;
+
 }
 
 .account {
-    position: absolute;
-    width: 202px;
-    height: 65px;
-    top: 743px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    height: 65px;
 }
 
 .profile_picture {
@@ -35,9 +31,6 @@
     display: flex;
     justify-content: center;
     justify-items: center;
-    margin-left: 28px;
-    position: absolute;
-    top: 8px;
 }
 
 .profile_picture p {

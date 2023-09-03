@@ -1,19 +1,25 @@
+import {Provider} from "./userTypes";
+
 // Types
+export interface Component {
+    provider?: Provider;
+    name: string;
+    description: string;
+    manufacturer: string;
+    price: number;
+    stock: number;
+    image: string;
+    weight: number;
+    dimensions: string;
+    location: string;
+}
 export interface AutoPartDetail {
-    name: string,
-    image?: string,
-    description: string,
-    manufacturer: string,
-    price: number,
-    stock: number,
-    weight: number,
-    dimensions: string,
-    location: string,
-    category: string,
+    component: Component,
+    category: AutoPartCategory;
     vehicle_make: string,
     vehicle_model: string,
     vehicle_year: string,
-    condition: string,
+    condition: Condition;
     oem_number: string,
     upc_number: string
 }

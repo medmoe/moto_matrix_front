@@ -1,27 +1,24 @@
-.container{
-    width: 700px;
-    height: 832px;
+.commonProperties {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+}
 
+.container{
+    gap: 5%;
+    height: 100vh;
 }
 .header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 23px;
 }
 
 .body {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: 31px;
+}
 
+.formContainer {
+    width: 50%;
+    gap: 30px;
 }
 .text {
     color: #000;
@@ -40,34 +37,34 @@
     justify-content: center;
     align-items: center;
 }
-
-.first {
-}
 .second {
     margin-top: -30px;
 }
 
 .register {
-    width: 700px;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 66px;
-    margin-top: 69px;
 }
 
 .input_field{
+    display: flex;
+    align-items: center;
     position: relative;
 }
 .icon{
     position: absolute;
-    left: 12px;
-    top: 18px;
+    left: 10px;
+}
+
+.loginButtonContainer {
+    width: 100%;
+}
+
+.signupButtonContainer {
+    width: 20%;
 }
