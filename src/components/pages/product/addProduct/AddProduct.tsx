@@ -17,17 +17,88 @@ import {Spinner} from "../../../spinner/Spinner";
 import {Select} from "../../../select/Select";
 import {Alert} from "../../../alert/Alert";
 import {NavigateFunction, useNavigate} from "react-router-dom";
+import {getUniqueKey} from "../../../../utils/functools";
+
+interface InputFieldTypes {
+    label: string,
+    name: string,
+    placeholder?: string,
+    value?: string,
+    type: string,
+}
+
+interface InputFieldValuesTypes {
+    generalInformation: InputFieldTypes[],
+    detailedInformation: InputFieldTypes[],
+}
 
 export function AddProduct() {
     const navigate: NavigateFunction = useNavigate();
     const dispatch = useAppDispatch();
     const autoPartDetails = useAppSelector(selectAutoPartDetail);
-    const [isUploaded, setIsUploaded] = useState<boolean>(false);
-    const [isUploading, setIsUploading] = useState<boolean>(false);
-    const [isNotUploaded, setIsNotUploaded] = useState<boolean>(false)
+    const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
     const [autoPartFormData, setAutoPartFromData] = useState<AutoPartDetail>(autoPartDetails);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const handleChange = (event: FormEvent) => {
+        event.preventDefault()
+        console.log("yes")
+        const target = event.target as HTMLInputElement | HTMLSelectElement
+        setAutoPartFromData({
+            ...autoPartFormData,
+            [target.name]: target.value
+        })
 
+    }
+
+    const inputFieldCommonValues = {
+        border: "1px solid #9e9d9d",
+        handleChange: handleChange,
+        backgroundColor: "#fff",
+        height: "30px"
+    }
+
+    const fieldValues: InputFieldValuesTypes = {
+        generalInformation: [
+            {label: "Name", name: "name", placeholder: "Enter product name", value: autoPartFormData.component.name, type: "text"},
+            {
+                label: "Manufacturer",
+                name: "manufacturer",
+                placeholder: "Enter manufacturer",
+                value: autoPartFormData.component.manufacturer,
+                type: "text"
+            },
+            {label: "Location", name: "location", placeholder: "Enter location in stock", value: autoPartFormData.component.location, type: "text"},
+            {label: "Dimensions", name: 'dimensions', placeholder: "Enter dimensions", value: autoPartFormData.component.dimensions, type: "text"},
+            {label: "Quantity", name: 'stock', value: `${autoPartFormData.component.stock}`, type: "number"},
+            {label: "Price", name: 'price', value: `${autoPartFormData.component.price}`, type: "number"},
+            {label: "Weight", name: 'weight', value: `${autoPartFormData.component.weight}`, type: "number"},
+        ],
+        detailedInformation: [
+            {label: "Vehicle Make", placeholder: "Enter vehicle make", name: "vehicle_make", value: autoPartFormData.vehicle_make, type: "text"},
+            {label: "OEM Number", placeholder: "Enter OEM number", name: "oem_number", value: autoPartFormData.oem_number, type: "text"},
+            {label: "UPC Number", placeholder: "Enter UPC number", name: "upc_number", value: autoPartFormData.upc_number, type: "text"},
+            {label: "Vehicle Model", placeholder: "Enter vehicle model", name: 'vehicle_model', value: autoPartFormData.vehicle_model, type: "text"},
+            {label: "Vehicle Year", placeholder: "Enter vehicle year", name: 'vehicle_year', value: autoPartFormData.vehicle_year, type: "text"},
+        ]
+    }
+
+    const generateInputFields = (breakpoint: number, fieldValues: InputFieldTypes[]): JSX.Element[][] => {
+        return fieldValues.reduce((acc: JSX.Element[][], {label, ...rest}, idx) => {
+            if (idx === breakpoint) {
+                acc.push([])
+            }
+            const field = (
+                <div className={styles.col} key={idx}>
+                    <label htmlFor={rest.name}>{label}</label>
+                    <InputField {...inputFieldCommonValues} {...rest} id={rest.name}/>
+                </div>
+            )
+            acc[acc.length - 1].push(field)
+            return acc
+        }, [[]])
+    }
+    const [firstGeneralInfoRow, secondGeneralInfoCol] = generateInputFields(4, fieldValues.generalInformation);
+    const [firstDetailedInfoCol, secondDetailedInfoCol] = generateInputFields(3, fieldValues.detailedInformation);
 
     const conditions: [string, string][] = Object.entries(Condition);
 
@@ -78,18 +149,9 @@ export function AddProduct() {
             parseInt(year, 10) <= endYear
     }
 
-    const handleChange = (event: FormEvent) => {
-        event.preventDefault()
-        const target = event.target as HTMLInputElement | HTMLSelectElement
-        setAutoPartFromData({
-            ...autoPartFormData,
-            [target.name]: target.value
-        })
-
-    }
 
     const fileSelectHandler = async (event: FormEvent) => {
-        setIsUploading(true);
+        setUploadStatus("uploading");
         const target: HTMLInputElement = event.target as HTMLInputElement
         const files: FileList = target.files as FileList
         const file: File = files[0] as File
@@ -102,14 +164,10 @@ export function AddProduct() {
             withCredentials: true
         })
             .then(() => {
-                setIsUploaded(true);
-                setIsUploading(false);
-                setIsNotUploaded(false)
+                setUploadStatus('idle');
             })
             .catch((err) => {
-                setIsNotUploaded(true);
-                setIsUploading(false);
-                setIsUploaded(false);
+                setUploadStatus('failed');
                 if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
                     navigate("/");
                 } else {
@@ -118,274 +176,115 @@ export function AddProduct() {
             })
     }
     return (
-        <div>
-            {errorMessage ? <Alert message={errorMessage} onClose={() => setErrorMessage("")}/> : null}
-            <div className={styles.container}>
-                <div className={styles.upperBarContainer}>
-                    <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")}/>]}
-                              title="Add Product"
-                              subtitle="new product form"
-                    />
-                </div>
-                <form>
-                    <div className={styles.body}>
-                        <div className={styles.lowerCardContainer}>
-                            <div className={styles.buttonsContainer}>
-                                <Button label="Cancel"
-                                        color={"#007bff"}
-                                        backgroundColor={"#fff"} border={"1px solid #007bff"}
-                                        handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))}/>
-                                <Button label={"Submit"}
-                                        color={"#fff"}
-                                        backgroundColor={"#007bff"}
-                                        border={"none"}
-                                        icon={<MaterialIcon icon={"send"} size={24} color={"#fff"}/>}
-                                        handleClick={submitForm}
-                                />
-                            </div>
-                            <div className={styles.generalInformationContainer}>
-                                <div className={styles.row}>
-                                    <p className={styles.title}>General Information</p>
-                                </div>
-                                <div className={styles.row}>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"productName"}>Name</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"productName"}
-                                                    type={"text"}
-                                                    placeholder={"Enter product name"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"name"}
-                                                    value={autoPartFormData.component.name}
-                                        />
-                                    </div>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"manufacturer"}>Manufacturer</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"manufacturer"}
-                                                    type={"text"}
-                                                    placeholder={"Enter manufacturer"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"manufacturer"}
-                                                    value={autoPartFormData.component.manufacturer}
-                                        />
-                                    </div>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"location"}>Location</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"location"}
-                                                    type={"text"}
-                                                    placeholder={"Enter location in stock"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"location"}
-                                                    value={autoPartFormData.component.location}
-                                        />
-                                    </div>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"dimensions"}>Dimensions</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"dimensions"}
-                                                    type={"text"}
-                                                    placeholder={"Enter dimensions"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"dimensions"}
-                                                    value={autoPartFormData.component.dimensions}
-                                        />
-                                    </div>
-                                </div>
-                                <div className={styles.row}>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"description"}>Description</label>
-                                        <textarea placeholder={"Enter a description"}
-                                                  name={"description"}
-                                                  value={autoPartFormData.component.description}
-                                                  onChange={handleChange}/>
-                                    </div>
-                                    <div className={styles.numberFields}>
-                                        <div className={styles.col}>
-                                            <label htmlFor={"quantity"}>Quantity</label>
-                                            <InputField border={"1px solid 9e9d9d"}
-                                                        handleChange={handleChange}
-                                                        width={"80px"}
-                                                        height={"30px"}
-                                                        id={"quantity"}
-                                                        type={"text"}
-                                                        backgroundColor={"#fff"}
-                                                        name={"stock"}
-                                                        value={`${autoPartFormData.component.stock}`}
-                                            />
-                                        </div>
-                                        <div className={styles.col}>
-                                            <label htmlFor={"price"}>Price</label>
-                                            <InputField border={"1px solid 9e9d9d"}
-                                                        handleChange={handleChange}
-                                                        width={"80px"}
-                                                        height={"30px"}
-                                                        id={"price"}
-                                                        type={"text"}
-                                                        backgroundColor={"#fff"}
-                                                        name={"price"}
-                                                        value={`${autoPartFormData.component.price}`}
-                                            />
-                                        </div>
-                                        <div className={styles.col}>
-                                            <label htmlFor={"weight"}>Weight</label>
-                                            <InputField border={"1px solid 9e9d9d"}
-                                                        handleChange={handleChange}
-                                                        width={"80px"}
-                                                        height={"30px"}
-                                                        id={"weight"}
-                                                        type={"text"}
-                                                        backgroundColor={"#fff"}
-                                                        name={"weight"}
-                                                        value={`${autoPartFormData.component.weight}`}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={styles.uploadImageContainer}>
-                                        <div className={styles.col}>
-                                            <label htmlFor={"image"}>Image
-                                                <div className={styles.customImageUpload}>
-                                                    <MaterialIcon icon={"cloud_upload"} size={30} color={"#9e9d9d"}/>
-                                                    <p style={{color: "#9e9d9d"}}>{
-                                                        isUploading ? "Uploading..." :
-                                                            isUploaded ? "Uploaded" :
-                                                                isNotUploaded ? "Failed!" :
-                                                                    "Image Upload"
-                                                    }</p>
-                                                </div>
-                                            </label>
-                                            <input type={"file"}
-                                                   name={"image"}
-                                                   id={"image"}
-                                                   style={{display: "none"}}
-                                                   onChange={fileSelectHandler}
-                                            />
-                                        </div>
-                                        <div>
-                                            {isUploading ? <Spinner height={"30px"} width={"30px"}/> :
-                                                isUploaded ? <MaterialIcon icon={"done"} size={24} color={'#4ecb71'}/> :
-                                                    isNotUploaded ?
-                                                        <MaterialIcon icon={"close"} size={24}
-                                                                      color={'#ff0000'}/> : null
-                                            }
-                                        </div>
-                                    </div>
+        <div className={styles.container}>
+            {errorMessage && <Alert message={errorMessage} onClose={() => setErrorMessage("")}/>}
+            <div className={styles.upperBarContainer}>
+                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")} key={getUniqueKey()}/>]}
+                          title="Add Product"
+                          subtitle="new product form"
+                />
+            </div>
+            <form className={styles.formContainer}>
+                <div className={styles.lowerCardContainer}>
+                    <div className={styles.buttonsContainer}>
+                        <Button label="Cancel"
+                                width={"15%"}
+                                color={"#007bff"}
+                                backgroundColor={"#fff"}
+                                border={"1px solid #007bff"}
+                                handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))}/>
+                        <Button label={"Submit"}
+                                width={"15%"}
+                                color={"#fff"}
+                                backgroundColor={"#007bff"}
+                                border={"none"}
+                                icon={<MaterialIcon icon={"send"} size={24} color={"#fff"}/>}
+                                handleClick={submitForm}
+                        />
+                    </div>
+                    <div className={styles.generalInformationContainer}>
+                        <div className={styles.row}>
+                            <p className={styles.title}>General Information</p>
+                        </div>
+                        <div className={styles.row}>
+                            {firstGeneralInfoRow}
+                        </div>
+                        <div className={styles.row}>
+                            <div className={styles.descriptionColumn}>
+                                <div className={styles.col}>
+                                    <label htmlFor={"description"}>Description</label>
+                                    <textarea placeholder={"Enter a description"}
+                                              name={"description"}
+                                              value={autoPartFormData.component.description}
+                                              onChange={handleChange}/>
                                 </div>
                             </div>
-                            <div className={styles.divider}>
-                                <Divider width={"943px"}/>
+                            <div className={styles.numberFieldsColumn}>
+                                {secondGeneralInfoCol}
                             </div>
-                            <div className={styles.detailedInformationContainer}>
-                                <div className={styles.firstCol}>
-                                    <p className={styles.title}>Detailed Information</p>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"make"}>Vehicle Make</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"make"}
-                                                    type={"text"}
-                                                    placeholder={"Enter vehicle make"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"vehicle_make"}
-                                                    value={autoPartFormData.vehicle_make}
-                                        />
-                                    </div>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"oem_number"}>OEM Number</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"oem_number"}
-                                                    type={"text"}
-                                                    placeholder={"Enter OEM number"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"oem_number"}
-                                                    value={autoPartFormData.oem_number}
-                                        />
-                                    </div>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"upc_number"}>UPC Number</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"upc_number"}
-                                                    type={"text"}
-                                                    placeholder={"Enter UPC number"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"upc_number"}
-                                                    value={autoPartFormData.upc_number}
-                                        />
-                                    </div>
+                            <div className={styles.uploadImageColumn}>
+                                <div className={styles.col}>
+                                    <label htmlFor={"image"}>Image
+                                        <div className={styles.customImageUpload}>
+                                            <MaterialIcon icon={"cloud_upload"} size={30} color={"#9e9d9d"}/>
+                                            <p style={{color: "#9e9d9d"}}>{
+                                                uploadStatus === 'uploading' ? "Uploading..." :
+                                                    uploadStatus === 'uploaded' ? "Uploaded" :
+                                                        uploadStatus === 'failed' ? "Failed!" :
+                                                            "Image Upload"
+                                            }</p>
+                                        </div>
+                                    </label>
+                                    <input type={"file"}
+                                           name={"image"}
+                                           id={"image"}
+                                           style={{display: "none"}}
+                                           onChange={fileSelectHandler}
+                                    />
                                 </div>
-                                <div className={styles.secondCol}>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"model"}>Enter vehicle model</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"model"}
-                                                    type={"text"}
-                                                    placeholder={"Enter vehicle model"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"vehicle_model"}
-                                                    value={autoPartFormData.vehicle_model}
-                                        />
-
-                                        <label htmlFor={"year"}>Enter vehicle year</label>
-                                        <InputField border={"1px solid #9e9d9d"}
-                                                    handleChange={handleChange}
-                                                    width={"195px"}
-                                                    height={"30px"}
-                                                    id={"year"}
-                                                    type={"text"}
-                                                    placeholder={"Enter vehicle year"}
-                                                    backgroundColor={"#fff"}
-                                                    name={"vehicle_year"}
-                                                    value={autoPartFormData.vehicle_year}
-                                        />
-                                    </div>
-                                </div>
-                                <div className={styles.thirdCol}>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"condition"}>Select condition</label>
-                                        <Select options={conditions}
-                                                handleChange={handleChange}
-                                                currentValue={autoPartFormData.condition}
-                                                name={"condition"}
-                                        />
-                                    </div>
-                                    <div className={styles.col}>
-                                        <label htmlFor={"category"}>Select category</label>
-                                        <Select options={categories}
-                                                handleChange={handleChange}
-                                                currentValue={autoPartFormData.category}
-                                                name={"category"}
-                                        />
-                                    </div>
+                                <div>
+                                    {uploadStatus === 'uploading' ? <Spinner height={"30px"} width={"30px"}/> :
+                                        uploadStatus === 'uploaded' ? <MaterialIcon icon={"done"} size={24} color={'#4ecb71'}/> :
+                                            uploadStatus === 'failed' ?
+                                                <MaterialIcon icon={"close"} size={24}
+                                                              color={'#ff0000'}/> : null
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div className={styles.divider}>
+                        <Divider width={"90%"}/>
+                    </div>
+                    <div className={styles.detailedInformationContainer}>
+                        <div className={styles.firstCol}>
+                            <p className={styles.title}>Detailed Information</p>
+                            {firstDetailedInfoCol}
+                        </div>
+                        <div className={styles.secondCol}>
+                            {secondDetailedInfoCol}
+                        </div>
+                        <div className={styles.thirdCol}>
+                            <div className={styles.col}>
+                                <label htmlFor={"condition"}>Select condition</label>
+                                <Select options={conditions}
+                                        handleChange={handleChange}
+                                        currentValue={autoPartFormData.condition}
+                                        name={"condition"}
+                                />
+                            </div>
+                            <div className={styles.col}>
+                                <label htmlFor={"category"}>Select category</label>
+                                <Select options={categories}
+                                        handleChange={handleChange}
+                                        currentValue={autoPartFormData.category}
+                                        name={"category"}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     )
 }

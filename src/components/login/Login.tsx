@@ -28,7 +28,7 @@ export function Login({handleChange, handleSubmit}: LoginProps) {
                 <form className={`${styles.formContainer} ${styles.commonProperties}`}>
                     {loginInputValues.map(([icon, placeholder, name, type], idx) => {
                         return (
-                            <div className={styles.input_field}>
+                            <div className={styles.input_field} key={idx}>
                                 <div className={styles.icon}>
                                     <MaterialIcon icon={icon} size={24} color={"#007bff"}/>
                                 </div>

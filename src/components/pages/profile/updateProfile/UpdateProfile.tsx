@@ -16,6 +16,7 @@ import {propertyLocations, Provider, ProviderType, UserProfile} from "../../../.
 import {API} from "../../../../constants";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
 import {Select} from "../../../select/Select";
+import {getUniqueKey} from "../../../../utils/functools";
 
 interface inputFieldType {
     label: string,
@@ -116,14 +117,14 @@ export function UpdateProfile() {
             acc.push([]);
         }
         const field = (
-            <div className={styles.headerFieldContainer}>
+            <div className={styles.headerFieldContainer} key={getUniqueKey()}>
                 <label htmlFor={rest.name}>{label}</label>
                 <InputField {...inputFieldCommonValues} {...rest} />
             </div>
         );
         acc[acc.length - 1].push(field); // Add the field to the last row
         return acc;
-    }, []).map(row => <div className={styles.row}>{row}</div>)
+    }, []).map(row => <div className={styles.row} key={getUniqueKey()}>{row}</div>)
 
     const isValidPassword = (password: string): boolean =>
         !(password && 1 <= password.length && password.length < 8);
@@ -239,7 +240,7 @@ export function UpdateProfile() {
             acc.push([]);
         }
         const field = (
-            <div className={styles.bodyFieldContainer}>
+            <div className={styles.bodyFieldContainer} key={getUniqueKey()}>
                 <label htmlFor={rest.name}>{label}</label>
                 <InputField {...inputFieldCommonValues} {...rest} />
             </div>
@@ -260,6 +261,7 @@ export function UpdateProfile() {
                         width={"20%"}
                         border="1px solid #007BFF"
                         backgroundColor="#FFF"
+                        key={getUniqueKey()}
                         handleClick={() => {
                             dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT))
                         }}
@@ -269,6 +271,7 @@ export function UpdateProfile() {
                                 width={"20%"}
                                 backgroundColor="#007BFF"
                                 color="#fff"
+                                key={getUniqueKey()}
                                 handleClick={submitForm}
                                 border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
 

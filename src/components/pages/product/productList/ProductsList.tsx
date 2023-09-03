@@ -114,7 +114,7 @@ export function ProductsList() {
             <div className={styles.header}>
                 <UpperBar title="Products List"
                           subtitle={`${autoPartsList.autoPartCount} products found`}
-                          components={[<SearchField handleChangeOnSearchField={handleChangeOnSearchField} handleKeyPress={handleKeyPress}/>]}/>
+                          components={[<SearchField handleChangeOnSearchField={handleChangeOnSearchField} handleKeyPress={handleKeyPress} key={getUniqueKey()}/>]}/>
             </div>
             <div className={styles.body}>
                 {isLoading ? <Spinner width={"140px"} height={"140px"}/> :

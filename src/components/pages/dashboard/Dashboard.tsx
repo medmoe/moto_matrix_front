@@ -13,6 +13,7 @@ import {zip} from "../../../utils/functools";
 import {BAR_COLORS} from "../../../constants";
 import {RecentOrder, recentOrdersTableMapping} from "../../../types/orderTypes";
 import {INVENTORY_LEVELS_DATA, POPULAR_PRODUCTS, DASHBOARD_CARDS_DATA, RECENT_ORDERS} from "../../../utils/mockData";
+import {getUniqueKey} from "../../../utils/functools";
 
 export function Dashboard() {
 
@@ -20,7 +21,7 @@ export function Dashboard() {
     return (
         <div className={styles.container}>
             <div className={styles.upperBarContainer}>
-                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")}/>]}/>
+                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")} key={getUniqueKey()}/>]}/>
             </div>
             <div className={styles.lowerContainer}>
                 <div className={styles.body}>

@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
 import {selectProviderProfile} from "../../../../features/user/activeUserSlice";
 import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
+import {getUniqueKey} from "../../../../utils/functools";
 
 interface ProfileProps {
     firstName?: string,
@@ -65,10 +66,10 @@ export function Profile({
                                                color="#fff"
                                                border="none"
                                                width={"20%"}
-                                               handleClick={() => {
-                                                   dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))
-                                               }}
-                                               icon={<MaterialIcon icon="edit" size={24} color="#fff"/>}
+                                               key={getUniqueKey()}
+                                               handleClick={() => {dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))}}
+                                               icon={<MaterialIcon icon="edit" size={24} color="#fff"
+                                               />}
                 />]} title="Profile" subtitle="Innovative Trailblazer"/>
             </div>
             <div className={styles.lowerContainer}>
@@ -111,8 +112,8 @@ export function Profile({
                         </div>
                         <div className={styles.descriptionContainer}>
                             <div className={styles.description}>
-                                {formatStoreDescription(providerProfile.store_description as string).map((paragraph, index) => {
-                                    return <p key={index}>{paragraph}</p>
+                                {providerProfile.store_description && formatStoreDescription(providerProfile.store_description).map((paragraph, idx) => {
+                                    return <p key={idx}>{paragraph}</p>
                                 })}
                             </div>
                         </div>
