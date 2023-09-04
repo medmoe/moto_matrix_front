@@ -1,5 +1,6 @@
 // Types
 export interface RecentOrder {
+    id: number,
     name: string,
     quantity: number,
     date: string,

@@ -1,19 +1,11 @@
 import React from "react";
 import styles from "./Dashboard.module.css";
-import {UpperBar} from "../../upperBar/UpperBar";
-import {SearchField} from "../../searchField/SearchField";
-import {Card} from "../../card/Card";
-import {Description} from "../../description/Description";
+import {Card, Description, Divider, DonutChart, GraphDescriptors, SearchField, Table, UpperBar} from "../../../../../components";
 import {Area, AreaChart, CartesianGrid, Tooltip} from "recharts";
-import {Divider} from "../../divider/Divider";
-import {GraphDescriptors} from "../../graphDescriptors/GraphDescriptors";
-import {DonutChart} from "../../donutChart/DonutChart";
-import {Table} from "../../table/Table";
-import {zip} from "../../../utils/functools";
-import {BAR_COLORS} from "../../../constants";
-import {RecentOrder, recentOrdersTableMapping} from "../../../types/orderTypes";
-import {INVENTORY_LEVELS_DATA, POPULAR_PRODUCTS, DASHBOARD_CARDS_DATA, RECENT_ORDERS} from "../../../utils/mockData";
-import {getUniqueKey} from "../../../utils/functools";
+import {zip} from "../../../../../utils/functools";
+import {BAR_COLORS} from "../../../../../constants";
+import {RecentOrder, recentOrdersTableMapping} from "../../../../../types/orderTypes";
+import {DASHBOARD_CARDS_DATA, INVENTORY_LEVELS_DATA, POPULAR_PRODUCTS, RECENT_ORDERS} from "../../../../../utils/mockData";
 
 export function Dashboard() {
 
@@ -21,7 +13,7 @@ export function Dashboard() {
     return (
         <div className={styles.container}>
             <div className={styles.upperBarContainer}>
-                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")} key={getUniqueKey()}/>]}/>
+                <UpperBar components={[<SearchField handleChangeOnSearchField={() => console.log("search")} key={0}/>]}/>
             </div>
             <div className={styles.lowerContainer}>
                 <div className={styles.body}>
@@ -111,7 +103,7 @@ export function Dashboard() {
                                     <p>Recent Orders</p>
                                 </div>
                                 <div className={styles.recentOrdersDetails}>
-                                    <Table <RecentOrder> data={RECENT_ORDERS} tableColumnsMapping={recentOrdersTableMapping}/>
+                                    <Table<RecentOrder> data={RECENT_ORDERS} tableColumnsMapping={recentOrdersTableMapping}/>
                                 </div>
                             </div>
                         </div>

@@ -1,25 +1,24 @@
 import {Meta, StoryObj} from "@storybook/react";
-
-import {UpdateProfile} from "./UpdateProfile";
 import {Provider} from "react-redux";
-import {store} from "../../../../store";
+import {store} from "../../../../../../store";
+import {Profile} from "./Profile";
 
 const meta = {
-    title: "Pages/Profile/UpdateProfile",
-    component: UpdateProfile,
+    title: "Pages/Profile/Profile",
+    component: Profile,
     parameters: {
         layout: "centered",
     },
     decorators: [(Story) => <Provider store={store}><Story /></Provider>],
-    tags : ["autodocs"],
-} satisfies Meta<typeof UpdateProfile>;
+    tags: ["autodocs"],
+} satisfies Meta<typeof Profile>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const UpdateProfilePage: Story = {
-    args : {
+export const ProfilePage: Story = {
+    args: {
 
     }
 }

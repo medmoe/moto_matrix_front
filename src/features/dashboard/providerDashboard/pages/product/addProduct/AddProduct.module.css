@@ -12,6 +12,14 @@
     background-color: #eee;
 }
 
+.spinner {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .upperBarContainer {
     height: 10%;
 }

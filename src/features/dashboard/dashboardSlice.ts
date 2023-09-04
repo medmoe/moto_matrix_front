@@ -13,6 +13,7 @@ export interface DashboardState {
 
 const initialState: DashboardState = {
     autoPartDetail: {
+        id: 0,
         component: {
             name: "",
             description: "",

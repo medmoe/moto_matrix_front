@@ -6,7 +6,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {updatePageName} from "../../dashboard/dashboardSlice";
 import {DASHBOARD_PAGES} from "../../../types/dashboardTypes";
-import {API} from "../../../constants";
+import {API, SPINNER_SIZE} from "../../../constants";
 import {ProfileType, User} from "../../../types/userTypes";
 import {updateConsumerProfile, updateProviderProfile} from "../activeUserSlice";
 
@@ -54,8 +54,10 @@ export function SignIn() {
             },
             withCredentials: true,
         }
+        setIsLoading(true);
         await axios.post(`${API}accounts/login/`, JSON.stringify(loginInfo), options)
             .then((res) => {
+                setIsLoading(false);
                 navigate("/dashboard");
                 if (res.data.userprofile.profile_type === ProfileType.Provider) {
                     dispatch(updateProviderProfile(res.data))
@@ -67,12 +69,15 @@ export function SignIn() {
                 dispatch(updatePageName(DASHBOARD_PAGES.DASHBOARD));
             })
             .catch((err) => {
+                setIsLoading(false);
                 err.response ? setErrorMessage(err.response.data.detail) : setErrorMessage(err.message);
             })
     }
     if (isLoading) {
         return (
-            <Spinner height={"120px"} width={"120px"}/>
+            <div className={styles.spinner}>
+                <Spinner height={SPINNER_SIZE.height} width={SPINNER_SIZE.width}/>
+            </div>
         )
     }
     return (

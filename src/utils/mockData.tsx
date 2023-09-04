@@ -13,11 +13,11 @@ export const POPULAR_PRODUCTS = [
 ]
 
 export const RECENT_ORDERS: TableRows<RecentOrder> = [
-    {name: "Mohammed abdelghafour bekhouche ", quantity: 100, date: "2023-07-30", status: "Paid"},
-    {name: "Noah David", quantity: 50, date: "2023-07-29", status: "Paid"},
-    {name: "Joe Shmoe", quantity: 0, date: "2023-07-28", status: "Pending"},
-    {name: "Joe Doe", quantity: 200, date: "2023-07-27", status: "Canceled"},
-    {name: "Xiang Li", quantity: 30, date: "2023-07-26", status: "Paid"},
+    {id: 0, name: "Mohammed abdelghafour bekhouche ", quantity: 100, date: "2023-07-30", status: "Paid"},
+    {id: 1, name: "Noah David", quantity: 50, date: "2023-07-29", status: "Paid"},
+    {id: 2, name: "Joe Shmoe", quantity: 0, date: "2023-07-28", status: "Pending"},
+    {id: 3, name: "Joe Doe", quantity: 200, date: "2023-07-27", status: "Canceled"},
+    {id: 4, name: "Xiang Li", quantity: 30, date: "2023-07-26", status: "Paid"},
 ]
 export const INVENTORY_LEVELS_DATA = [
     {

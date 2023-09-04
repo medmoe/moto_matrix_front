@@ -13,8 +13,23 @@ export interface Component {
     dimensions: string;
     location: string;
 }
+
+type ComponentWithoutImage = Omit<Component, 'image'>
+
 export interface AutoPartDetail {
+    id: number,
     component: Component,
+    category: AutoPartCategory;
+    vehicle_make: string,
+    vehicle_model: string,
+    vehicle_year: string,
+    condition: Condition;
+    oem_number: string,
+    upc_number: string
+}
+
+export interface AutoPartDetailWithoutImage {
+    component: ComponentWithoutImage,
     category: AutoPartCategory;
     vehicle_make: string,
     vehicle_model: string,
@@ -45,15 +60,19 @@ export enum AutoPartCategory {
 }
 
 // Mappings
-export const inventoryTableColumnsMapping: Record<string, string> = {
-    'Image': 'image',
-    'Name': 'name',
-    'Manufacturer': 'manufacturer',
-    'Price': 'price',
-    'Stock': 'stock',
-    'Weight': 'weight',
-    'Dimensions': 'dimensions',
-    'Location': 'location',
+export const inventoryTableColumnsMapping: Record<string, Record<string, string> | string> = {
+    'id': 'id',
+    'component': {
+        'Image': 'image',
+        'Name': 'name',
+        'Manufacturer': 'manufacturer',
+        'Price': 'price',
+        'Stock': 'stock',
+        'Weight': 'weight',
+        'Dimensions': 'dimensions',
+        'Location': 'location',
+        'Description': 'description'
+    },
     'Category': 'category',
     'Vehicle Make': 'vehicle_make',
     'Vehicle Model': 'vehicle_model',
@@ -61,5 +80,17 @@ export const inventoryTableColumnsMapping: Record<string, string> = {
     'Condition': 'condition',
     'OEM Number': 'oem_number',
     'UPC Number': 'upc_number',
-    'Description': 'description'
+}
+
+// Define a mapping for where each property belongs
+export const propertyLocation: { [key: string]: string } = {
+    'name': 'component',
+    'description': 'component',
+    'manufacturer': 'component',
+    'price': 'component',
+    'stock': 'component',
+    'image': 'component',
+    'weight': 'component',
+    'dimensions': 'component',
+    'location': 'component',
 }

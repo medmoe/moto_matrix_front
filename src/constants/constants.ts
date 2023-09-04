@@ -18,3 +18,12 @@ export const INPUT_FIELD_STYLE = {
     border: "1px solid #9e9d9d",
     height: "50px",
 }
+
+export const SPINNER_SIZE= {
+    width: "40px",
+    height: "40px",
+}
+
+export const IMAGE_SIZE = 35;
+export const IMAGE_KEY = 'image';
+export const DEFAULT_COLOR = '#D9DEDE'

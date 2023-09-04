@@ -1,16 +1,15 @@
 import React from "react";
 import styles from "./Profile.module.css";
-import {UpperBar} from "../../../upperBar/UpperBar";
-import {ProfileImage} from "../../../profileImage/ProfileImage";
-import {Rating} from "../../../rating/Rating";
-import {Button} from "../../../button/Button";
-import {Divider} from "../../../divider/Divider";
+import {UpperBar} from "../../../../../../components/upperBar/UpperBar";
+import {ProfileImage} from "../../../../../../components/profileImage/ProfileImage";
+import {Rating} from "../../../../../../components/rating/Rating";
+import {Button} from "../../../../../../components/button/Button";
+import {Divider} from "../../../../../../components/divider/Divider";
 import MaterialIcon from 'material-icons-react';
-import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {selectProviderProfile} from "../../../../features/user/activeUserSlice";
-import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
-import {getUniqueKey} from "../../../../utils/functools";
+import {useAppDispatch, useAppSelector} from "../../../../../../hooks";
+import {updatePageName} from "../../../../dashboardSlice";
+import {selectProviderProfile} from "../../../../../user/activeUserSlice";
+import {DASHBOARD_PAGES} from "../../../../../../types/dashboardTypes";
 
 interface ProfileProps {
     firstName?: string,
@@ -66,8 +65,10 @@ export function Profile({
                                                color="#fff"
                                                border="none"
                                                width={"20%"}
-                                               key={getUniqueKey()}
-                                               handleClick={() => {dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))}}
+                                               key={0}
+                                               handleClick={() => {
+                                                   dispatch(updatePageName(DASHBOARD_PAGES.UPDATE_ACCOUNT))
+                                               }}
                                                icon={<MaterialIcon icon="edit" size={24} color="#fff"
                                                />}
                 />]} title="Profile" subtitle="Innovative Trailblazer"/>

@@ -1,22 +1,15 @@
 import React, {FormEvent, JSX, useState} from "react";
 import styles from "./UpdateProfile.module.css";
-import {UpperBar} from "../../../upperBar/UpperBar";
-import {Button} from "../../../button/Button";
-import {InputField} from "../../../inputField/InputField";
-import {ProfileImage} from "../../../profileImage/ProfileImage";
-import {Divider} from "../../../divider/Divider";
+import {Alert, Button, Divider, InputField, ProfileImage, Select, Spinner, UpperBar} from "../../../../../../components";
 import MaterialIcon from "material-icons-react";
-import {useAppDispatch, useAppSelector} from "../../../../hooks";
-import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice";
-import {selectProviderProfile, updateProviderProfile} from "../../../../features/user/activeUserSlice";
+import {useAppDispatch, useAppSelector} from "../../../../../../hooks";
+import {updateActiveIndex, updatePageName} from "../../../../dashboardSlice";
+import {selectProviderProfile, updateProviderProfile} from "../../../../../user/activeUserSlice";
 import {useNavigate} from "react-router-dom";
-import {Alert} from "../../../alert/Alert";
 import axios from "axios";
-import {propertyLocations, Provider, ProviderType, UserProfile} from "../../../../types/userTypes";
-import {API} from "../../../../constants";
-import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
-import {Select} from "../../../select/Select";
-import {getUniqueKey} from "../../../../utils/functools";
+import {propertyLocations, Provider, ProviderType} from "../../../../../../types/userTypes";
+import {API, SPINNER_SIZE} from "../../../../../../constants";
+import {DASHBOARD_PAGES} from "../../../../../../types/dashboardTypes";
 
 interface inputFieldType {
     label: string,
@@ -36,6 +29,8 @@ export function UpdateProfile() {
     let initState: Provider = providerProfile
     const [profileData, setProfileData] = useState(initState);
     const [errorMessage, setErrorMessage] = useState("");
+    const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
+    const [isUploading, setIsUploading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const UNAUTHORIZED: number = 401;
@@ -45,15 +40,7 @@ export function UpdateProfile() {
         event.preventDefault();
         const target = event.target as HTMLInputElement
         const location = propertyLocations[target.name]
-        let updatedData: {
-            provider_type?: ProviderType;
-            store_logo?: string;
-            userprofile: UserProfile;
-            store_name?: string;
-            number_of_sales?: number;
-            cached_average_rating?: number;
-            store_description?: string
-        };
+        let updatedData: Provider
         switch (location) {
             case 'user':
                 updatedData = {
@@ -117,14 +104,14 @@ export function UpdateProfile() {
             acc.push([]);
         }
         const field = (
-            <div className={styles.headerFieldContainer} key={getUniqueKey()}>
+            <div className={styles.headerFieldContainer} key={idx}>
                 <label htmlFor={rest.name}>{label}</label>
                 <InputField {...inputFieldCommonValues} {...rest} />
             </div>
         );
         acc[acc.length - 1].push(field); // Add the field to the last row
         return acc;
-    }, []).map(row => <div className={styles.row} key={getUniqueKey()}>{row}</div>)
+    }, []).map((row, idx) => <div className={styles.row} key={idx}>{row}</div>)
 
     const isValidPassword = (password: string): boolean =>
         !(password && 1 <= password.length && password.length < 8);
@@ -180,6 +167,8 @@ export function UpdateProfile() {
             }
         }
 
+        setIsUploading(true);
+
         const options = {
             headers: {'Content-Type': 'application/json'},
             withCredentials: true
@@ -190,6 +179,7 @@ export function UpdateProfile() {
             options
         )
             .then((res) => {
+                setIsUploading(false);
                 dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT));
                 dispatch(updateProviderProfile({...res.data, ...res.data.user}));
             })
@@ -198,13 +188,14 @@ export function UpdateProfile() {
                     navigate("/");
                     dispatch(updateActiveIndex(0));
                 } else {
-                    console.log(err);
-                    setErrorMessage(err.response.data.detail);
+                    setIsUploading(false);
+                    setErrorMessage("Update profile failed!");
                 }
             })
     }
 
     const fileSelectedHandler = async (event: FormEvent) => {
+        setUploadStatus('uploading');
         const target = event.target as HTMLInputElement
         const files = target.files as FileList
         const file = files[0] as File
@@ -224,8 +215,10 @@ export function UpdateProfile() {
                         profile_pic: res.data.file
                     }
                 }))
+                setUploadStatus('uploaded');
             })
             .catch((err) => {
+                setUploadStatus('failed')
                 if (err.data && err.data.detail) {
                     setErrorMessage(err.data.detail);
                 } else {
@@ -240,7 +233,7 @@ export function UpdateProfile() {
             acc.push([]);
         }
         const field = (
-            <div className={styles.bodyFieldContainer} key={getUniqueKey()}>
+            <div className={styles.bodyFieldContainer} key={idx}>
                 <label htmlFor={rest.name}>{label}</label>
                 <InputField {...inputFieldCommonValues} {...rest} />
             </div>
@@ -249,6 +242,19 @@ export function UpdateProfile() {
         return acc
     }, [[]])
 
+    const renderUploadIcon = (uploadStatus: 'idle' | 'uploading' | 'uploaded' | 'failed'): JSX.Element | null => {
+        switch (uploadStatus) {
+            case "idle":
+            case "uploaded":
+                return <div className={styles.cameraContainer}><MaterialIcon icon={"photo_camera"} size={40} color={'#fff'}/></div>
+            case "uploading":
+                return <div className={styles.cameraContainer}><Spinner width={"10px"} height={"10px"}/></div>
+            case "failed":
+                return <div className={styles.cameraContainer}><MaterialIcon icon={"close"} size={40} color={'#ff0000'}/></div>
+            default:
+                return null
+        }
+    }
     return (
         <form className={styles.container}>
             {errorMessage && <Alert message={errorMessage} onClose={() => setErrorMessage("")}/>}
@@ -261,7 +267,7 @@ export function UpdateProfile() {
                         width={"20%"}
                         border="1px solid #007BFF"
                         backgroundColor="#FFF"
-                        key={getUniqueKey()}
+                        key={0}
                         handleClick={() => {
                             dispatch(updatePageName(DASHBOARD_PAGES.ACCOUNT))
                         }}
@@ -271,7 +277,7 @@ export function UpdateProfile() {
                                 width={"20%"}
                                 backgroundColor="#007BFF"
                                 color="#fff"
-                                key={getUniqueKey()}
+                                key={1}
                                 handleClick={submitForm}
                                 border="none" icon={<MaterialIcon icon="send" size={24} color="#fff"/>}/>
 
@@ -279,73 +285,74 @@ export function UpdateProfile() {
                     }
                 />
             </div>
-            <div className={styles.lowerContainer}>
-                <div className={`${styles.largeCardContainer} ${styles.text}`}>
-                    <div className={styles.wrapper}>
-                        <div className={styles.header}>
-                            <div className={styles.profileImageContainer}>
-                                <div className={styles.uploadContainer}>
-                                    <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
-                                                  alt="profile image"
-                                                  width="140px" height="140px"/>
+            {isUploading ? <div className={styles.spinner}><Spinner width={SPINNER_SIZE.width} height={SPINNER_SIZE.height}/></div> :
+                <div className={styles.lowerContainer}>
+                    <div className={`${styles.largeCardContainer} ${styles.text}`}>
+                        <div className={styles.wrapper}>
+                            <div className={styles.header}>
+                                <div className={styles.profileImageContainer}>
+                                    <div className={styles.uploadContainer}>
+                                        <ProfileImage src={providerProfile.userprofile.profile_pic ? providerProfile.userprofile.profile_pic : "#"}
+                                                      alt="profile image"
+                                                      width="140px" height="140px"/>
+                                    </div>
+                                    <div className={styles.fileUpload}>
+                                        <label htmlFor="file-upload" className={styles.customFileUpload}>
+                                            {renderUploadIcon(uploadStatus)}
+                                        </label>
+                                        <input id="file-upload"
+                                               type="file"
+                                               onChange={fileSelectedHandler}
+                                               style={{display: 'none'}}
+                                        />
+                                    </div>
+                                    <p className={styles.title}>Account Information</p>
                                 </div>
-                                <div className={styles.fileUpload}>
-                                    <label htmlFor="file-upload" className={styles.customFileUpload}>
-                                        <div className={styles.cameraContainer}>
-                                            <MaterialIcon icon="photo_camera" size={40} color="#fff"/>
-                                        </div>
-                                    </label>
-                                    <input id="file-upload"
-                                           type="file"
-                                           onChange={fileSelectedHandler}
-                                           style={{display: 'none'}}
-                                    />
-                                </div>
-                                <p className={styles.title}>Account Information</p>
-                            </div>
-                            <div className={styles.accountInformationContainer}>
-                                {accountInformationInputFields}
-                            </div>
-                        </div>
-                        <div className={styles.divider}>
-                            <Divider width="90%"/>
-                        </div>
-                        <div className={`${styles.body}`}>
-                            <div className={styles.col}>
-                                <div>
-                                    <p className={styles.title}>Contact Information</p>
-                                </div>
-                                {firstContactCol}
-                            </div>
-                            <div className={styles.col}>
-                                <div className={styles.titleHidden}>
-                                    <p className={styles.title}>Contact Information</p>
-                                </div>
-                                {secondContactCol}
-                                <div className={styles.bodyFieldContainer}>
-                                    <label htmlFor={"provider_type"}>Select business type</label>
-                                    <Select options={providerTypes}
-                                            handleChange={handleChange}
-                                            currentValue={profileData.provider_type}
-                                            name={"provider_type"}/>
+                                <div className={styles.accountInformationContainer}>
+                                    {accountInformationInputFields}
                                 </div>
                             </div>
-                            <div className={styles.col}>
-                                <div className={styles.titleHidden}>
-                                    <p className={styles.title}>Contact Information</p>
+                            <div className={styles.divider}>
+                                <Divider width="90%"/>
+                            </div>
+                            <div className={`${styles.body}`}>
+                                <div className={styles.col}>
+                                    <div>
+                                        <p className={styles.title}>Contact Information</p>
+                                    </div>
+                                    {firstContactCol}
                                 </div>
-                                <div className={styles.bodyFieldContainer}>
-                                    <label htmlFor="store_description">Bio</label>
-                                    <textarea placeholder="Describe what you do here"
-                                              value={profileData.store_description}
-                                              name="store_description"
-                                              onChange={handleChange}/>
+                                <div className={styles.col}>
+                                    <div className={styles.titleHidden}>
+                                        <p className={styles.title}>Contact Information</p>
+                                    </div>
+                                    {secondContactCol}
+                                    <div className={styles.bodyFieldContainer}>
+                                        <label htmlFor={"provider_type"}>Select business type</label>
+                                        <Select options={providerTypes}
+                                                handleChange={handleChange}
+                                                currentValue={profileData.provider_type}
+                                                name={"provider_type"}/>
+                                    </div>
+                                </div>
+                                <div className={styles.col}>
+                                    <div className={styles.titleHidden}>
+                                        <p className={styles.title}>Contact Information</p>
+                                    </div>
+                                    <div className={styles.bodyFieldContainer}>
+                                        <label htmlFor="store_description">Bio</label>
+                                        <textarea placeholder="Describe what you do here"
+                                                  value={profileData.store_description}
+                                                  name="store_description"
+                                                  onChange={handleChange}/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+
         </form>
     )
 }

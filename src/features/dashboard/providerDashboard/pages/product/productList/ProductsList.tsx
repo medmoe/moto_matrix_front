@@ -1,21 +1,17 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from './ProductsList.module.css';
-import {SearchField} from "../../../searchField/SearchField";
-import {Button} from "../../../button/Button";
-import {Table} from "../../../table/Table";
-import {UpperBar} from "../../../upperBar/UpperBar";
-import {Pagination} from "../../../pagination/Pagination";
+import {Button, SearchField, Spinner, Table, UpperBar} from "../../../../../../components";
+import {Pagination} from "../../../../../../components/pagination/Pagination";
 import {ProductStatus} from "../productStatus/ProductStatus";
 import MaterialIcon from 'material-icons-react';
-import {getUniqueKey, reorderWithPriority} from "../../../../utils/functools";
-import {useAppDispatch} from "../../../../hooks";
-import {updateActiveIndex, updatePageName} from "../../../../features/dashboard/dashboardSlice"
-import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../types/productTypes";
-import {API, PRODUCT_LIST_PAGE_SIZE} from "../../../../constants";
-import {ResponseStatusCodes} from "../../../../types/generalTypes";
-import {DASHBOARD_PAGES} from "../../../../types/dashboardTypes";
+import {reorderWithPriority} from "../../../../../../utils/functools";
+import {useAppDispatch} from "../../../../../../hooks";
+import {updateActiveIndex, updatePageName} from "../../../../dashboardSlice"
+import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../../../types/productTypes";
+import {API, PRODUCT_LIST_PAGE_SIZE, SPINNER_SIZE} from "../../../../../../constants";
+import {ResponseStatusCodes} from "../../../../../../types/generalTypes";
+import {DASHBOARD_PAGES} from "../../../../../../types/dashboardTypes";
 import axios from "axios";
-import {Spinner} from "../../../spinner/Spinner";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
 interface AutoPartsResponse {
@@ -45,9 +41,9 @@ export function ProductsList() {
     const startingItem: number = PRODUCT_LIST_PAGE_SIZE * (activePage - 1) + 1;
     const endingItem: number = Math.min(PRODUCT_LIST_PAGE_SIZE * activePage, autoPartsList.autoPartCount);
 
-    const fetchAutoParts = async (url: string | null, params: {[key:string]: string}={}) => {
+    const fetchAutoParts = async (url: string | null, params: { [key: string]: string } = {}) => {
         if (!url) return;
-        await axios.get(url,{withCredentials: true, params: params})
+        await axios.get(url, {withCredentials: true, params: params})
             .then((res) => {
                 setAutoPartsList({
                     autoParts: res.data.results,
@@ -114,17 +110,18 @@ export function ProductsList() {
             <div className={styles.header}>
                 <UpperBar title="Products List"
                           subtitle={`${autoPartsList.autoPartCount} products found`}
-                          components={[<SearchField handleChangeOnSearchField={handleChangeOnSearchField} handleKeyPress={handleKeyPress} key={getUniqueKey()}/>]}/>
+                          components={[<SearchField handleChangeOnSearchField={handleChangeOnSearchField} handleKeyPress={handleKeyPress}
+                                                    key={0}/>]}/>
             </div>
             <div className={styles.body}>
-                {isLoading ? <Spinner width={"140px"} height={"140px"}/> :
+                {isLoading ? <Spinner width={SPINNER_SIZE.width} height={SPINNER_SIZE.height}/> :
                     <div className={styles.largeCardContainer}>
                         <div className={styles.upper}>
                             <div className={styles.productStatus}>
                                 {productStatus.map((status, index) => {
                                     return <ProductStatus title={status}
                                                           isActive={index === productStatusActiveIndex}
-                                                          key={getUniqueKey()}
+                                                          key={index}
                                                           handleClick={() => {
                                                               setProductStatusActiveIndex(index)
                                                               setAutoPartsList({
@@ -139,11 +136,11 @@ export function ProductsList() {
                                 <Button
                                     width={"20%"}
                                     label="Add Product"
-                                        icon={<MaterialIcon icon="add" size={24} color="#fff"/>}
-                                        backgroundColor="#007bff"
-                                        color="#fff"
-                                        border="none"
-                                        handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT))}/>
+                                    icon={<MaterialIcon icon="add" size={24} color="#fff"/>}
+                                    backgroundColor="#007bff"
+                                    color="#fff"
+                                    border="none"
+                                    handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT))}/>
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
