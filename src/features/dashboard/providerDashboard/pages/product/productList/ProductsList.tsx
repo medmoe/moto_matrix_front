@@ -145,7 +145,8 @@ export function ProductsList() {
                         </div>
                         <div className={styles.tableContainer}>
                             <Table<AutoPartDetail> data={autoPartsList.autoParts}
-                                                   tableColumnsMapping={inventoryTableColumnsMapping}/>
+                                                   tableColumnsMapping={inventoryTableColumnsMapping}
+                            handleRowDetail={handleRowDetail}/>
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>

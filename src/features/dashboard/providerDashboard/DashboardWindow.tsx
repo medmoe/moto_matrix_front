@@ -7,17 +7,18 @@ import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} f
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
 import {selectPageName, updateActiveIndex, updatePageName} from '../dashboardSlice'
-import {selectConsumerProfile, selectProviderProfile} from "../../user/activeUserSlice";
+import {selectProviderProfile} from "../../user/activeUserSlice";
 import {Provider} from "../../../types/userTypes";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
     const providerProfile = useAppSelector(selectProviderProfile) as Provider;
     const pageName = useAppSelector(selectPageName);
+
     const dispatch = useAppDispatch();
-    const {DASHBOARD, ...restOfPages} = DASHBOARD_PAGES
+    const {DASHBOARD, ...rest} = DASHBOARD_PAGES
     const pages: { [key: string]: JSX.Element } = {
-        'DASHBOARD': <Dashboard/>,
+        "DASHBOARD": <Dashboard/>,
         'INVENTORY': <ProductsList/>,
         'ACCOUNT': <Profile firstName={providerProfile.userprofile.user.first_name}
                             lastName={providerProfile.userprofile.user.last_name}
@@ -35,7 +36,7 @@ export function DashboardWindow() {
                             numberOfSales={providerProfile.number_of_sales}
         />,
         'UPDATE_ACCOUNT': <UpdateProfile/>,
-        'ADD_PRODUCT': <AddProduct/>
+        'ADD_PRODUCT': <AddProduct/>,
     }
     const handleLogout = async () => {
         const options = {
