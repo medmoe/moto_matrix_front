@@ -19,7 +19,7 @@ export function ProductImages({images}: ProductImagesProps) {
         <div className={styles.container}>
             <div className={styles.imagesColumn}>
                 {images.map((url: string | undefined, index: number) => {
-                    const element: JSX.Element = url
+                    const element: JSX.Element = url?.startsWith('http')
                         ? <img src={url} alt={'product image'}/>
                         : defaultImage
                     return <div className={styles.image} key={index} onClick={handleClick}> {element} </div>

@@ -50,11 +50,30 @@
     height: 40%;
     display: flex;
     gap: 30%;
+    border: 1px solid red;
 }
 
 .description {
     width: 40%;
     padding-left: 2%;
+}
+
+.keys {
+    font-weight: bolder;
+    width: 50%;
+}
+
+.values {
+    width: 50%;
+}
+
+.row {
+    display: flex;
+
+}
+.innerRow {
+    display: flex;
+    width: 50%;
 }
 
 
