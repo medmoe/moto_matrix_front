@@ -1,11 +1,90 @@
 import React from "react";
-import {UpperBar, ProductImages} from "../../../../../../components";
+import {UpperBar, ProductImages, Button, Rating, Divider} from "../../../../../../components";
 import {AutoPartDetail} from "../../../../../../types/productTypes";
+import styles from './ProductDetails.module.css';
+import MaterialIcon from 'material-icons-react';
 
+interface ProductDetailsProps {
+    autoPartDetail?: AutoPartDetail
+}
 
-export function ProductDetails (autoPart: AutoPartDetail){
+const BUTTON_WIDTH = "20%";
+
+export function ProductDetails({autoPartDetail}: ProductDetailsProps) {
+    const pen: JSX.Element = <MaterialIcon icon={"edit"} size={35} color={"#fff"}/>
+    const deleteProduct = () => {
+
+    }
+    const cancelUpdate = () => {
+
+    }
+    const updateProduct = () => {
+
+    }
     return (
-        <div>
+        <div className={styles.container}>
+            <div className={styles.upper}>
+                <UpperBar title={autoPartDetail?.component.name}
+                          subtitle={<Rating rate={4.5}/>}
+                          components={[
+                              <Button key={0} label={"Delete"} color={"#f00"} backgroundColor={"#fff"} border={"1px solid #ff0000"}
+                                      width={BUTTON_WIDTH} handleClick={deleteProduct}/>,
+                              <Button key={1} label={"Cancel"} color={"#007bff"} backgroundColor={"#fff"} border={"1px solid #007bff"}
+                                      width={BUTTON_WIDTH} handleClick={cancelUpdate}/>,
+                              <Button key={2} label={"Update"} color={"#fff"} backgroundColor={"#007bff"} border={"none"} icon={pen}
+                                      width={BUTTON_WIDTH} handleClick={updateProduct}/>,
+                          ]}/>
+            </div>
+            <div className={styles.lower}>
+                <div className={styles.largeCard}>
+                    <div className={styles.firstRow}>
+                        <div className={styles.images}>
+                            <ProductImages
+                                images={['https://picsum.photos/40', 'https://picsum.photos/40', 'https://picsum.photos/40', 'https://picsum.photos/40', 'https://picsum.photos/40']}/>
+                        </div>
+                        <div className={styles.generalInformation}>
+                            <div className={styles.firstRow}>
+                                <div>
+                                    <p>Provider: We need to update the fetch auto parts in the future to include provider data</p>
+                                    <p>Manufacturer: {autoPartDetail?.component.manufacturer}</p>
+                                    <p>Category: {autoPartDetail?.category.toLowerCase()}</p>
+                                    <p>Stock: {autoPartDetail?.component.stock}</p>
+                                    <p>Condition: {autoPartDetail?.condition.toLowerCase()}</p>
+                                    <p>Price: {autoPartDetail?.component.price}</p>
+                                </div>
+                            </div>
+                            <Divider width={"90%"}/>
+                            <div className={styles.secondRow}>
+                                <div>
+                                    <p>Vehicle make: {autoPartDetail?.vehicle_make}</p>
+                                    <p>Vehicle model: {autoPartDetail?.vehicle_model}</p>
+                                    <p>Vehicle year: {autoPartDetail?.vehicle_year}</p>
+                                </div>
+                                <div>
+                                    <p>OEM number: {autoPartDetail?.oem_number}</p>
+                                    <p>UPC number: {autoPartDetail?.upc_number}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.secondRow}>
+                        <div className={styles.description}>
+                            <p>Description: Introducing the NexaDrive™ Quantum Suspension Module, the future of automotive ride comfort and
+                                performance. This revolutionary auto part is designed for the car enthusiast who craves the perfect harmony of
+                                unparalleled smoothness and unbeatable road grip.
+
+                            </p>
+                        </div>
+                        <div>
+
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
     )

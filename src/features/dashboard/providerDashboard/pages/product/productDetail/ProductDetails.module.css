@@ -1,0 +1,61 @@
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    color: #000;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.upper {
+    height: 10%;
+}
+
+.lower {
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.largeCard {
+    width: 95%;
+    height: 95%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.firstRow {
+    display: flex;
+    height: 60%;
+    gap: 2%;
+}
+
+.images {
+    width: 40%;
+}
+
+.generalInformation {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.secondRow {
+    height: 40%;
+    display: flex;
+    gap: 30%;
+}
+
+.description {
+    width: 40%;
+    padding-left: 2%;
+}
+
+
+

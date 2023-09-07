@@ -4,10 +4,10 @@ import {TableColumnMappingRecord, TableRows} from "../../types/generalTypes";
 import {RowCells} from "./RowCells";
 
 
-interface TableProps<T extends {[key: string]: any }> {
+interface TableProps<T extends { [key: string]: any }> {
     data: TableRows<T>,
     tableColumnsMapping: TableColumnMappingRecord,
-    handleRowDetail: (event: React.MouseEvent) => void
+    handleRowDetail?: (event: React.MouseEvent<HTMLTableRowElement>, row: T, rowNumber: number) => void
 }
 
 function getColumnsNames(obj: TableColumnMappingRecord): string[] {
@@ -21,7 +21,7 @@ function getColumnsNames(obj: TableColumnMappingRecord): string[] {
     }, [])
 }
 
-export function Table<T>({data, tableColumnsMapping, handleRowDetail}: TableProps<T & {[key: string]: any }>) {
+export function Table<T>({data, tableColumnsMapping, handleRowDetail}: TableProps<T & { [key: string]: any }>) {
     return (
         <table className={styles.table}>
             <thead>
@@ -32,7 +32,12 @@ export function Table<T>({data, tableColumnsMapping, handleRowDetail}: TableProp
             </tr>
             </thead>
             <tbody>
-            {data.map((row, rowNumber) => <tr key={rowNumber} onClick={handleRowDetail}>
+            {data.map((row, rowNumber) => <tr key={rowNumber}
+                                              onClick={(event) => {
+                                                  if (handleRowDetail) {
+                                                      handleRowDetail(event, row, rowNumber)
+                                                  }
+                                              }}>
                 <RowCells columnMapping={tableColumnsMapping} rowData={row} rowNumber={rowNumber}/>
             </tr>)}
             </tbody>

@@ -18,7 +18,7 @@ export function ProductImages({images}: ProductImagesProps) {
     return (
         <div className={styles.container}>
             <div className={styles.imagesColumn}>
-                {images.map((url: string, index: number) => {
+                {images.map((url: string | undefined, index: number) => {
                     const element: JSX.Element = url
                         ? <img src={url} alt={'product image'}/>
                         : defaultImage

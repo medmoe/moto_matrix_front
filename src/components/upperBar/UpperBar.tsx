@@ -3,7 +3,7 @@ import styles from "./UpperBar.module.css"
 
 interface UpperBarProps {
     title?: string,
-    subtitle?: string,
+    subtitle?: string | JSX.Element,
     components?: JSX.Element[],
 }
 

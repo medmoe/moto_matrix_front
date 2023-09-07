@@ -3,16 +3,17 @@ import axios from "axios";
 import styles from './Dashboard.module.css';
 import {DASHBOARD_PAGES} from "../../../types/dashboardTypes";
 import {API} from "../../../constants";
-import {AddProduct, Dashboard, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
+import {AddProduct, Dashboard, ProductDetails, ProductsList, Profile, SideMenu, UpdateProfile} from "../../../components";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
-import {selectPageName, updateActiveIndex, updatePageName} from '../dashboardSlice'
+import {selectAutoPartDetail, selectPageName, updateActiveIndex, updatePageName} from '../dashboardSlice'
 import {selectProviderProfile} from "../../user/activeUserSlice";
 import {Provider} from "../../../types/userTypes";
 
 export function DashboardWindow() {
     const navigate = useNavigate();
     const providerProfile = useAppSelector(selectProviderProfile) as Provider;
+    const autoPartDetail = useAppSelector(selectAutoPartDetail);
     const pageName = useAppSelector(selectPageName);
 
     const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ export function DashboardWindow() {
         />,
         'UPDATE_ACCOUNT': <UpdateProfile/>,
         'ADD_PRODUCT': <AddProduct/>,
+        'PRODUCT_DETAILS': <ProductDetails autoPartDetail={autoPartDetail} />
     }
     const handleLogout = async () => {
         const options = {
