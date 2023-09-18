@@ -9,6 +9,7 @@ export interface DashboardState {
     autoPartDetail: AutoPartDetail,
     activeIndex: number,
     pageName: string,
+    isUpdate: boolean,
 }
 
 const initialState: DashboardState = {
@@ -35,6 +36,7 @@ const initialState: DashboardState = {
     },
     activeIndex: 0,
     pageName: DASHBOARD_PAGES.DASHBOARD,
+    isUpdate: false,
 }
 
 export const dashboardSlice = createSlice({
@@ -50,15 +52,20 @@ export const dashboardSlice = createSlice({
         updatePageName: (state, action: PayloadAction<string>) => {
             state.pageName = action.payload;
         },
+        updateIsUpdate: (state, action: PayloadAction<boolean>) => {
+            state.isUpdate = action.payload;
+        }
     }
 })
 
 export const selectAutoPartDetail = (state: RootState) => state.dashboard.autoPartDetail;
 export const selectActiveIndex = (state: RootState) => state.dashboard.activeIndex;
 export const selectPageName = (state: RootState) => state.dashboard.pageName;
+export const selectIsUpdate = (state: RootState) => state.dashboard.isUpdate;
 export const {
     updateAutoPartDetail,
     updatePageName,
-    updateActiveIndex
+    updateActiveIndex,
+    updateIsUpdate
 } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

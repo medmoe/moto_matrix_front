@@ -50,11 +50,10 @@
     height: 40%;
     display: flex;
     gap: 30%;
-    border: 1px solid red;
 }
 
 .description {
-    width: 40%;
+    width: 90%;
     padding-left: 2%;
 }
 

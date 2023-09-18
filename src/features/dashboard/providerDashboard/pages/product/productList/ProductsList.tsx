@@ -6,7 +6,7 @@ import {ProductStatus} from "../productStatus/ProductStatus";
 import MaterialIcon from 'material-icons-react';
 import {reorderWithPriority} from "../../../../../../utils/functools";
 import {useAppDispatch} from "../../../../../../hooks";
-import {updateActiveIndex, updateAutoPartDetail, updatePageName} from "../../../../dashboardSlice"
+import {updateActiveIndex, updateAutoPartDetail, updateIsUpdate, updatePageName} from "../../../../dashboardSlice"
 import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../../../types/productTypes";
 import {API, PRODUCT_LIST_PAGE_SIZE, SPINNER_SIZE} from "../../../../../../constants";
 import {ResponseStatusCodes} from "../../../../../../types/generalTypes";
@@ -109,6 +109,12 @@ export function ProductsList() {
     const handleRowDetail = (event: React.MouseEvent<Element, MouseEvent>, row: AutoPartDetail, rowNumber: number) => {
         dispatch(updateAutoPartDetail(row));
         dispatch(updatePageName(DASHBOARD_PAGES.PRODUCT_DETAILS));
+        dispatch(updateIsUpdate(true));
+    }
+
+    const handleAddProduct = () => {
+        dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT));
+        dispatch(updateIsUpdate(false));
     }
     return (
         <div className={styles.container}>
@@ -145,7 +151,7 @@ export function ProductsList() {
                                     backgroundColor="#007bff"
                                     color="#fff"
                                     border="none"
-                                    handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT))}/>
+                                    handleClick={handleAddProduct}/>
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
