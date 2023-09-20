@@ -107,6 +107,7 @@ export function ProductsList() {
     }
 
     const handleRowDetail = (event: React.MouseEvent<Element, MouseEvent>, row: AutoPartDetail, rowNumber: number) => {
+        console.log(row);
         dispatch(updateAutoPartDetail(row));
         dispatch(updatePageName(DASHBOARD_PAGES.PRODUCT_DETAILS));
         dispatch(updateIsUpdate(true));
