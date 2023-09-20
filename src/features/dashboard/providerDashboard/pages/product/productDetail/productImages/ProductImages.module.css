@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    gap: 2%;
+    height: 100%;
+    padding-top: 2%;
+}
+
+.imagesColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2%;
+    width: 10%;
+    height: 93%;
+}
+
+.image {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+}
+
+.selectedImage {
+    width: 88%;
+    height: 93%;
+    background-color: #d9d9d9;
+}

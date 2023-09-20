@@ -189,6 +189,7 @@ export function UpdateProfile() {
                     dispatch(updateActiveIndex(0));
                 } else {
                     setIsUploading(false);
+                    console.log(err);
                     setErrorMessage("Update profile failed!");
                 }
             })

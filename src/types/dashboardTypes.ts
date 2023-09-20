@@ -1,5 +1,5 @@
 // Types
-export type DashboardPageKeys = 'DASHBOARD' | 'INVENTORY' | 'ACCOUNT' | 'UPDATE_ACCOUNT' | 'ADD_PRODUCT';
+export type DashboardPageKeys = 'DASHBOARD' | 'INVENTORY' | 'ACCOUNT' | 'UPDATE_ACCOUNT' | 'ADD_PRODUCT' | 'PRODUCT_DETAILS';
 
 // Mappings
 export const DASHBOARD_PAGES: Record<DashboardPageKeys, string> = {
@@ -8,4 +8,5 @@ export const DASHBOARD_PAGES: Record<DashboardPageKeys, string> = {
     ACCOUNT: 'ACCOUNT',
     UPDATE_ACCOUNT: 'UPDATE_ACCOUNT',
     ADD_PRODUCT: 'ADD_PRODUCT',
+    PRODUCT_DETAILS: 'PRODUCT_DETAILS',
 }

@@ -29,6 +29,7 @@ export interface AutoPartDetail {
 }
 
 export interface AutoPartDetailWithoutImage {
+    id?: number,
     component: ComponentWithoutImage,
     category: AutoPartCategory;
     vehicle_make: string,

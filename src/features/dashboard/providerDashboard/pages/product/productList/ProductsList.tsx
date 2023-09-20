@@ -6,7 +6,7 @@ import {ProductStatus} from "../productStatus/ProductStatus";
 import MaterialIcon from 'material-icons-react';
 import {reorderWithPriority} from "../../../../../../utils/functools";
 import {useAppDispatch} from "../../../../../../hooks";
-import {updateActiveIndex, updatePageName} from "../../../../dashboardSlice"
+import {updateActiveIndex, updateAutoPartDetail, updateIsUpdate, updatePageName} from "../../../../dashboardSlice"
 import {AutoPartDetail, inventoryTableColumnsMapping} from "../../../../../../types/productTypes";
 import {API, PRODUCT_LIST_PAGE_SIZE, SPINNER_SIZE} from "../../../../../../constants";
 import {ResponseStatusCodes} from "../../../../../../types/generalTypes";
@@ -105,6 +105,18 @@ export function ProductsList() {
             void fetchAutoParts(`${API}components/search/?pageSize=${PRODUCT_LIST_PAGE_SIZE}`, {'search': searchText})
         }
     }
+
+    const handleRowDetail = (event: React.MouseEvent<Element, MouseEvent>, row: AutoPartDetail, rowNumber: number) => {
+        console.log(row);
+        dispatch(updateAutoPartDetail(row));
+        dispatch(updatePageName(DASHBOARD_PAGES.PRODUCT_DETAILS));
+        dispatch(updateIsUpdate(true));
+    }
+
+    const handleAddProduct = () => {
+        dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT));
+        dispatch(updateIsUpdate(false));
+    }
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -140,12 +152,13 @@ export function ProductsList() {
                                     backgroundColor="#007bff"
                                     color="#fff"
                                     border="none"
-                                    handleClick={() => dispatch(updatePageName(DASHBOARD_PAGES.ADD_PRODUCT))}/>
+                                    handleClick={handleAddProduct}/>
                             </div>
                         </div>
                         <div className={styles.tableContainer}>
                             <Table<AutoPartDetail> data={autoPartsList.autoParts}
-                                                   tableColumnsMapping={inventoryTableColumnsMapping}/>
+                                                   tableColumnsMapping={inventoryTableColumnsMapping}
+                            handleRowDetail={handleRowDetail}/>
                         </div>
                         <div className={styles.footerContainer}>
                             <div className={styles.footerText}>

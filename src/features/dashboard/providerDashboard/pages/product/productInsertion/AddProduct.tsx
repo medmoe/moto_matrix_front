@@ -3,7 +3,7 @@ import {Alert, Button, Divider, InputField, SearchField, Select, Spinner, UpperB
 import styles from './AddProduct.module.css';
 import MaterialIcon from 'material-icons-react';
 import {useAppDispatch, useAppSelector} from "../../../../../../hooks";
-import {selectAutoPartDetail, updatePageName} from "../../../../dashboardSlice";
+import {selectAutoPartDetail, selectIsUpdate, updatePageName} from "../../../../dashboardSlice";
 import {AutoPartCategory, AutoPartDetailWithoutImage, Condition, propertyLocation} from "../../../../../../types/productTypes";
 import {DASHBOARD_PAGES} from "../../../../../../types/dashboardTypes";
 import {API} from "../../../../../../constants";
@@ -24,6 +24,7 @@ interface InputFieldValuesTypes {
     detailedInformation: InputFieldTypes[],
 }
 
+
 export function AddProduct() {
     const navigate: NavigateFunction = useNavigate();
     const dispatch = useAppDispatch();
@@ -31,8 +32,9 @@ export function AddProduct() {
     const rest = {...autoPartData, component: componentWithoutImage} as AutoPartDetailWithoutImage
     const [fileUploadStatus, setFileUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
     const [formUploadStatus, setFormUploadStatus] = useState<'idle' | 'uploading' | 'failed'>('idle');
-    const [autoPartFormData, setAutoPartFromData] = useState(rest);
+    const [autoPartFormData, setAutoPartFromData] = useState<AutoPartDetailWithoutImage>(rest);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const isUpdate = useAppSelector(selectIsUpdate);
     const handleChange = (event: FormEvent) => {
         event.preventDefault()
         const target = event.target as HTMLInputElement | HTMLSelectElement
@@ -134,19 +136,30 @@ export function AddProduct() {
         }
         setFormUploadStatus("uploading");
         const options = {headers: {'Content-Type': 'application/json'}, withCredentials: true}
-        await axios.post(`${API}components/auto-parts/`, JSON.stringify(autoPartFormData), options)
-            .then((res) => {
-                console.log(res);
-                dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
-            })
-            .catch((err) => {
-                setFormUploadStatus('failed')
-                if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
-                    navigate("/");
-                } else {
-                    console.error(err);
-                }
-            })
+        if (!isUpdate) {
+            const {id, ...dataToSend} = autoPartFormData
+            await axios.post(`${API}components/auto-parts/`, JSON.stringify(dataToSend), options)
+                .then((res) => {
+                    dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
+                })
+                .catch((err) => {
+                    setFormUploadStatus('failed')
+                    if (err.response && err.response.status === ResponseStatusCodes.Unauthorized) {
+                        navigate("/");
+                    } else {
+                        console.error(err);
+                    }
+                })
+        }else{
+            await axios.put(`${API}components/auto-parts/${autoPartFormData.id}/`, JSON.stringify(autoPartFormData), options)
+                .then((res) => {
+                    dispatch(updatePageName(DASHBOARD_PAGES.INVENTORY))
+                })
+                .catch((err) => {
+                    setFormUploadStatus('failed')
+                    console.log(err);
+                })
+        }
 
     }
 
@@ -158,7 +171,6 @@ export function AddProduct() {
             parseInt(year, 10) >= startYear &&
             parseInt(year, 10) <= endYear
     }
-
 
     const fileSelectHandler = async (event: FormEvent) => {
         setFileUploadStatus("uploading");
